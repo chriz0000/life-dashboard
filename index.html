@@ -61,7 +61,8 @@
   .top-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; align-items: stretch; }
   .second-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; align-items: stretch; }
   .pillars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .bottom-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; align-items: start; }
+  .pillars-grid > *:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
 
   @media (max-width: 980px) {
     .top-row, .second-row, .pillars-grid, .bottom-row { grid-template-columns: 1fr; }
@@ -366,10 +367,45 @@
   .account-subject { font-size: 13px; color: var(--text-3); padding-top: 7px; margin-top: 7px; border-top: 1px solid var(--separator); line-height: 1.4; }
   .account-subjects-empty { font-size: 13px; color: var(--text-3); padding-top: 7px; margin-top: 7px; border-top: 1px solid var(--separator); }
 
-  /* ---------- Spirit + Knowledge combined card ---------- */
-  .sk-section-label {
-    font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px;
-    color: var(--text-2); padding-bottom: 8px; border-bottom: 1px solid var(--separator); margin-bottom: 4px;
+  /* ---------- WHOOP ---------- */
+  .whoop-card { transition: background-color 0.4s ease, box-shadow 0.4s ease; }
+  .whoop-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .whoop-band { font-size: 13px; font-weight: 600; }
+  .whoop-main { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+  .whoop-gauges { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .whoop-side { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 14px; }
+  .whoop-trend-placeholder {
+    background: var(--well); border-radius: 14px; padding: 14px 16px;
+    font-size: 13px; color: var(--text-3); line-height: 1.5;
+  }
+  @media (max-width: 980px) {
+    .whoop-gauges { justify-content: center; width: 100%; }
+  }
+
+  /* ---------- Verse block (Spirit) ---------- */
+  .verse-block {
+    background: var(--well); border-radius: 14px; padding: 26px 24px;
+    font-size: 18px; font-style: italic; line-height: 1.6; color: var(--text); text-align: center;
+  }
+  .verse-ref {
+    font-size: 13px; font-style: normal; font-weight: 600; color: var(--text-2);
+    margin-top: 14px; letter-spacing: 0.3px;
+  }
+
+  /* ---------- Knowledge area cards ---------- */
+  .knowledge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .knowledge-card { background: var(--well); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .knowledge-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .knowledge-card-name { font-size: 16px; font-weight: 600; }
+  .knowledge-card-status {
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 8px;
+    background: var(--track); color: var(--text-2); white-space: nowrap;
+  }
+  .knowledge-card-meta { font-size: 13px; color: var(--text-3); }
+  .knowledge-card-milestone { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+  .knowledge-card-milestone b { color: var(--text); font-weight: 600; }
+  @media (max-width: 700px) {
+    .knowledge-grid { grid-template-columns: 1fr; }
   }
 
   /* ---------- Footer ---------- */
@@ -408,6 +444,9 @@
     </div>
   </div>
 
+  <!-- WHOOP: recovery, sleep, strain at a glance -->
+  <div class="card whoop-card" id="whoop-card"></div>
+
   <!-- SECOND ROW: email intelligence | schedule | quick stats -->
   <div class="second-row">
     <div class="card" id="email-card">
@@ -428,7 +467,7 @@
   <div class="section-header top-section-header">Pillars</div>
   <div class="pillars-grid" id="pillars"></div>
 
-  <!-- BOTTOM ROW: accounts | subscriptions | spirit & knowledge -->
+  <!-- BOTTOM ROW: accounts | subscriptions -->
   <div class="bottom-row">
     <div class="card" id="accounts-card">
       <div class="section-header">Accounts</div>
@@ -437,10 +476,6 @@
     <div class="card" id="subs-card">
       <div class="section-header">Subscriptions</div>
       <table class="data-table" id="subsTable"></table>
-    </div>
-    <div class="card" id="spirit-knowledge-card">
-      <div class="section-header">Spirit &amp; Knowledge</div>
-      <div id="spiritKnowledge"></div>
     </div>
   </div>
 
@@ -477,6 +512,17 @@ const DATA = {
     { sender: "Tanda",               subject: "New Roster: 15th Jun", time: "1d ago" },
     { sender: "Dan Martell",         subject: "The #1 reason founders stay stuck", time: "2d ago" },
   ],
+
+  whoop: {
+    recovery: 79,
+    sleep: 89,
+    strain: 5.8,
+    strainMax: 21,
+    hrv: 56,
+    restingHr: 57,
+    date: "12 Jun 2026",
+    recoveryTrend: [79],
+  },
 
   schedule: {
     days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -516,16 +562,6 @@ const DATA = {
           { day: "Sat", workout: "5km easy", km: 5, detail: "5km @ 8:00/km — recovery focus, keep heart rate in Zone 2." },
           { day: "Sun", workout: "22km long run", km: 22, detail: "22km long run @ 5:50/km — fuel every 45 mins, practice race-day nutrition." },
         ],
-      },
-      whoop: {
-        connected: true,
-        items: [
-          { label: "Recovery", value: "79%" },
-          { label: "Sleep", value: "89%" },
-          { label: "Strain", value: "5.8" },
-          { label: "HRV", value: "56ms" },
-        ],
-        note: "Synced from WHOOP · 12 Jun 2026.",
       },
       heartRateZones: [
         { zone: "Z1 · Recovery", range: "120–135 bpm", color: "blue" },
@@ -682,9 +718,14 @@ const DATA = {
       weight: 0.10,
       status: "Just starting",
       color: "orange",
-      reading: { streak: 0, label: "Reading streak", placeholder: "No reading plan set yet — choose a plan to see today's chapter here." },
-      verse: { label: "Verse of the Day", placeholder: "Set a verse source to show a daily verse here." },
-      notes: { label: "Notes", placeholder: "Reflections and notes will appear here." },
+      readingPlan: {
+        totalDays: 365,
+        currentBook: "Genesis",
+        todaysReading: "Genesis 1",
+      },
+      devotionalStreak: 0,
+      verse: { text: "Trust in the Lord with all your heart", reference: "Proverbs 3:5" },
+      notes: { placeholder: "No notes today" },
     },
     {
       key: "knowledge",
@@ -694,12 +735,13 @@ const DATA = {
       weight: 0.15,
       status: "Not started",
       color: "red",
+      weeklyHours: 0,
       areas: [
-        { name: "Czech", value: "Level 0/10", sub: "Not started", percent: 0 },
-        { name: "Māori", value: "Level 0/10", sub: "Not started", percent: 0 },
-        { name: "Reading", value: "0 books", sub: "Goal: 12 this year", percent: 0 },
-        { name: "Fighting / martial arts", value: "Research phase", sub: "Choosing a discipline", percent: 0 },
-        { name: "Gun license", value: "Not started", sub: "Requirements not reviewed", percent: 0 },
+        { name: "Czech", type: "language", level: 0, maxLevel: 10, status: "Beginner", hours: 0, milestone: "Learn 50 basic words" },
+        { name: "Māori", type: "language", level: 0, maxLevel: 10, status: "Beginner", hours: 0, milestone: "Learn basic greetings (mihi)" },
+        { name: "Reading", type: "reading", booksCompleted: 0, goal: 12, currentBook: "None" },
+        { name: "Fighting / Martial Arts", type: "status", status: "Research phase", nextStep: "Find a gym in Gold Coast area" },
+        { name: "Gun License", type: "status", status: "Not started", nextStep: "Research QLD firearms licensing requirements" },
       ],
     },
   ],
@@ -732,6 +774,7 @@ const DATA = {
 const COLOR = {
   red: "#C45C4A",
   orange: "#C68B4B",
+  yellow: "#D9A746",
   green: "#5B9A6F",
   blue: "#5B8DB8",
   purple: "#8B7BB5",
@@ -1180,6 +1223,60 @@ function animateProgressRows(root) {
   });
 }
 
+/* ---------- Knowledge area cards ---------- */
+function computeKnowledgeScore(areas) {
+  const pcts = areas.map(a => {
+    if (a.type === "language") return (a.level / a.maxLevel) * 100;
+    if (a.type === "reading") return (a.booksCompleted / a.goal) * 100;
+    if (a.status === "Research phase") return 5;
+    return 0;
+  });
+  return Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length);
+}
+
+function knowledgeAreaCard(a) {
+  if (a.type === "language") {
+    const pct = Math.round((a.level / a.maxLevel) * 100);
+    return `
+      <div class="knowledge-card">
+        <div class="knowledge-card-top">
+          <span class="knowledge-card-name">${a.name}</span>
+          <span class="knowledge-card-status">${a.status}</span>
+        </div>
+        <div class="progress-row-top">
+          <span class="progress-value">Level ${a.level}/${a.maxLevel}</span>
+          <span class="progress-value">${a.hours}h practiced</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" data-pct="${pct}"></div></div>
+        <div class="knowledge-card-milestone">Next milestone: <b>${a.milestone}</b></div>
+      </div>
+    `;
+  }
+  if (a.type === "reading") {
+    const pct = Math.round((a.booksCompleted / a.goal) * 100);
+    return `
+      <div class="knowledge-card">
+        <div class="knowledge-card-top">
+          <span class="knowledge-card-name">${a.name}</span>
+          <span class="knowledge-card-status">${a.booksCompleted}/${a.goal} books</span>
+        </div>
+        <div class="knowledge-card-meta">Current book: ${a.currentBook}</div>
+        <div class="progress-track"><div class="progress-fill" data-pct="${pct}"></div></div>
+        <div class="knowledge-card-milestone">${a.booksCompleted} books completed in 2026 · Goal: ${a.goal} this year</div>
+      </div>
+    `;
+  }
+  return `
+    <div class="knowledge-card">
+      <div class="knowledge-card-top">
+        <span class="knowledge-card-name">${a.name}</span>
+        <span class="knowledge-card-status">${a.status}</span>
+      </div>
+      <div class="knowledge-card-milestone">Next step: <b>${a.nextStep}</b></div>
+    </div>
+  `;
+}
+
 /* ---------- Habit tracker — full 30 days ---------- */
 function habitTracker30Block(items) {
   const labels = lastNDayLabels(items.length);
@@ -1206,7 +1303,7 @@ function chartBlock(id, short) {
 /* =========================================================
    RENDER: PILLARS (always expanded, 2-column grid)
    ========================================================= */
-const GRID_PILLAR_KEYS = ["physical", "capital", "brand", "build", "discipline"];
+const GRID_PILLAR_KEYS = ["physical", "capital", "brand", "build", "discipline", "spirit", "knowledge"];
 
 function renderPillars() {
   const html = GRID_PILLAR_KEYS.map((key, i) => {
@@ -1229,7 +1326,6 @@ function renderPillars() {
       sections.push(labeled("Today", listRows([{ name: p.today.title, sub: p.today.sub, isCurrent: true }])));
       sections.push(labeled("Week 3 Schedule", weekTableBlock(p.weekSchedule)));
       sections.push(labeled("Weekly Training Volume (km)", chartBlock(`chart-${p.key}-volume`)));
-      sections.push(labeled("WHOOP", statGrid(p.whoop.items, 4) + `<div class="progress-sub" style="margin-top:12px;">${p.whoop.note}</div>`));
       sections.push(labeled("Heart Rate Zones", listRows(p.heartRateZones.map(z => ({
         name: z.zone, dotColor: z.color, amount: z.range,
       })))));
@@ -1277,6 +1373,44 @@ function renderPillars() {
       sections.push(labeled(p.todoistTasks.label, checkRows(p.todoistTasks.items)));
     }
 
+    if (p.key === "spirit") {
+      const now = new Date();
+      const brisbaneNow = new Date(now.toLocaleString("en-US", { timeZone: "Australia/Brisbane" }));
+      const startOfYear = new Date(brisbaneNow.getFullYear(), 0, 0);
+      const dayOfYear = Math.floor((brisbaneNow - startOfYear) / 86400000);
+      const totalDays = p.readingPlan.totalDays;
+      const yearPct = Math.round((dayOfYear / totalDays) * 100);
+
+      sections.push(statGrid([
+        { label: "Reading Plan", value: `Day ${dayOfYear}`, sub: `of ${totalDays} days` },
+        { label: "Current Book", value: p.readingPlan.currentBook },
+        { label: "Devotional Streak", value: `${p.devotionalStreak} day${p.devotionalStreak === 1 ? "" : "s"}`, dot: p.devotionalStreak > 0 ? "green" : "red" },
+      ]));
+      sections.push(progressRows([
+        { name: "Bible Reading Plan — Year Progress", value: `Day ${dayOfYear} of ${totalDays}`, percent: yearPct },
+      ]));
+      sections.push(labeled("Today's Reading", listRows([
+        { name: p.readingPlan.todaysReading, sub: p.readingPlan.currentBook, isCurrent: true },
+      ])));
+      sections.push(labeled("Verse of the Day", `
+        <div class="verse-block">
+          “${p.verse.text}”
+          <div class="verse-ref">— ${p.verse.reference}</div>
+        </div>
+      `));
+      sections.push(labeled("Reflection Notes", placeholderBlock(p.notes.placeholder)));
+    }
+
+    if (p.key === "knowledge") {
+      const score = computeKnowledgeScore(p.areas);
+      sections.push(heroGaugeBlock({
+        percent: score, color: COLOR[p.color], valueText: `${score}%`, sublabel: "score",
+        title: "Overall Knowledge Score", sub: "Based on language levels, reading progress, and goal milestones across all areas.",
+        pace: `Learning hours this week: ${p.weeklyHours}`,
+      }));
+      sections.push(labeled("Learning Areas", `<div class="knowledge-grid">${p.areas.map(knowledgeAreaCard).join("")}</div>`));
+    }
+
     return `
       <section class="pillar-card" id="pillar-${p.key}" style="animation-delay:${i * 0.05}s">
         <div class="pillar-header">
@@ -1307,41 +1441,57 @@ function renderPillars() {
 }
 
 /* =========================================================
-   RENDER: SPIRIT + KNOWLEDGE (combined bottom-row card)
+   RENDER: WHOOP
    ========================================================= */
-function renderSpiritKnowledge() {
-  const spirit = DATA.pillars.find(p => p.key === "spirit");
-  const knowledge = DATA.pillars.find(p => p.key === "knowledge");
+function renderWhoop() {
+  const w = DATA.whoop;
+  let band, color;
+  if (w.recovery >= 67) { band = "Recovered"; color = COLOR.green; }
+  else if (w.recovery >= 34) { band = "Moderate"; color = COLOR.yellow; }
+  else { band = "Low"; color = COLOR.red; }
 
-  document.getElementById("spiritKnowledge").innerHTML = `
-    <div style="display:flex; flex-direction:column; gap:18px;">
-      <div>
-        <div class="sk-section-label">Spirit</div>
-        <div class="stat-grid cols-2" style="margin-top:14px;">
+  const strainPct = Math.min(100, (w.strain / w.strainMax) * 100);
+
+  const hasTrend = w.recoveryTrend && w.recoveryTrend.length > 1;
+  const trendHtml = hasTrend
+    ? chartBlock("chart-whoop-trend", true)
+    : `<div class="whoop-trend-placeholder">7-day recovery trend will appear here once more days are synced.</div>`;
+
+  const card = document.getElementById("whoop-card");
+  card.style.background = hexToRgba(color, 0.06);
+  card.style.boxShadow = `inset 0 0 0 1px ${hexToRgba(color, 0.18)}, var(--shadow)`;
+
+  card.innerHTML = `
+    <div class="whoop-header">
+      <div class="section-header">WHOOP</div>
+      <div class="whoop-band" style="color:${color}">${band} · Synced ${w.date}</div>
+    </div>
+    <div class="whoop-main">
+      <div class="whoop-gauges">
+        ${circularGauge({ percent: w.recovery, size: 150, stroke: 14, color, valueText: `${w.recovery}%`, sublabel: "Recovery", valueSize: 34 })}
+        ${circularGauge({ percent: w.sleep, size: 110, stroke: 10, color: COLOR.blue, valueText: `${w.sleep}%`, sublabel: "Sleep", valueSize: 24 })}
+        ${circularGauge({ percent: strainPct, size: 110, stroke: 10, color: COLOR.purple, valueText: w.strain.toFixed(1), sublabel: "Strain /21", valueSize: 24 })}
+      </div>
+      <div class="whoop-side">
+        <div class="stat-grid cols-2">
           <div class="stat-box">
-            <div class="stat-label">${spirit.reading.label}</div>
-            <div class="stat-value">
-              <span class="dot" style="background:${COLOR[spirit.reading.streak > 0 ? "green" : "red"]}"></span>
-              <span>${spirit.reading.streak} days</span>
-            </div>
+            <div class="stat-label">HRV</div>
+            <div class="stat-value">${w.hrv}ms</div>
           </div>
           <div class="stat-box">
-            <div class="stat-label">Today's reading</div>
-            <div class="stat-value">Not set</div>
+            <div class="stat-label">Resting HR</div>
+            <div class="stat-value">${w.restingHr} bpm</div>
           </div>
         </div>
-        ${labeled(spirit.verse.label, placeholderBlock(spirit.verse.placeholder))}
-        ${labeled(spirit.notes.label, placeholderBlock(spirit.notes.placeholder))}
-      </div>
-      <div>
-        <div class="sk-section-label">Knowledge</div>
-        <div style="margin-top:14px;">${chartBlock("chart-knowledge-radar", true)}</div>
-        <div style="margin-top:18px;">${progressRows(knowledge.areas, true)}</div>
+        ${trendHtml}
       </div>
     </div>
   `;
 
-  animateProgressRows(document.getElementById("spiritKnowledge"));
+  animateGauges(card);
+  if (hasTrend) {
+    makeRecoveryTrendChart("chart-whoop-trend", w.recoveryTrend);
+  }
 }
 
 /* =========================================================
@@ -1619,20 +1769,28 @@ function makeCompletionRateChart(canvasId, cfg) {
   });
 }
 
-/* ---------- Knowledge proficiency radar chart ---------- */
-function makeKnowledgeRadar(canvasId, areas) {
+/* ---------- WHOOP recovery trend sparkline ---------- */
+function makeRecoveryTrendChart(canvasId, data) {
   const ctx = document.getElementById(canvasId).getContext("2d");
+  const gradient = ctx.createLinearGradient(0, 0, 0, 180);
+  gradient.addColorStop(0, hexToRgba(COLOR.green, 0.18));
+  gradient.addColorStop(1, hexToRgba(COLOR.green, 0));
+
   return new Chart(ctx, {
-    type: "radar",
+    type: "line",
     data: {
-      labels: areas.map(a => a.name),
+      labels: lastNDayLabels(data.length),
       datasets: [{
-        data: areas.map(a => a.percent),
-        backgroundColor: hexToRgba(COLOR.purple, 0.15),
-        borderColor: COLOR.purple,
-        borderWidth: 2,
-        pointBackgroundColor: COLOR.purple,
+        data,
+        borderColor: COLOR.green,
+        backgroundColor: gradient,
+        fill: true,
+        tension: 0.35,
         pointRadius: 3,
+        pointBackgroundColor: COLOR.green,
+        pointBorderColor: "#FFFFFF",
+        pointBorderWidth: 1.5,
+        borderWidth: 2.5,
       }],
     },
     options: {
@@ -1640,15 +1798,15 @@ function makeKnowledgeRadar(canvasId, areas) {
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { ...TOOLTIP_STYLE, callbacks: { label: (c) => `${c.label}: ${c.parsed.r}%` } },
+        tooltip: { ...TOOLTIP_STYLE, callbacks: { label: (c) => `Recovery: ${c.parsed.y}%` } },
       },
       scales: {
-        r: {
+        x: { grid: { display: false }, border: { display: false } },
+        y: {
+          grid: { color: "rgba(120,100,80,0.06)" },
+          border: { display: false },
           min: 0, max: 100,
-          ticks: { display: false, stepSize: 25 },
-          grid: { color: "rgba(120,100,80,0.08)" },
-          angleLines: { color: "rgba(120,100,80,0.08)" },
-          pointLabels: { font: { size: 11, weight: "600" } },
+          ticks: { callback: (v) => `${v}%`, maxTicksLimit: 4 },
         },
       },
     },
@@ -1662,7 +1820,6 @@ function initAllCharts() {
   const physical = DATA.pillars.find(p => p.key === "physical");
   const capital = DATA.pillars.find(p => p.key === "capital");
   const discipline = DATA.pillars.find(p => p.key === "discipline");
-  const knowledge = DATA.pillars.find(p => p.key === "knowledge");
 
   makeRevenueChart(`chart-capital-revenue`, capital.revenueChart);
   makeExpenseDonut(`chart-capital-expenses`, capital.expenses);
@@ -1675,7 +1832,6 @@ function initAllCharts() {
   makeTasksChart(`chart-discipline-tasks`, discipline.tasksChart);
   makeKarmaChart(`chart-discipline-karma`, discipline.karmaChart);
   makeCompletionRateChart(`chart-discipline-completion`, discipline.completionRateChart);
-  makeKnowledgeRadar(`chart-knowledge-radar`, knowledge.areas);
 }
 
 /* =========================================================
@@ -1728,11 +1884,11 @@ function renderFooter() {
    ========================================================= */
 renderHeader();
 renderFocusToday();
+renderWhoop();
 renderEmails();
 renderSchedule();
 renderQuickStats();
 renderPillars();
-renderSpiritKnowledge();
 renderAccounts();
 renderSubscriptions();
 renderFooter();
