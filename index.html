@@ -95,7 +95,30 @@
     border-left: 3px solid var(--c);
     animation: fadeUp 0.5s ease both;
   }
-  .alert-icon { font-size: 15px; flex-shrink: 0; line-height: 1; }
+  .alert-icon { display: flex; flex-shrink: 0; line-height: 1; }
+
+  /* ---------- Today's schedule ---------- */
+  .schedule-card {
+    background: var(--card); border-radius: 16px; padding: 14px 16px;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 12px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .schedule-title { font-size: 10.5px; color: var(--text-3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+  .day-bar { display: flex; gap: 4px; }
+  .day-cell {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    padding: 8px 0; border-radius: 10px; background: var(--stat);
+    font-size: 11px; font-weight: 700; color: var(--text-2);
+  }
+  .day-cell.is-today { background: rgba(127,119,221,0.18); color: var(--purple); }
+  .timeline { display: flex; flex-direction: column; gap: 12px; }
+  .timeline-row { display: flex; gap: 12px; align-items: flex-start; }
+  .timeline-time { font-size: 11px; color: var(--text-3); font-weight: 700; width: 56px; flex-shrink: 0; padding-top: 2px; }
+  .timeline-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .timeline-content { flex: 1; min-width: 0; }
+  .timeline-title { font-size: 13px; font-weight: 700; }
+  .timeline-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; font-weight: 600; }
   .alert b { color: var(--text); font-weight: 700; }
 
   /* ---------- Quick nav ---------- */
@@ -112,7 +135,7 @@
     -webkit-user-select: none; user-select: none;
   }
   .nav-pill:active { transform: scale(0.94); background: var(--stat); }
-  .nav-icon { font-size: 14px; }
+  .nav-icon { display: flex; }
   .nav-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: 2px; }
 
   /* ---------- Pillar cards ---------- */
@@ -189,13 +212,19 @@
 
   /* Lists (bills, subs) */
   .list { display: flex; flex-direction: column; gap: 8px; }
-  .list-row { display: flex; align-items: center; justify-content: space-between; background: var(--stat); border-radius: 10px; padding: 11px 13px; }
+  .list-row { display: flex; align-items: center; justify-content: space-between; background: var(--stat); border-radius: 10px; padding: 11px 13px; border: 1px solid transparent; }
+  .list-row.is-today { border-color: var(--purple); background: rgba(127,119,221,0.08); }
   .list-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-  .list-name { font-size: 13px; font-weight: 700; }
+  .list-name { font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
   .list-sub { font-size: 11px; color: var(--text-3); font-weight: 600; }
   .list-sub.is-overdue { color: var(--red); }
   .list-amount { font-size: 14.5px; font-weight: 800; flex-shrink: 0; padding-left: 10px; }
   .list-amount.is-overdue { color: var(--red); }
+
+  /* Habit tracker */
+  .habit-row { display: flex; justify-content: space-between; background: var(--stat); border-radius: 10px; padding: 12px 10px; }
+  .habit-cell { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .habit-day { font-size: 9.5px; color: var(--text-3); font-weight: 700; text-transform: uppercase; }
 
   /* Quest list */
   .quest-row { display: flex; align-items: center; gap: 11px; background: var(--stat); border-radius: 10px; padding: 11px 13px; }
@@ -274,6 +303,8 @@
 
   <nav class="quicknav" id="quicknav"></nav>
 
+  <section class="schedule-card" id="schedule"></section>
+
   <main id="pillars"></main>
 
   <section id="integrations" style="display:flex; flex-direction:column; gap:12px;"></section>
@@ -296,16 +327,27 @@ const DATA = {
   },
 
   alerts: [
-    { icon: "🔥", color: "red",   html: "Streak <b>broken</b> — 0 days" },
-    { icon: "💵", color: "amber", html: "NRICH revenue: <b>$0</b> in last 30 days" },
-    { icon: "📅", color: "amber", html: "<b>4 bills</b> due — $297 total" },
-    { icon: "📣", color: "amber", html: "Marketing <b>stalled</b> — Phase 1 incomplete" },
+    { color: "red",   html: "Streak <b>broken</b> — 0 days" },
+    { color: "amber", html: "NRICH revenue: <b>$0</b> in last 30 days" },
+    { color: "amber", html: "<b>4 bills</b> due — $297 total" },
+    { color: "amber", html: "Marketing <b>stalled</b> — Phase 1 incomplete" },
   ],
+
+  schedule: {
+    label: "Today's schedule",
+    days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    today: "Sat",
+    contentDays: ["Wed", "Sun"],
+    events: [
+      { time: "7:00 AM", title: "5km easy run", sub: "Marathon training · Week 3, Day 6", color: "green" },
+      { time: "Today", title: "Canva — $20 due", sub: "Subscription renewal", color: "amber" },
+    ],
+  },
 
   pillars: [
     {
       key: "physical",
-      icon: "🏃",
+      icon: "physical",
       name: "Physical",
       status: "On track",
       color: "green",
@@ -314,17 +356,49 @@ const DATA = {
         { label: "Marathon", value: "Week 3/6", sub: "Race ~3 Jul" },
         { label: "Goal pace", value: "7:07/km" },
         { label: "WHOOP", value: "No data", dot: "amber" },
-        { label: "Today", value: "Recovery easy 6km" },
+        { label: "Today", value: "5km easy run" },
       ],
       segments: {
         label: "Training Block",
         items: ["done", "done", "current", "future", "future", "future"],
         sublabels: ["W1", "W2", "W3", "W4", "W5", "W6"],
       },
+      weekSchedule: {
+        label: "Week 3 Schedule",
+        today: "Sat",
+        items: [
+          { day: "Mon", workout: "Rest" },
+          { day: "Tue", workout: "8km tempo" },
+          { day: "Wed", workout: "6km easy" },
+          { day: "Thu", workout: "10km intervals" },
+          { day: "Fri", workout: "Rest" },
+          { day: "Sat", workout: "5km easy" },
+          { day: "Sun", workout: "22km long run" },
+        ],
+      },
+      heartRateZones: {
+        label: "Heart Rate Zones",
+        items: [
+          { zone: "Z1 · Recovery", range: "120–135 bpm", color: "blue" },
+          { zone: "Z2 · Easy", range: "136–150 bpm", color: "green" },
+          { zone: "Z3 · Tempo", range: "151–165 bpm", color: "amber" },
+          { zone: "Z4 · Threshold", range: "166–178 bpm", color: "red" },
+          { zone: "Z5 · Max", range: "179+ bpm", color: "purple" },
+        ],
+      },
+      whoop: {
+        label: "WHOOP",
+        items: [
+          { label: "Recovery", value: "Syncing..." },
+          { label: "Sleep score", value: "Syncing..." },
+          { label: "Strain", value: "Syncing..." },
+          { label: "HRV", value: "Syncing..." },
+        ],
+      },
     },
     {
       key: "capital",
-      icon: "💰",
+      icon: "capital",
       name: "Capital",
       status: "Behind",
       color: "red",
@@ -349,10 +423,24 @@ const DATA = {
         labels: ["Mar", "Apr", "May", "Jun"],
         data: [0, 0, 87, 0],
       },
+      shopify: {
+        label: "Shopify Store Health",
+        productsListed: 20,
+        activeProducts: 18,
+        totalInventoryUnits: 1115,
+      },
+      expenseBreakdown: {
+        label: "Monthly Expense Breakdown",
+        items: [
+          { name: "Rent & bills", amount: 250, color: "blue" },
+          { name: "Subscriptions", amount: 70, color: "purple" },
+          { name: "Loan payments", amount: 147, color: "amber" },
+        ],
+      },
     },
     {
       key: "brand",
-      icon: "📣",
+      icon: "brand",
       name: "Brand",
       status: "Needs work",
       color: "amber",
@@ -372,7 +460,7 @@ const DATA = {
     },
     {
       key: "build",
-      icon: "🛠️",
+      icon: "build",
       name: "Build",
       status: "Stalled",
       color: "amber",
@@ -401,7 +489,7 @@ const DATA = {
     },
     {
       key: "discipline",
-      icon: "⚡",
+      icon: "discipline",
       name: "Discipline",
       status: "Broken",
       color: "red",
@@ -421,10 +509,29 @@ const DATA = {
         data: [0, 0, 4, 2],
         goal: 35,
       },
+      todoistTasks: {
+        label: "Today's Tasks",
+        items: [
+          { text: "Morning mobility routine", done: false },
+          { text: "Marathon training run", done: false },
+          { text: "Inbox zero — Gmail", done: false },
+          { text: "Log NRICH inventory count", done: false },
+        ],
+      },
+      habitTracker: {
+        label: "Habit Tracker (7d)",
+        items: [false, false, true, true, false, false, false],
+      },
     },
   ],
 
   gmail: { unread: 1, sub: "Automated · Clear", badge: "1 NEW", badgeColor: "blue" },
+  whoopCard: {
+    recovery: "--",
+    sleep: "--",
+    strain: "--",
+    note: "Connect WHOOP to see live data",
+  },
   notion: { title: "Content HQ", sub: "Updated Jun 9", badge: "SYNCED", badgeColor: "green" },
   subscriptions: [
     { name: "ChatGPT", amount: "$30", due: "Overdue", overdue: true },
@@ -447,6 +554,7 @@ const COLOR = {
   blue: "#378ADD",
   purple: "#7F77DD",
   gray: "#68686f",
+  teal: "#14B8A6",
 };
 
 function hexToRgba(hex, alpha) {
@@ -459,6 +567,31 @@ function hexToRgba(hex, alpha) {
 function badgeStyle(colorKey) {
   const hex = COLOR[colorKey] || COLOR.gray;
   return `background:${hexToRgba(hex, 0.16)}; color:${hex};`;
+}
+
+/* =========================================================
+   ICONS — inline SVG line-art, inherits color via currentColor
+   ========================================================= */
+const ICON_PATHS = {
+  physical: '<circle cx="15" cy="4" r="1.6"/><path d="M13 6.5l-1.5 3.5 3 2.3.8 5.7"/><path d="M11.5 10l-3.5 1.5"/><path d="M14 12l3 .8 2.3 4"/><path d="M11.5 17.5l-3 4"/><path d="M14.3 16.8l3 3.7"/>',
+  capital: '<ellipse cx="8" cy="17.5" rx="5" ry="2"/><ellipse cx="8" cy="14" rx="5" ry="2"/><ellipse cx="8" cy="10.5" rx="5" ry="2"/><path d="M17 16.5V5.5"/><path d="M13.2 9L17 5.2l3.8 3.8"/>',
+  brand: '<path d="M3 9.5v5a1 1 0 001 1h2.2l5.3 4V4.5l-5.3 4H4a1 1 0 00-1 1z"/><path d="M15.5 9a4 4 0 010 6"/><path d="M18.3 6.2a8 8 0 010 11.6"/>',
+  build: '<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>',
+  discipline: '<path d="M12 2.5c1.1 3-3 4.3-3 7.7a3 3 0 006 0c0-1-.7-2-.7-2 1.9 1.1 2.7 3 2.7 5a5 5 0 01-10 0c0-4.3 3-6.7 5-10.7z"/>',
+  mail: '<rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6.5 9-6.5"/>',
+  doc: '<path d="M13.5 2.5h-7a2 2 0 00-2 2v15a2 2 0 002 2h11a2 2 0 002-2V8z"/><path d="M13.5 2.5V8h5"/><path d="M8.5 12.5h7M8.5 16h7"/>',
+  whoop: '<path d="M2.5 12h3.2l1.6 4.2 3.4-9 2 4.8h6.8"/>',
+  warning: '<path d="M10.6 3.5L2.3 18a1.8 1.8 0 001.55 2.7h16.3a1.8 1.8 0 001.55-2.7L13.4 3.5a1.8 1.8 0 00-2.8 0z"/><path d="M12 9.3v3.6"/><path d="M12 17h.01"/>',
+  star: '<path d="M12 3l2.6 5.9 6.4.6-4.8 4.2 1.4 6.2L12 16.8 6.4 19.9l1.4-6.2L3 9.5l6.4-.6z"/>',
+};
+
+function svgIcon(name, size = 18) {
+  return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[name] || ""}</svg>`;
+}
+
+function dotSvg(colorKey, size = 8) {
+  const c = COLOR[colorKey] || COLOR.gray;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 8 8" style="flex-shrink:0"><circle cx="4" cy="4" r="4" fill="${c}"/></svg>`;
 }
 
 /* =========================================================
@@ -488,7 +621,7 @@ function renderHero() {
     </div>
     <div class="hero-info">
       <div class="hero-name">${u.name}</div>
-      <div class="hero-title">⚔️ ${u.title}</div>
+      <div class="hero-title">${svgIcon("star", 13)} ${u.title}</div>
       <div class="hero-meta">${dateStr} · ${u.location}</div>
       <div class="hero-xp">${avgXp}% to Level ${u.level + 1}</div>
     </div>
@@ -508,7 +641,7 @@ function renderHero() {
 function renderAlerts() {
   document.getElementById("alerts").innerHTML = DATA.alerts.map((a, i) => `
     <div class="alert" style="--c:${COLOR[a.color]}; animation-delay:${i * 0.05}s">
-      <span class="alert-icon">${a.icon}</span>
+      <span class="alert-icon" style="color:${COLOR[a.color]}">${svgIcon("warning", 15)}</span>
       <span>${a.html}</span>
     </div>
   `).join("");
@@ -520,7 +653,7 @@ function renderAlerts() {
 function renderQuickNav() {
   document.getElementById("quicknav").innerHTML = DATA.pillars.map(p => `
     <button class="nav-pill" data-target="${p.key}">
-      <span class="nav-icon">${p.icon}</span>
+      <span class="nav-icon" style="color:${COLOR[p.color]}">${svgIcon(p.icon, 14)}</span>
       <span>${p.name}</span>
       <span class="nav-dot" style="background:${COLOR[p.color]}"></span>
     </button>
@@ -536,6 +669,37 @@ function renderQuickNav() {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
+}
+
+/* =========================================================
+   RENDER: TODAY'S SCHEDULE
+   ========================================================= */
+function renderSchedule() {
+  const s = DATA.schedule;
+
+  const dayBar = s.days.map(d => `
+    <div class="day-cell ${d === s.today ? "is-today" : ""}">
+      <span>${d}</span>
+      ${s.contentDays.includes(d) ? dotSvg("purple", 5) : ""}
+    </div>
+  `).join("");
+
+  const timeline = s.events.map(e => `
+    <div class="timeline-row">
+      <div class="timeline-time">${e.time}</div>
+      <div class="timeline-dot" style="background:${COLOR[e.color]}"></div>
+      <div class="timeline-content">
+        <div class="timeline-title">${e.title}</div>
+        <div class="timeline-sub">${e.sub}</div>
+      </div>
+    </div>
+  `).join("");
+
+  document.getElementById("schedule").innerHTML = `
+    <div class="schedule-title">${s.label}</div>
+    <div class="day-bar">${dayBar}</div>
+    <div class="timeline">${timeline}</div>
+  `;
 }
 
 /* =========================================================
@@ -575,7 +739,7 @@ function billsBlock(bills) {
         ${bills.items.map(b => `
           <div class="list-row">
             <div class="list-main">
-              <span class="list-name">${b.name}</span>
+              <span class="list-name">${dotSvg(b.overdue ? "red" : "gray")}${b.name}</span>
               <span class="list-sub ${b.overdue ? "is-overdue" : ""}">${b.due}</span>
             </div>
             <span class="list-amount ${b.overdue ? "is-overdue" : ""}">${b.amount}</span>
@@ -651,6 +815,126 @@ function chartBlock(id, label) {
   `;
 }
 
+function labeledSection(label, innerHtml) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${label}</div>
+      ${innerHtml}
+    </div>
+  `;
+}
+
+function weekScheduleBlock(ws) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${ws.label}</div>
+      <div class="list">
+        ${ws.items.map(item => `
+          <div class="list-row ${item.day === ws.today ? "is-today" : ""}">
+            <div class="list-main">
+              <span class="list-name">${item.day}${item.day === ws.today ? " · Today" : ""}</span>
+            </div>
+            <span class="list-amount">${item.workout}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function hrZonesBlock(hr) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${hr.label}</div>
+      <div class="list">
+        ${hr.items.map(z => `
+          <div class="list-row">
+            <div class="list-main">
+              <span class="list-name">${dotSvg(z.color)}${z.zone}</span>
+            </div>
+            <span class="list-amount" style="color:${COLOR[z.color]}">${z.range}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function shopifyBlock(s) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${s.label}</div>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label">Products listed</div>
+          <div class="stat-value">${s.productsListed}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Active products</div>
+          <div class="stat-value">${s.activeProducts}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Inventory units</div>
+          <div class="stat-value">${s.totalInventoryUnits.toLocaleString()}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function expenseBlock(e) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${e.label}</div>
+      <div class="list">
+        ${e.items.map(i => `
+          <div class="list-row">
+            <div class="list-main">
+              <span class="list-name">${dotSvg(i.color)}${i.name}</span>
+            </div>
+            <span class="list-amount">$${i.amount}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function todoistBlock(t) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${t.label}</div>
+      <div class="list">
+        ${t.items.map(i => `
+          <div class="quest-row">
+            <span class="quest-icon" style="${i.done
+              ? `background:${hexToRgba(COLOR.green, 0.18)}; color:${COLOR.green}`
+              : `background:${hexToRgba(COLOR.gray, 0.18)}; color:${COLOR.gray}`}">${i.done ? "✓" : ""}</span>
+            <span class="quest-text">${i.text}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function habitTrackerBlock(h) {
+  const labels = lastNDayLabels(h.items.length);
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${h.label}</div>
+      <div class="habit-row">
+        ${h.items.map((done, i) => `
+          <div class="habit-cell">
+            <span class="habit-day">${labels[i]}</span>
+            ${dotSvg(done ? "green" : "red", 10)}
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
 /* =========================================================
    RENDER: PILLARS
    ========================================================= */
@@ -659,18 +943,25 @@ function renderPillars() {
     const sections = [];
     if (p.stats) sections.push(statGrid(p.stats));
     if (p.segments) sections.push(segmentBlock(p.segments));
+    if (p.weekSchedule) sections.push(weekScheduleBlock(p.weekSchedule));
+    if (p.heartRateZones) sections.push(hrZonesBlock(p.heartRateZones));
+    if (p.whoop) sections.push(labeledSection(p.whoop.label, statGrid(p.whoop.items)));
     if (p.bills) sections.push(billsBlock(p.bills));
     if (p.chart) sections.push(chartBlock(`chart-${p.key}`, p.chart.label));
+    if (p.shopify) sections.push(shopifyBlock(p.shopify));
+    if (p.expenseBreakdown) sections.push(expenseBlock(p.expenseBreakdown));
     if (p.quests) sections.push(questsBlock(p.quests));
     if (p.inventory) sections.push(inventoryBlock(p.inventory));
     if (p.devProjects) sections.push(devProjectsBlock(p.devProjects));
+    if (p.todoistTasks) sections.push(todoistBlock(p.todoistTasks));
     if (p.karmaChart) sections.push(chartBlock(`chart-${p.key}-karma`, p.karmaChart.label));
     if (p.tasksChart) sections.push(chartBlock(`chart-${p.key}-tasks`, p.tasksChart.label));
+    if (p.habitTracker) sections.push(habitTrackerBlock(p.habitTracker));
 
     return `
       <section class="pillar" id="pillar-${p.key}" style="animation-delay:${i * 0.06}s">
         <div class="pillar-header" data-key="${p.key}">
-          <div class="pillar-icon" style="--icon-bg:${hexToRgba(COLOR[p.color], 0.15)}">${p.icon}</div>
+          <div class="pillar-icon" style="--icon-bg:${hexToRgba(COLOR[p.color], 0.15)}; color:${COLOR[p.color]}">${svgIcon(p.icon, 20)}</div>
           <div class="pillar-meta">
             <div class="pillar-top-row">
               <span class="pillar-name">${p.name}</span>
@@ -928,10 +1219,11 @@ function makeTasksChart(canvasId, cfg) {
 function renderIntegrations() {
   const g = DATA.gmail;
   const n = DATA.notion;
+  const w = DATA.whoopCard;
 
   const gmailHtml = `
     <div class="integ-card">
-      <div class="integ-icon">📧</div>
+      <div class="integ-icon" style="color:${COLOR.blue}">${svgIcon("mail", 20)}</div>
       <div class="integ-info">
         <div class="integ-title">${g.unread} unread</div>
         <div class="integ-sub">${g.sub}</div>
@@ -940,9 +1232,20 @@ function renderIntegrations() {
     </div>
   `;
 
+  const whoopHtml = `
+    <div class="integ-card">
+      <div class="integ-icon" style="color:${COLOR.teal}; background:${hexToRgba(COLOR.teal, 0.14)}">${svgIcon("whoop", 20)}</div>
+      <div class="integ-info">
+        <div class="integ-title">Recovery ${w.recovery} · Sleep ${w.sleep} · Strain ${w.strain}</div>
+        <div class="integ-sub">${w.note}</div>
+      </div>
+      <span class="integ-badge" style="background:${hexToRgba(COLOR.teal, 0.16)}; color:${COLOR.teal}">WHOOP</span>
+    </div>
+  `;
+
   const notionHtml = `
     <div class="integ-card">
-      <div class="integ-icon">📓</div>
+      <div class="integ-icon" style="color:${COLOR.green}">${svgIcon("doc", 20)}</div>
       <div class="integ-info">
         <div class="integ-title">${n.title}</div>
         <div class="integ-sub">${n.sub}</div>
@@ -958,7 +1261,7 @@ function renderIntegrations() {
         ${DATA.subscriptions.map(s => `
           <div class="list-row">
             <div class="list-main">
-              <span class="list-name">${s.name}</span>
+              <span class="list-name">${dotSvg(s.overdue ? "red" : "gray")}${s.name}</span>
               <span class="list-sub ${s.overdue ? "is-overdue" : ""}">${s.due}</span>
             </div>
             <span class="list-amount ${s.overdue ? "is-overdue" : ""}">${s.amount}</span>
@@ -968,7 +1271,7 @@ function renderIntegrations() {
     </div>
   `;
 
-  document.getElementById("integrations").innerHTML = gmailHtml + notionHtml + subsHtml;
+  document.getElementById("integrations").innerHTML = gmailHtml + whoopHtml + notionHtml + subsHtml;
 }
 
 /* =========================================================
@@ -993,6 +1296,7 @@ function renderFooter() {
 renderHero();
 renderAlerts();
 renderQuickNav();
+renderSchedule();
 renderPillars();
 renderIntegrations();
 renderFooter();
