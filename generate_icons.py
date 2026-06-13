@@ -1,145 +1,82 @@
 """Generate PWA icons (192x192, 512x512) with no external dependencies.
 
-Draws a warm cream background with a subtly-rounded "card" rect, a
-sage-green progress ring filled to ~20% (life score 19/100), the score
-"19" centered in the ring, and "LIFE" text below the ring, then writes
-raw PNG bytes via zlib.
+Draws a minimal compass-rose logo: a warm dark brown background, a
+four-point star (kite shapes) in cream with the north point accented in
+sage green, framed by a subtle warm-gray ring, then writes raw PNG bytes
+via zlib.
 """
 import math
 import struct
 import zlib
 
-BG = (232, 224, 213)     # outer panel, muted warm cream
-CARD = (240, 235, 227)   # #F0EBE3 inner rounded card
-TRACK = (227, 219, 207)  # ring track (unfilled)
-GREEN = (91, 154, 111)   # #5B9A6F ring fill
-BROWN = (44, 40, 37)     # #2C2825 score text
-TAUPE = (138, 130, 121)  # #8A8279 "LIFE" label
+BG = (0x2C, 0x28, 0x25)     # #2C2825 warm dark brown background
+CREAM = (0xF0, 0xEB, 0xE3)  # #F0EBE3 compass body
+GREEN = (0x5B, 0x9A, 0x6F)  # #5B9A6F north pointer accent
+GRAY = (0x8A, 0x82, 0x79)   # #8A8279 subtle inner ring
 
-RING_FILL_FRACTION = 0.20
-
-FONT = {
-    "1": [
-        "00100",
-        "01100",
-        "00100",
-        "00100",
-        "00100",
-        "00100",
-        "01110",
-    ],
-    "9": [
-        "01110",
-        "10001",
-        "10001",
-        "01111",
-        "00001",
-        "00001",
-        "01110",
-    ],
-    "L": [
-        "10000",
-        "10000",
-        "10000",
-        "10000",
-        "10000",
-        "10000",
-        "11111",
-    ],
-    "I": [
-        "11111",
-        "00100",
-        "00100",
-        "00100",
-        "00100",
-        "00100",
-        "11111",
-    ],
-    "F": [
-        "11111",
-        "10000",
-        "11110",
-        "10000",
-        "10000",
-        "10000",
-        "10000",
-    ],
-    "E": [
-        "11111",
-        "10000",
-        "11110",
-        "10000",
-        "10000",
-        "10000",
-        "11111",
-    ],
+SQRT2 = math.sqrt(2)
+DIRS = {
+    "N": (0, -1),
+    "E": (1, 0),
+    "S": (0, 1),
+    "W": (-1, 0),
+    "NE": (1 / SQRT2, -1 / SQRT2),
+    "SE": (1 / SQRT2, 1 / SQRT2),
+    "SW": (-1 / SQRT2, 1 / SQRT2),
+    "NW": (-1 / SQRT2, -1 / SQRT2),
 }
 
 
-def in_rounded_rect(x, y, size, margin, radius):
-    if x < margin or x > size - margin or y < margin or y > size - margin:
-        return False
-    left = x < margin + radius
-    right = x > size - margin - radius
-    top = y < margin + radius
-    bottom = y > size - margin - radius
-    if (left or right) and (top or bottom):
-        cx = margin + radius if left else size - margin - radius
-        cy = margin + radius if top else size - margin - radius
-        dx, dy = x - cx, y - cy
-        return dx * dx + dy * dy <= radius * radius
+def point_in_convex(px, py, verts):
+    sign = 0
+    for i in range(len(verts)):
+        x1, y1 = verts[i]
+        x2, y2 = verts[(i + 1) % len(verts)]
+        cross = (x2 - x1) * (py - y1) - (y2 - y1) * (px - x1)
+        if cross != 0:
+            s = 1 if cross > 0 else -1
+            if sign == 0:
+                sign = s
+            elif s != sign:
+                return False
     return True
 
 
-def draw_text(pixels, size, text, scale, color, oy):
-    total_w = len(text) * 5 * scale + (len(text) - 1) * scale
-    ox = (size - total_w) // 2
-    for ci, ch in enumerate(text):
-        glyph = FONT[ch]
-        gx = ox + ci * 6 * scale
-        for ry, row in enumerate(glyph):
-            for rx, on in enumerate(row):
-                if on == "1":
-                    for sy in range(scale):
-                        for sx in range(scale):
-                            px, py = gx + rx * scale + sx, oy + ry * scale + sy
-                            if 0 <= px < size and 0 <= py < size:
-                                pixels[py][px] = color
-
-
 def make_icon(size, path):
-    margin = size * 0.03
-    radius = size * 0.15625
+    cx = cy = size / 2
+    r_outer = size * 0.32
+    r_inner = size * 0.105
+    ring_r = size * 0.40
+    ring_t = size * 0.012
 
-    pixels = [[None] * size for _ in range(size)]
+    def pt(direction, r):
+        dx, dy = DIRS[direction]
+        return (cx + dx * r, cy + dy * r)
+
+    center = (cx, cy)
+    kites = {
+        "N": [center, pt("NW", r_inner), pt("N", r_outer), pt("NE", r_inner)],
+        "E": [center, pt("NE", r_inner), pt("E", r_outer), pt("SE", r_inner)],
+        "S": [center, pt("SE", r_inner), pt("S", r_outer), pt("SW", r_inner)],
+        "W": [center, pt("SW", r_inner), pt("W", r_outer), pt("NW", r_inner)],
+    }
+    colors = {"N": GREEN, "E": CREAM, "S": CREAM, "W": CREAM}
+
+    pixels = [[BG] * size for _ in range(size)]
     for y in range(size):
+        py = y + 0.5
         for x in range(size):
-            pixels[y][x] = CARD if in_rounded_rect(x, y, size, margin, radius) else BG
-
-    # progress ring (~20% filled, clockwise from 12 o'clock)
-    cx = size / 2
-    cy_ring = size * 0.42
-    r_outer = size * 0.30
-    thickness = size * 0.055
-    r_inner = r_outer - thickness
-    for y in range(size):
-        for x in range(size):
-            dx, dy = x - cx + 0.5, y - cy_ring + 0.5
-            dist = math.sqrt(dx * dx + dy * dy)
-            if r_inner <= dist <= r_outer:
-                angle = math.atan2(dx, -dy) % (2 * math.pi)
-                frac = angle / (2 * math.pi)
-                pixels[y][x] = GREEN if frac <= RING_FILL_FRACTION else TRACK
-
-    # "19" centered in the ring
-    scale_score = max(1, round(size / 28))
-    fh_score = 7 * scale_score
-    draw_text(pixels, size, "19", scale_score, BROWN, int(cy_ring - fh_score / 2))
-
-    # "LIFE" below the ring
-    scale_life = max(1, round(size / 48))
-    fh_life = 7 * scale_life
-    draw_text(pixels, size, "LIFE", scale_life, TAUPE, int(size * 0.80 - fh_life / 2))
+            px = x + 0.5
+            dist = math.hypot(px - cx, py - cy)
+            color = None
+            if abs(dist - ring_r) <= ring_t / 2:
+                color = GRAY
+            for key, verts in kites.items():
+                if point_in_convex(px, py, verts):
+                    color = colors[key]
+                    break
+            if color:
+                pixels[y][x] = color
 
     write_png(path, pixels, size, size)
 
