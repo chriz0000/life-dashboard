@@ -8,7 +8,7 @@
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#F5F5F7" />
+<meta name="theme-color" content="#FAF8F5" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Dashboard" />
@@ -17,19 +17,20 @@
 
 <style>
   :root {
-    --bg: #F5F5F7;
+    --bg: #FAF8F5;
     --card: #FFFFFF;
-    --text: #1D1D1F;
-    --text-2: #86868B;
-    --text-3: #AEAEB2;
-    --blue: #007AFF;
-    --green: #34C759;
-    --orange: #FF9500;
-    --red: #FF3B30;
-    --track: #E5E5EA;
-    --well: #F5F5F7;
-    --separator: rgba(0,0,0,0.06);
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --text: #2C2825;
+    --text-2: #8A8279;
+    --text-3: #B5AFA8;
+    --blue: #5B8DB8;
+    --green: #5B9A6F;
+    --orange: #C68B4B;
+    --red: #C45C4A;
+    --purple: #8B7BB5;
+    --track: #EDEAE6;
+    --well: #F5F2EE;
+    --separator: rgba(120,100,80,0.08);
+    --shadow: 0 1px 3px rgba(120,100,80,0.06), 0 1px 2px rgba(120,100,80,0.03);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -257,7 +258,7 @@
     font-size: 12px; font-weight: 600; color: var(--text-2);
     background: var(--well); border-radius: 8px; padding: 3px 9px;
   }
-  .account-badge.has-unread { color: var(--blue); background: rgba(0,122,255,0.1); }
+  .account-badge.has-unread { color: var(--blue); background: rgba(91,141,184,0.1); }
 
   /* ---------- Footer ---------- */
   .footer { text-align: center; padding-top: 4px; display: flex; flex-direction: column; gap: 5px; animation: fadeUp 0.5s ease both; }
@@ -268,6 +269,118 @@
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* ---------- Tap feedback ---------- */
+  .tappable { cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; -webkit-user-select: none; user-select: none; }
+  .tappable:active { transform: scale(0.97); }
+
+  /* ---------- Header ---------- */
+  .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .refresh-btn {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--well);
+    display: flex; align-items: center; justify-content: center; color: var(--text-2);
+    flex-shrink: 0; margin-top: 2px; transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  .refresh-btn:active { transform: scale(0.9) rotate(180deg); background: var(--track); }
+
+  /* ---------- Life score breakdown ---------- */
+  .life-score-breakdown { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; overflow: hidden; }
+  .life-score.expanded .life-score-breakdown { grid-template-rows: 1fr; }
+  .life-score-breakdown-inner { overflow: hidden; min-height: 0; }
+  .life-score-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 0; font-size: 12px; color: var(--text-2); border-top: 1px solid var(--separator);
+  }
+  .life-score-item:first-child { border-top: none; padding-top: 9px; }
+  .life-score-item b { color: var(--text); font-weight: 600; }
+
+  /* ---------- Focus items ---------- */
+  .focus-item.done { opacity: 0.4; }
+  .focus-item.done .focus-text { text-decoration: line-through; }
+  .focus-checkbox {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--track);
+    flex-shrink: 0; margin-top: 4px; display: flex; align-items: center; justify-content: center;
+    color: #fff; transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .focus-item.done .focus-checkbox { background: var(--green); border-color: var(--green); }
+
+  /* ---------- Email swipe ---------- */
+  .email-row-wrap {
+    position: relative; overflow: hidden; border-bottom: 1px solid var(--separator);
+    max-height: 200px; transition: max-height 0.3s ease, opacity 0.3s ease;
+  }
+  .email-row-wrap:last-child { border-bottom: none; }
+  .email-row-wrap.removing { max-height: 0; opacity: 0; border-bottom: none; }
+  .email-row {
+    display: flex; flex-direction: column; gap: 3px; padding: 11px 0;
+    background: var(--card); position: relative; z-index: 1; transition: transform 0.3s ease;
+  }
+  .email-row-wrap:first-child .email-row { padding-top: 0; }
+  .email-row-wrap:last-child .email-row { padding-bottom: 0; }
+  .email-row-wrap.swiped .email-row { transform: translateX(-84px); }
+  .email-dismiss {
+    position: absolute; top: 0; right: -84px; bottom: 0; width: 84px;
+    background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; border-radius: 10px; transition: right 0.3s ease;
+  }
+  .email-row-wrap.swiped .email-dismiss { right: 0; }
+
+  /* ---------- Paid / done list rows ---------- */
+  .list-row.is-paid .list-name, .list-row.is-paid .list-amount, .list-row.is-paid .list-sub {
+    text-decoration: line-through; color: var(--text-3) !important;
+  }
+  .paid-badge {
+    font-size: 11px; font-weight: 600; color: var(--green);
+    background: rgba(91,154,111,0.1); border-radius: 6px; padding: 2px 8px; margin-left: 6px;
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .list-row:not(.is-paid) .paid-badge { display: none; }
+
+  /* ---------- Stat / hero tap states ---------- */
+  .stat-box.tappable:active, .hero-stat.tappable:active { background: var(--track); }
+
+  /* ---------- Day cell tap ---------- */
+  .day-cell.tappable:active { transform: scale(0.93); }
+
+  /* ---------- Timeline expand ---------- */
+  .timeline-detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; overflow: hidden; }
+  .timeline-row.expanded .timeline-detail { grid-template-rows: 1fr; }
+  .timeline-detail-inner { overflow: hidden; min-height: 0; }
+  .timeline-detail-text { font-size: 12px; color: var(--text-3); padding-top: 8px; }
+
+  /* ---------- Account expand ---------- */
+  .account-row { flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; }
+  .account-row-top { display: flex; align-items: center; justify-content: space-between; }
+  .account-subjects { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; overflow: hidden; }
+  .account-row.expanded .account-subjects { grid-template-rows: 1fr; }
+  .account-subjects-inner { overflow: hidden; min-height: 0; }
+  .account-subject {
+    font-size: 12px; color: var(--text-3); padding-top: 6px; margin-top: 6px; border-top: 1px solid var(--separator);
+  }
+  .account-subject:first-child { border-top: 1px solid var(--separator); }
+  .account-subjects-empty { font-size: 12px; color: var(--text-3); padding-top: 6px; margin-top: 6px; border-top: 1px solid var(--separator); }
+
+  /* ---------- Habit tracker tap ---------- */
+  .habit-cell.tappable:active { transform: scale(0.88); }
+
+  /* ---------- Reading streak +1 ---------- */
+  .streak-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #fff;
+    font-size: 15px; font-weight: 700; flex-shrink: 0; margin-left: 8px; line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  .streak-btn:active { transform: scale(0.85); }
+
+  /* ---------- Knowledge progress pct ---------- */
+  .progress-pct { font-size: 11px; color: var(--text-3); font-weight: 600; margin-left: 6px; }
+
+  /* ---------- Row detail expand (week schedule, etc.) ---------- */
+  .row-group { display: flex; flex-direction: column; }
+  .row-detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; overflow: hidden; }
+  .row-group.expanded .row-detail { grid-template-rows: 1fr; }
+  .row-detail-inner { overflow: hidden; min-height: 0; }
+  .row-detail-text { font-size: 12px; color: var(--text-3); padding: 8px 14px 0; }
 </style>
 </head>
 <body>
@@ -345,9 +458,9 @@ const DATA = {
     today: "Sat",
     contentDays: ["Wed", "Sun"],
     events: [
-      { time: "4:00 AM", title: "Morning Warm Up", sub: "Daily mobility & stretching routine", color: "blue" },
-      { time: "7:00 AM", title: "5km easy run", sub: "Gold Coast Marathon training · Week 3, Day 6 · 8:00/km pace", color: "green" },
-      { time: "Today", title: "Canva — $20 due", sub: "Subscription renewal", color: "orange" },
+      { time: "4:00 AM", title: "Morning Warm Up", sub: "Daily mobility & stretching routine", color: "blue", detail: "10 min mobility flow — hips, ankles, shoulders — followed by 5 min breathing exercise." },
+      { time: "7:00 AM", title: "5km easy run", sub: "Gold Coast Marathon training · Week 3, Day 6 · 8:00/km pace", color: "green", detail: "Keep heart rate in Zone 2 (136-150 bpm). Route: riverside loop. Hydrate before and after." },
+      { time: "Today", title: "Canva — $20 due", sub: "Subscription renewal", color: "orange", detail: "Auto-renews via card ending 4471. Cancel in Canva settings before midnight to avoid charge." },
     ],
   },
 
@@ -360,7 +473,7 @@ const DATA = {
       weight: 0.15,
       status: "On track",
       color: "green",
-      marathon: { name: "Gold Coast Marathon", note: "ASICS Gold Coast Marathon", daysOut: 20 },
+      marathon: { name: "Gold Coast Marathon", note: "ASICS Gold Coast Marathon", daysOut: 20, paceInfo: "Goal: sub-4:00 · Avg pace 5:41/km · Z2 heart rate" },
       trainingBlock: {
         label: "Training Block · Week 3 of 6",
         items: ["done", "done", "current", "future", "future", "future"],
@@ -370,13 +483,13 @@ const DATA = {
       weekSchedule: {
         today: "Sat",
         items: [
-          { day: "Mon", workout: "Rest" },
-          { day: "Tue", workout: "8km tempo" },
-          { day: "Wed", workout: "6km easy" },
-          { day: "Thu", workout: "10km intervals" },
-          { day: "Fri", workout: "Rest" },
-          { day: "Sat", workout: "5km easy" },
-          { day: "Sun", workout: "22km long run" },
+          { day: "Mon", workout: "Rest", detail: "Full rest day — mobility work and stretching only." },
+          { day: "Tue", workout: "8km tempo", detail: "8km @ tempo pace (~5:00/km) — Zone 3-4 effort." },
+          { day: "Wed", workout: "6km easy", detail: "6km @ easy pace (~6:30/km) — Zone 2, conversational." },
+          { day: "Thu", workout: "10km intervals", detail: "10km total — 6 x 800m intervals @ 4:30/km with 400m jog recovery." },
+          { day: "Fri", workout: "Rest", detail: "Full rest day — mobility work and stretching only." },
+          { day: "Sat", workout: "5km easy", detail: "5km @ 8:00/km — recovery focus, keep heart rate in Zone 2." },
+          { day: "Sun", workout: "22km long run", detail: "22km long run @ 5:50/km — fuel every 45 mins, practice race-day nutrition." },
         ],
       },
       whoop: {
@@ -552,13 +665,13 @@ const DATA = {
   ],
 
   emailAccounts: [
-    { name: "Main Gmail", count: 1 },
-    { name: "iCloud", count: 3 },
-    { name: "Personal (Outlook)", count: 0 },
-    { name: "CS1", count: 715 },
-    { name: "First Wear", count: 171 },
-    { name: "Newage Longevity", count: 92 },
-    { name: "No Brokies", count: 109 },
+    { name: "Main Gmail", count: 1, recentSubjects: ["Welcome to your new dashboard"] },
+    { name: "iCloud", count: 3, recentSubjects: ["iCloud storage almost full", "Your subscription receipt", "Photos memory ready to view"] },
+    { name: "Personal (Outlook)", count: 0, recentSubjects: [] },
+    { name: "CS1", count: 715, recentSubjects: ["Order #4821 has shipped", "New review on your store", "Inventory low: Body oils"] },
+    { name: "First Wear", count: 171, recentSubjects: ["New customer message", "Payment received", "Shipping label created"] },
+    { name: "Newage Longevity", count: 92, recentSubjects: ["Subscription renewal reminder", "New product inquiry"] },
+    { name: "No Brokies", count: 109, recentSubjects: ["Community post needs approval", "New member joined"] },
   ],
 
   subscriptions: [
@@ -577,12 +690,13 @@ const DATA = {
    HELPERS
    ========================================================= */
 const COLOR = {
-  red: "#FF3B30",
-  orange: "#FF9500",
-  green: "#34C759",
-  blue: "#007AFF",
-  gray: "#AEAEB2",
-  dark: "#1D1D1F",
+  red: "#C45C4A",
+  orange: "#C68B4B",
+  green: "#5B9A6F",
+  blue: "#5B8DB8",
+  purple: "#8B7BB5",
+  gray: "#B5AFA8",
+  dark: "#2C2825",
 };
 
 function hexToRgba(hex, alpha) {
@@ -610,6 +724,7 @@ const ICON_PATHS = {
   knowledge: '<path d="M22 9L12 4 2 9l10 5 10-5z"/><path d="M6 11.2v4.8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4.8"/>',
   chevron: '<polyline points="6 9 12 15 18 9"/>',
   check: '<path d="M20 6L9 17l-5-5"/>',
+  refresh: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0020.49 15"/>',
 };
 
 function svgIcon(name, size = 18, strokeWidth = 1.5) {
@@ -641,14 +756,29 @@ function renderHeader() {
   const score = computeLifeScore();
 
   document.getElementById("header").innerHTML = `
-    <div class="greeting">${greeting}, ${DATA.user.name}</div>
-    <div class="date">${dateStr}</div>
-    <div class="life-score">
+    <div class="header-top">
+      <div>
+        <div class="greeting">${greeting}, ${DATA.user.name}</div>
+        <div class="date">${dateStr}</div>
+      </div>
+      <div class="refresh-btn tappable" id="refreshBtn" title="Refresh">${svgIcon("refresh", 16, 2)}</div>
+    </div>
+    <div class="life-score tappable" id="lifeScoreToggle">
       <div class="life-score-row">
         <span class="life-score-label">Life score</span>
         <span class="life-score-value">${score}/100</span>
       </div>
       <div class="life-score-track"><div class="life-score-fill" id="lifeScoreFill"></div></div>
+      <div class="life-score-breakdown">
+        <div class="life-score-breakdown-inner">
+          ${DATA.pillars.map(p => `
+            <div class="life-score-item">
+              <span>${p.name} <span style="color:var(--text-3)">(${Math.round(p.weight * 100)}% weight)</span></span>
+              <b>${p.score}/100 → +${(p.score * p.weight).toFixed(1)}</b>
+            </div>
+          `).join("")}
+        </div>
+      </div>
     </div>
   `;
 
@@ -657,34 +787,71 @@ function renderHeader() {
       document.getElementById("lifeScoreFill").style.width = `${score}%`;
     });
   });
+
+  document.getElementById("refreshBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    location.reload();
+  });
+
+  document.getElementById("lifeScoreToggle").addEventListener("click", () => {
+    document.getElementById("lifeScoreToggle").classList.toggle("expanded");
+  });
 }
 
 /* =========================================================
    RENDER: FOCUS TODAY
    ========================================================= */
 function renderFocusToday() {
+  const done = JSON.parse(sessionStorage.getItem("focusDone") || "[]");
   document.getElementById("focusList").innerHTML = DATA.focusToday.map((f, i) => `
-    <li class="focus-item">
+    <li class="focus-item tappable ${done[i] ? "done" : ""}" data-index="${i}">
+      <span class="focus-checkbox">${done[i] ? svgIcon("check", 11, 2.5) : ""}</span>
       <span class="focus-dot" style="background:${COLOR[f.color]}"></span>
       <span class="focus-num">${i + 1}.</span>
       <span class="focus-text">${f.text}</span>
     </li>
   `).join("");
+
+  document.querySelectorAll(".focus-item").forEach(item => {
+    item.addEventListener("click", () => {
+      const i = item.dataset.index;
+      const done = JSON.parse(sessionStorage.getItem("focusDone") || "[]");
+      done[i] = !done[i];
+      sessionStorage.setItem("focusDone", JSON.stringify(done));
+      item.classList.toggle("done");
+      item.querySelector(".focus-checkbox").innerHTML = done[i] ? svgIcon("check", 11, 2.5) : "";
+    });
+  });
 }
 
 /* =========================================================
    RENDER: EMAILS
    ========================================================= */
 function renderEmails() {
-  document.getElementById("emailList").innerHTML = DATA.emails.map(e => `
-    <div class="email-row">
-      <div class="email-top">
-        <span class="email-sender">${e.sender}</span>
-        <span class="email-time">${e.time}</span>
+  document.getElementById("emailList").innerHTML = DATA.emails.map((e, i) => `
+    <div class="email-row-wrap" data-index="${i}">
+      <div class="email-row tappable">
+        <div class="email-top">
+          <span class="email-sender">${e.sender}</span>
+          <span class="email-time">${e.time}</span>
+        </div>
+        <div class="email-subject">${e.subject}</div>
       </div>
-      <div class="email-subject">${e.subject}</div>
+      <div class="email-dismiss">Dismiss</div>
     </div>
   `).join("");
+
+  document.querySelectorAll(".email-row-wrap").forEach(wrap => {
+    const row = wrap.querySelector(".email-row");
+    const dismiss = wrap.querySelector(".email-dismiss");
+    row.addEventListener("click", () => wrap.classList.toggle("swiped"));
+    dismiss.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      wrap.classList.remove("swiped");
+      wrap.classList.add("removing");
+      wrap.addEventListener("transitionend", () => wrap.remove(), { once: true });
+    });
+  });
 }
 
 /* =========================================================
@@ -701,12 +868,13 @@ function renderSchedule() {
   `).join("");
 
   const timeline = s.events.map(e => `
-    <div class="timeline-row">
+    <div class="timeline-row tappable">
       <div class="timeline-time">${e.time}</div>
       <div class="timeline-dot" style="background:${COLOR[e.color]}"></div>
       <div class="timeline-content">
         <div class="timeline-title">${e.title}</div>
         <div class="timeline-sub">${e.sub}</div>
+        ${e.detail ? `<div class="timeline-detail"><div class="timeline-detail-inner"><div class="timeline-detail-text">${e.detail}</div></div></div>` : ""}
       </div>
     </div>
   `).join("");
@@ -715,6 +883,11 @@ function renderSchedule() {
     <div class="day-bar">${dayBar}</div>
     <div class="timeline">${timeline}</div>
   `;
+
+  document.querySelectorAll("#schedule .timeline-row").forEach(row => {
+    if (!row.querySelector(".timeline-detail")) return;
+    row.addEventListener("click", () => row.classList.toggle("expanded"));
+  });
 }
 
 /* =========================================================
@@ -728,7 +901,7 @@ function statGrid(items) {
   return `
     <div class="stat-grid">
       ${items.map(s => `
-        <div class="stat-box">
+        <div class="stat-box tappable">
           <div class="stat-label">${s.label}</div>
           <div class="stat-value">${s.dot ? `<span class="dot" style="background:${COLOR[s.dot]}"></span>` : ""}${s.value}</div>
           ${s.sub ? `<div class="stat-sub">${s.sub}</div>` : ""}
@@ -738,9 +911,9 @@ function statGrid(items) {
   `;
 }
 
-function heroStat(label, value, sub) {
+function heroStat(label, value, sub, altSub) {
   return `
-    <div class="hero-stat">
+    <div class="hero-stat ${altSub ? "tappable" : ""}" ${altSub ? `data-default-sub="${sub}" data-alt-sub="${altSub}"` : ""}>
       <div class="hero-stat-label">${label}</div>
       <div class="hero-stat-value">${value}</div>
       ${sub ? `<div class="hero-stat-sub">${sub}</div>` : ""}
@@ -773,6 +946,51 @@ function listRows(items) {
   `;
 }
 
+function weekScheduleBlock(ws) {
+  return `
+    <div class="list">
+      ${ws.items.map((it, i) => {
+        const isToday = it.day === ws.today;
+        return `
+          <div class="row-group ${isToday ? "" : "tappable"}" data-index="${i}">
+            <div class="list-row ${isToday ? "is-current" : ""}">
+              <div class="list-main">
+                <span class="list-name">${it.day}${isToday ? " · Today" : ""}</span>
+              </div>
+              <span class="list-amount">${it.workout}</span>
+            </div>
+            ${!isToday ? `<div class="row-detail"><div class="row-detail-inner"><div class="row-detail-text">${it.detail}</div></div></div>` : ""}
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function payableListBlock(items, wrapId) {
+  return `
+    <div class="list" id="${wrapId}">
+      ${items.map(it => `
+        <div class="list-row tappable">
+          <div class="list-main">
+            <span class="list-name">${it.name}<span class="paid-badge">${svgIcon("check", 10, 3)} Paid</span></span>
+            ${it.sub ? `<span class="list-sub ${it.overdue ? "is-overdue" : ""} ${it.dueToday ? "is-due-today" : ""}">${it.sub}</span>` : ""}
+          </div>
+          <span class="list-amount ${it.overdue ? "is-overdue" : ""} ${it.dueToday ? "is-due-today" : ""}">${it.amount}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function setupPaidToggles(wrapId) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+  wrap.querySelectorAll(".list-row").forEach(row => {
+    row.addEventListener("click", () => row.classList.toggle("is-paid"));
+  });
+}
+
 function checkRows(items) {
   return `
     <div class="list">
@@ -780,8 +998,8 @@ function checkRows(items) {
         const done = it.state === "done" || it.done === true;
         const pending = it.state === "pending";
         let bg, fg, icon;
-        if (done) { bg = hexToRgba(COLOR.green, 0.15); fg = COLOR.green; icon = svgIcon("check", 11, 2.5); }
-        else if (pending) { bg = hexToRgba(COLOR.orange, 0.15); fg = COLOR.orange; icon = ""; }
+        if (done) { bg = hexToRgba(COLOR.green, 0.1); fg = COLOR.green; icon = svgIcon("check", 11, 2.5); }
+        else if (pending) { bg = hexToRgba(COLOR.orange, 0.1); fg = COLOR.orange; icon = ""; }
         else { bg = "var(--track)"; fg = COLOR.gray; icon = ""; }
         return `
           <div class="check-row">
@@ -809,12 +1027,12 @@ function inventoryBlock(items) {
 
 function progressRows(items) {
   return `
-    <div class="progress-rows">
+    <div class="progress-rows" id="knowledgeProgress">
       ${items.map((it, i) => `
-        <div>
+        <div class="tappable" data-index="${i}">
           <div class="progress-row-top">
             <span class="progress-name">${it.name}</span>
-            <span class="progress-value">${it.value}</span>
+            <span class="progress-value">${it.value}<span class="progress-pct">${it.percent}%</span></span>
           </div>
           <div class="progress-track"><div class="progress-fill" data-pct="${it.percent}" id="progress-${i}-${it.name.replace(/[^a-zA-Z0-9]/g, "")}"></div></div>
           ${it.sub ? `<div class="progress-sub">${it.sub}</div>` : ""}
@@ -824,18 +1042,47 @@ function progressRows(items) {
   `;
 }
 
+function setupKnowledgeProgress() {
+  const wrap = document.getElementById("knowledgeProgress");
+  if (!wrap) return;
+  const areas = DATA.pillars.find(p => p.key === "knowledge").areas;
+  wrap.querySelectorAll(":scope > .tappable").forEach(row => {
+    row.addEventListener("click", () => {
+      const i = +row.dataset.index;
+      const area = areas[i];
+      area.percent = Math.min(100, area.percent + 5);
+      const fill = row.querySelector(".progress-fill");
+      fill.dataset.pct = area.percent;
+      fill.style.width = `${area.percent}%`;
+      row.querySelector(".progress-pct").textContent = `${area.percent}%`;
+    });
+  });
+}
+
 function habitTrackerBlock(items) {
   const labels = lastNDayLabels(items.length);
   return `
-    <div class="habit-row">
+    <div class="habit-row" id="habitTracker">
       ${items.map((done, i) => `
-        <div class="habit-cell">
+        <div class="habit-cell tappable" data-done="${done}" data-index="${i}">
           <span class="habit-day">${labels[i]}</span>
-          ${dotSvg(done ? "green" : "red", 10)}
+          <span class="habit-dot">${dotSvg(done ? "green" : "red", 10)}</span>
         </div>
       `).join("")}
     </div>
   `;
+}
+
+function setupHabitTracker() {
+  const wrap = document.getElementById("habitTracker");
+  if (!wrap) return;
+  wrap.querySelectorAll(".habit-cell").forEach(cell => {
+    cell.addEventListener("click", () => {
+      const done = cell.dataset.done !== "true";
+      cell.dataset.done = done;
+      cell.querySelector(".habit-dot").innerHTML = dotSvg(done ? "green" : "red", 10);
+    });
+  });
 }
 
 function placeholderBlock(text) {
@@ -857,14 +1104,10 @@ function renderPillars() {
       const raceDate = new Date();
       raceDate.setDate(raceDate.getDate() + p.marathon.daysOut);
       const raceDateStr = raceDate.toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: "Australia/Brisbane" });
-      sections.push(heroStat(p.marathon.name, `${p.marathon.daysOut} days to go`, `${p.marathon.note} · ${raceDateStr}`));
+      sections.push(heroStat(p.marathon.name, `${p.marathon.daysOut} days to go`, `${p.marathon.note} · ${raceDateStr}`, p.marathon.paceInfo));
       sections.push(labeled(p.trainingBlock.label, segmentBlock(p.trainingBlock)));
       sections.push(labeled("Today", listRows([{ name: p.today.title, sub: p.today.sub, isCurrent: true }])));
-      sections.push(labeled("Week 3 Schedule", listRows(p.weekSchedule.items.map(it => ({
-        name: it.day + (it.day === p.weekSchedule.today ? " · Today" : ""),
-        amount: it.workout,
-        isCurrent: it.day === p.weekSchedule.today,
-      })))));
+      sections.push(labeled("Week 3 Schedule", weekScheduleBlock(p.weekSchedule)));
       sections.push(labeled("WHOOP", statGrid(p.whoop.items) + `<div class="progress-sub" style="margin-top:10px;">${p.whoop.note}</div>`));
       sections.push(labeled("Heart Rate Zones", listRows(p.heartRateZones.map(z => ({
         name: z.zone, dotColor: z.color, amount: z.range,
@@ -874,9 +1117,9 @@ function renderPillars() {
     if (p.key === "capital") {
       sections.push(statGrid(p.stats));
       sections.push(labeled(p.revenueChart.label, chartBlock(`chart-${p.key}-revenue`)));
-      sections.push(labeled(p.bills.label, listRows(p.bills.items.map(b => ({
+      sections.push(labeled(p.bills.label, payableListBlock(p.bills.items.map(b => ({
         name: b.name, sub: b.due, amount: b.amount, overdue: b.overdue, dueToday: b.dueToday,
-      })))));
+      })), "bills-capital")));
       sections.push(labeled(p.shopify.label, statGrid([
         { label: "Products listed", value: p.shopify.productsListed },
         { label: "Active products", value: p.shopify.activeProducts },
@@ -915,10 +1158,22 @@ function renderPillars() {
     }
 
     if (p.key === "spirit") {
-      sections.push(statGrid([
-        { label: p.reading.label, value: `${p.reading.streak} days`, dot: p.reading.streak > 0 ? "green" : "red" },
-        { label: "Today's reading", value: "Not set" },
-      ]));
+      sections.push(`
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-label">${p.reading.label}</div>
+            <div class="stat-value">
+              <span class="dot" id="readingStreakDot" style="background:${COLOR[p.reading.streak > 0 ? "green" : "red"]}"></span>
+              <span id="readingStreakValue">${p.reading.streak} days</span>
+              <span class="streak-btn tappable" id="streakBtn">+1</span>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Today's reading</div>
+            <div class="stat-value">Not set</div>
+          </div>
+        </div>
+      `);
       sections.push(labeled("Today's Reading", placeholderBlock(p.reading.placeholder)));
       sections.push(labeled(p.verse.label, placeholderBlock(p.verse.placeholder)));
       sections.push(labeled(p.notes.label, placeholderBlock(p.notes.placeholder)));
@@ -931,7 +1186,7 @@ function renderPillars() {
     return `
       <section class="pillar-card" id="pillar-${p.key}" style="animation-delay:${i * 0.05}s">
         <div class="pillar-header" data-key="${p.key}">
-          <div class="pillar-icon" style="--icon-bg:${hexToRgba(COLOR[p.color], 0.12)}; --icon-fg:${COLOR[p.color]}">${svgIcon(p.icon, 20)}</div>
+          <div class="pillar-icon" style="--icon-bg:${hexToRgba(COLOR[p.color], 0.06)}; --icon-fg:${COLOR[p.color]}">${svgIcon(p.icon, 20)}</div>
           <div class="pillar-info">
             <div class="pillar-name-row">
               <span class="pillar-name">${p.name}</span>
@@ -972,6 +1227,41 @@ function renderPillars() {
   document.querySelectorAll(".pillar-header").forEach(header => {
     header.addEventListener("click", () => togglePillar(header.closest(".pillar-card")));
   });
+
+  // hero stat: tap to cycle detail views
+  document.querySelectorAll(".hero-stat[data-alt-sub]").forEach(el => {
+    el.addEventListener("click", () => {
+      const sub = el.querySelector(".hero-stat-sub");
+      const showingAlt = el.classList.toggle("showing-alt");
+      sub.textContent = showingAlt ? el.dataset.altSub : el.dataset.defaultSub;
+    });
+  });
+
+  // week schedule: tap other days to expand details
+  document.querySelectorAll(".row-group.tappable").forEach(group => {
+    group.addEventListener("click", () => group.classList.toggle("expanded"));
+  });
+
+  // bills: tap to mark as paid
+  setupPaidToggles("bills-capital");
+
+  // habit tracker: tap to toggle
+  setupHabitTracker();
+
+  // knowledge progress: tap to increment 5%
+  setupKnowledgeProgress();
+
+  // spirit reading streak: +1 button
+  const streakBtn = document.getElementById("streakBtn");
+  if (streakBtn) {
+    streakBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const spirit = DATA.pillars.find(x => x.key === "spirit");
+      spirit.reading.streak += 1;
+      document.getElementById("readingStreakValue").textContent = `${spirit.reading.streak} days`;
+      document.getElementById("readingStreakDot").style.background = COLOR.green;
+    });
+  }
 }
 
 const chartInstances = {};
@@ -1011,22 +1301,22 @@ function initChartsFor(key) {
 /* =========================================================
    CHARTS
    ========================================================= */
-Chart.defaults.color = "#86868B";
+Chart.defaults.color = "#8A8279";
 Chart.defaults.font.family = "-apple-system, 'SF Pro Display', system-ui, sans-serif";
 Chart.defaults.font.size = 11;
 Chart.defaults.font.weight = "500";
 
 const TOOLTIP_STYLE = {
-  backgroundColor: "#1D1D1F",
-  titleColor: "#FFFFFF",
-  bodyColor: "#FFFFFF",
+  backgroundColor: "#2C2825",
+  titleColor: "#FAF8F5",
+  bodyColor: "#FAF8F5",
   padding: 8,
   cornerRadius: 8,
 };
 
 function makeRevenueChart(canvasId, cfg) {
   const ctx = document.getElementById(canvasId).getContext("2d");
-  const colors = cfg.data.map(v => v > 0 ? COLOR.green : "#E5E5EA");
+  const colors = cfg.data.map(v => v > 0 ? COLOR.green : "#EDEAE6");
   return new Chart(ctx, {
     type: "bar",
     data: {
@@ -1048,7 +1338,7 @@ function makeRevenueChart(canvasId, cfg) {
       scales: {
         x: { grid: { display: false }, border: { display: false } },
         y: {
-          grid: { color: "rgba(0,0,0,0.04)" },
+          grid: { color: "rgba(120,100,80,0.06)" },
           border: { display: false },
           ticks: { callback: (v) => `$${v}` },
           beginAtZero: true,
@@ -1107,7 +1397,7 @@ function makeKarmaChart(canvasId, cfg) {
       scales: {
         x: { grid: { display: false }, border: { display: false } },
         y: {
-          grid: { color: "rgba(0,0,0,0.04)" },
+          grid: { color: "rgba(120,100,80,0.06)" },
           border: { display: false },
           min: min - pad,
           max: max + pad,
@@ -1126,7 +1416,7 @@ const goalLinePlugin = {
     const y = scales.y.getPixelForValue(opts.value);
     if (y < chartArea.top || y > chartArea.bottom) return;
     ctx.save();
-    ctx.strokeStyle = opts.color || "#86868B";
+    ctx.strokeStyle = opts.color || "#8A8279";
     ctx.lineWidth = 1.5;
     ctx.setLineDash([5, 4]);
     ctx.beginPath();
@@ -1134,7 +1424,7 @@ const goalLinePlugin = {
     ctx.lineTo(chartArea.right, y);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = opts.color || "#86868B";
+    ctx.fillStyle = opts.color || "#8A8279";
     ctx.font = "600 10px -apple-system, sans-serif";
     ctx.textAlign = "right";
     ctx.fillText(opts.label || "", chartArea.right - 4, y - 6);
@@ -1162,12 +1452,12 @@ function makeTasksChart(canvasId, cfg) {
       plugins: {
         legend: { display: false },
         tooltip: TOOLTIP_STYLE,
-        goalLine: { value: cfg.goal, color: "#86868B", label: `Goal ${cfg.goal}` },
+        goalLine: { value: cfg.goal, color: "#8A8279", label: `Goal ${cfg.goal}` },
       },
       scales: {
         x: { grid: { display: false }, border: { display: false } },
         y: {
-          grid: { color: "rgba(0,0,0,0.04)" },
+          grid: { color: "rgba(120,100,80,0.06)" },
           border: { display: false },
           beginAtZero: true,
           max: Math.max(cfg.goal * 1.15, Math.max(...cfg.data) * 1.4),
@@ -1183,20 +1473,34 @@ function makeTasksChart(canvasId, cfg) {
    ========================================================= */
 function renderAccounts() {
   document.getElementById("accountsList").innerHTML = DATA.emailAccounts.map(a => `
-    <div class="account-row">
-      <span class="account-name">${a.name}</span>
-      <span class="account-badge ${a.count > 0 ? "has-unread" : ""}">${a.count > 0 ? a.count.toLocaleString() : "—"}</span>
+    <div class="account-row tappable">
+      <div class="account-row-top">
+        <span class="account-name">${a.name}</span>
+        <span class="account-badge ${a.count > 0 ? "has-unread" : ""}">${a.count > 0 ? a.count.toLocaleString() : "—"}</span>
+      </div>
+      <div class="account-subjects">
+        <div class="account-subjects-inner">
+          ${a.recentSubjects && a.recentSubjects.length
+            ? a.recentSubjects.map(s => `<div class="account-subject">${s}</div>`).join("")
+            : `<div class="account-subjects-empty">No recent emails</div>`}
+        </div>
+      </div>
     </div>
   `).join("");
+
+  document.querySelectorAll("#accountsList .account-row").forEach(row => {
+    row.addEventListener("click", () => row.classList.toggle("expanded"));
+  });
 }
 
 /* =========================================================
    RENDER: SUBSCRIPTIONS
    ========================================================= */
 function renderSubscriptions() {
-  document.getElementById("subsList").innerHTML = listRows(DATA.subscriptions.map(s => ({
+  document.getElementById("subsList").outerHTML = payableListBlock(DATA.subscriptions.map(s => ({
     name: s.name, sub: s.due, amount: s.amount, overdue: s.overdue, dueToday: s.dueToday,
-  })));
+  })), "subsList");
+  setupPaidToggles("subsList");
 }
 
 /* =========================================================
@@ -1229,9 +1533,9 @@ if (firstPillar) {
 
 // register service worker
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js?v=" + Date.now()).catch(() => {});
-  });
+  navigator.serviceWorker.register("sw.js").then(reg => {
+    reg.update();
+  }).catch(() => {});
 }
 </script>
 </body>
