@@ -360,18 +360,6 @@
   .account-subject:first-child { border-top: 1px solid var(--separator); }
   .account-subjects-empty { font-size: 12px; color: var(--text-3); padding-top: 6px; margin-top: 6px; border-top: 1px solid var(--separator); }
 
-  /* ---------- Habit tracker tap ---------- */
-  .habit-cell.tappable:active { transform: scale(0.88); }
-
-  /* ---------- Reading streak +1 ---------- */
-  .streak-btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #fff;
-    font-size: 15px; font-weight: 700; flex-shrink: 0; margin-left: 8px; line-height: 1;
-    transition: transform 0.2s ease;
-  }
-  .streak-btn:active { transform: scale(0.85); }
-
   /* ---------- Knowledge progress pct ---------- */
   .progress-pct { font-size: 11px; color: var(--text-3); font-weight: 600; margin-left: 6px; }
 
@@ -1029,7 +1017,7 @@ function progressRows(items) {
   return `
     <div class="progress-rows" id="knowledgeProgress">
       ${items.map((it, i) => `
-        <div class="tappable" data-index="${i}">
+        <div>
           <div class="progress-row-top">
             <span class="progress-name">${it.name}</span>
             <span class="progress-value">${it.value}<span class="progress-pct">${it.percent}%</span></span>
@@ -1042,47 +1030,18 @@ function progressRows(items) {
   `;
 }
 
-function setupKnowledgeProgress() {
-  const wrap = document.getElementById("knowledgeProgress");
-  if (!wrap) return;
-  const areas = DATA.pillars.find(p => p.key === "knowledge").areas;
-  wrap.querySelectorAll(":scope > .tappable").forEach(row => {
-    row.addEventListener("click", () => {
-      const i = +row.dataset.index;
-      const area = areas[i];
-      area.percent = Math.min(100, area.percent + 5);
-      const fill = row.querySelector(".progress-fill");
-      fill.dataset.pct = area.percent;
-      fill.style.width = `${area.percent}%`;
-      row.querySelector(".progress-pct").textContent = `${area.percent}%`;
-    });
-  });
-}
-
 function habitTrackerBlock(items) {
   const labels = lastNDayLabels(items.length);
   return `
     <div class="habit-row" id="habitTracker">
       ${items.map((done, i) => `
-        <div class="habit-cell tappable" data-done="${done}" data-index="${i}">
+        <div class="habit-cell">
           <span class="habit-day">${labels[i]}</span>
           <span class="habit-dot">${dotSvg(done ? "green" : "red", 10)}</span>
         </div>
       `).join("")}
     </div>
   `;
-}
-
-function setupHabitTracker() {
-  const wrap = document.getElementById("habitTracker");
-  if (!wrap) return;
-  wrap.querySelectorAll(".habit-cell").forEach(cell => {
-    cell.addEventListener("click", () => {
-      const done = cell.dataset.done !== "true";
-      cell.dataset.done = done;
-      cell.querySelector(".habit-dot").innerHTML = dotSvg(done ? "green" : "red", 10);
-    });
-  });
 }
 
 function placeholderBlock(text) {
@@ -1165,7 +1124,6 @@ function renderPillars() {
             <div class="stat-value">
               <span class="dot" id="readingStreakDot" style="background:${COLOR[p.reading.streak > 0 ? "green" : "red"]}"></span>
               <span id="readingStreakValue">${p.reading.streak} days</span>
-              <span class="streak-btn tappable" id="streakBtn">+1</span>
             </div>
           </div>
           <div class="stat-box">
@@ -1244,24 +1202,6 @@ function renderPillars() {
 
   // bills: tap to mark as paid
   setupPaidToggles("bills-capital");
-
-  // habit tracker: tap to toggle
-  setupHabitTracker();
-
-  // knowledge progress: tap to increment 5%
-  setupKnowledgeProgress();
-
-  // spirit reading streak: +1 button
-  const streakBtn = document.getElementById("streakBtn");
-  if (streakBtn) {
-    streakBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const spirit = DATA.pillars.find(x => x.key === "spirit");
-      spirit.reading.streak += 1;
-      document.getElementById("readingStreakValue").textContent = `${spirit.reading.streak} days`;
-      document.getElementById("readingStreakDot").style.background = COLOR.green;
-    });
-  }
 }
 
 const chartInstances = {};

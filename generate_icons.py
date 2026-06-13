@@ -1,28 +1,41 @@
 """Generate PWA icons (192x192, 512x512) with no external dependencies.
 
-Draws a dark background with a subtly-rounded "card" rect, a purple
-level-ring circle, a white "7" centered in the ring, and "LIFE" text
-below the ring, then writes raw PNG bytes via zlib.
+Draws a warm cream background with a subtly-rounded "card" rect, a
+sage-green progress ring filled to ~20% (life score 19/100), the score
+"19" centered in the ring, and "LIFE" text below the ring, then writes
+raw PNG bytes via zlib.
 """
 import math
 import struct
 import zlib
 
-BG = (10, 10, 11)        # #0a0a0b
-CARD = (20, 20, 22)       # #141416
-PURPLE = (127, 119, 221)  # #7F77DD
-WHITE = (232, 232, 236)   # #e8e8ec
-GRAY = (160, 160, 168)    # #a0a0a8
+BG = (232, 224, 213)     # outer panel, muted warm cream
+CARD = (240, 235, 227)   # #F0EBE3 inner rounded card
+TRACK = (227, 219, 207)  # ring track (unfilled)
+GREEN = (91, 154, 111)   # #5B9A6F ring fill
+BROWN = (44, 40, 37)     # #2C2825 score text
+TAUPE = (138, 130, 121)  # #8A8279 "LIFE" label
+
+RING_FILL_FRACTION = 0.20
 
 FONT = {
-    "7": [
-        "11111",
-        "00001",
-        "00010",
+    "1": [
         "00100",
-        "01000",
-        "01000",
-        "01000",
+        "01100",
+        "00100",
+        "00100",
+        "00100",
+        "00100",
+        "01110",
+    ],
+    "9": [
+        "01110",
+        "10001",
+        "10001",
+        "01111",
+        "00001",
+        "00001",
+        "01110",
     ],
     "L": [
         "10000",
@@ -95,34 +108,38 @@ def draw_text(pixels, size, text, scale, color, oy):
 
 
 def make_icon(size, path):
-    margin = size * 0.04
-    radius = size * 0.18
+    margin = size * 0.03
+    radius = size * 0.15625
 
     pixels = [[None] * size for _ in range(size)]
     for y in range(size):
         for x in range(size):
             pixels[y][x] = CARD if in_rounded_rect(x, y, size, margin, radius) else BG
 
-    # ring
+    # progress ring (~20% filled, clockwise from 12 o'clock)
+    cx = size / 2
     cy_ring = size * 0.42
     r_outer = size * 0.30
     thickness = size * 0.055
+    r_inner = r_outer - thickness
     for y in range(size):
         for x in range(size):
-            dx, dy = x - size / 2 + 0.5, y - cy_ring + 0.5
+            dx, dy = x - cx + 0.5, y - cy_ring + 0.5
             dist = math.sqrt(dx * dx + dy * dy)
-            if r_outer - thickness <= dist <= r_outer:
-                pixels[y][x] = PURPLE
+            if r_inner <= dist <= r_outer:
+                angle = math.atan2(dx, -dy) % (2 * math.pi)
+                frac = angle / (2 * math.pi)
+                pixels[y][x] = GREEN if frac <= RING_FILL_FRACTION else TRACK
 
-    # "7" centered in the ring
-    scale7 = max(1, round(size / 24))
-    fw7, fh7 = 5 * scale7, 7 * scale7
-    draw_text(pixels, size, "7", scale7, WHITE, int(cy_ring - fh7 / 2))
+    # "19" centered in the ring
+    scale_score = max(1, round(size / 28))
+    fh_score = 7 * scale_score
+    draw_text(pixels, size, "19", scale_score, BROWN, int(cy_ring - fh_score / 2))
 
     # "LIFE" below the ring
     scale_life = max(1, round(size / 48))
     fh_life = 7 * scale_life
-    draw_text(pixels, size, "LIFE", scale_life, GRAY, int(size * 0.80 - fh_life / 2))
+    draw_text(pixels, size, "LIFE", scale_life, TAUPE, int(size * 0.80 - fh_life / 2))
 
     write_png(path, pixels, size, size)
 
