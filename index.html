@@ -31,6 +31,7 @@
     --well: #F5F2EE;
     --separator: rgba(120,100,80,0.08);
     --shadow: 0 1px 3px rgba(120,100,80,0.06), 0 1px 2px rgba(120,100,80,0.03);
+    --taupe: #A3927F;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -430,6 +431,42 @@
   .list-row:not(.is-paid) .paid-badge { display: none; }
 
   .stat-box.tappable:active, .hero-stat-block.tappable:active { background: var(--track); }
+
+  /* ---------- Daily motivation line ---------- */
+  .motivation-line {
+    text-align: center; font-style: italic; font-size: 17px; line-height: 1.5;
+    color: var(--taupe); padding-top: 20px; border-top: 1px solid var(--separator);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  /* ---------- Floating Claude chat ---------- */
+  .chat-fab {
+    position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%;
+    background: var(--card); color: var(--text-2); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(120,100,80,0.18), var(--shadow); cursor: pointer; z-index: 1000;
+    transition: transform 0.2s ease, opacity 0.25s ease;
+  }
+  .chat-fab:active { transform: scale(0.92); }
+  .chat-fab.hidden { opacity: 0; transform: scale(0.7); pointer-events: none; }
+  .chat-bar {
+    position: fixed; bottom: 24px; right: 24px; left: 24px; max-width: 460px; margin-left: auto;
+    background: var(--card); border-radius: 18px; box-shadow: 0 6px 20px rgba(120,100,80,0.18), var(--shadow);
+    display: flex; align-items: center; gap: 8px; padding: 10px; z-index: 1000;
+    transform: translateY(calc(100% + 24px)); opacity: 0; transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
+  }
+  .chat-bar.open { transform: translateY(0); opacity: 1; }
+  .chat-input {
+    flex: 1; border: none; outline: none; background: var(--well); border-radius: 12px;
+    padding: 12px 14px; font-size: 15px; color: var(--text); font-family: inherit; min-width: 0;
+  }
+  .chat-send, .chat-close {
+    width: 40px; height: 40px; border-radius: 50%; border: none; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  .chat-send { background: var(--blue); color: #fff; }
+  .chat-close { background: var(--well); color: var(--text-2); }
+  .chat-send:active, .chat-close:active { transform: scale(0.9); }
 </style>
 </head>
 <body>
@@ -443,6 +480,9 @@
       <ol class="focus-list" id="focusList"></ol>
     </div>
   </div>
+
+  <!-- Daily motivation line -->
+  <div class="motivation-line" id="motivationLine"></div>
 
   <!-- WHOOP: recovery, sleep, strain at a glance -->
   <div class="card whoop-card" id="whoop-card"></div>
@@ -483,7 +523,14 @@
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<!-- Floating Claude chat -->
+<div class="chat-fab" id="chatFab" title="Ask Claude"></div>
+<div class="chat-bar" id="chatBar">
+  <input class="chat-input" id="chatInput" type="text" placeholder="Ask Claude about your dashboard..." />
+  <button class="chat-send" id="chatSend" title="Send"></button>
+  <button class="chat-close" id="chatClose" title="Close"></button>
+</div>
+
 <script>
 /* =========================================================
    DATA — replace these objects to update the dashboard.
@@ -516,7 +563,7 @@ const DATA = {
   whoop: {
     recovery: 79,
     sleep: 89,
-    strain: 5.8,
+    strain: 5.76,
     strainMax: 21,
     hrv: 56,
     restingHr: 57,
@@ -676,6 +723,7 @@ const DATA = {
       weight: 0.15,
       status: "Broken",
       color: "red",
+      streak: 0,
       stats: [
         { label: "Streak", value: "0 days", dot: "red" },
         { label: "Best streak", value: "13 days" },
@@ -808,6 +856,9 @@ const ICON_PATHS = {
   chevron: '<polyline points="6 9 12 15 18 9"/>',
   check: '<path d="M20 6L9 17l-5-5"/>',
   refresh: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0020.49 15"/>',
+  chat: '<path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>',
+  send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+  close: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
 };
 
 function svgIcon(name, size = 18, strokeWidth = 1.5) {
@@ -865,7 +916,7 @@ function renderHeader() {
   const hour = parseInt(
     now.toLocaleString("en-AU", { hour: "numeric", hour12: false, timeZone: "Australia/Brisbane" }),
     10
-  );
+  ) % 24;
   let greeting = "Good morning";
   if (hour >= 12 && hour < 17) greeting = "Good afternoon";
   else if (hour >= 17 || hour < 5) greeting = "Good evening";
@@ -914,6 +965,25 @@ function renderHeader() {
   document.getElementById("lifeScoreToggle").addEventListener("click", () => {
     document.getElementById("lifeScoreToggle").classList.toggle("expanded");
   });
+}
+
+/* =========================================================
+   RENDER: DAILY MOTIVATION
+   ========================================================= */
+function renderMotivation() {
+  const recovery = DATA.whoop.recovery;
+  const streak = DATA.pillars.find(p => p.key === "discipline").streak;
+  const daysOut = DATA.pillars.find(p => p.key === "physical").marathon.daysOut;
+
+  let message;
+  if (recovery > 80) message = "Your body is primed — make today count";
+  else if (recovery < 50) message = "Recovery is low — prioritize rest and fundamentals";
+  else if (streak > 0) message = "Streak alive — keep the momentum going";
+  else if (streak === 0) message = "Day one. Every streak starts with one task";
+  else if (daysOut < 14) message = "Race is close — trust the training";
+  else message = "Awareness is the first step to change";
+
+  document.getElementById("motivationLine").textContent = message;
 }
 
 /* =========================================================
@@ -1489,18 +1559,30 @@ function renderWhoop() {
   `;
 
   animateGauges(card);
-  if (hasTrend) {
-    makeRecoveryTrendChart("chart-whoop-trend", w.recoveryTrend);
-  }
 }
 
 /* =========================================================
    CHARTS
    ========================================================= */
-Chart.defaults.color = "#8A8279";
-Chart.defaults.font.family = "-apple-system, 'SF Pro Display', system-ui, sans-serif";
-Chart.defaults.font.size = 12;
-Chart.defaults.font.weight = "500";
+let chartJsPromise = null;
+function loadChartJs() {
+  if (!chartJsPromise) {
+    chartJsPromise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js";
+      script.onload = () => {
+        Chart.defaults.color = "#8A8279";
+        Chart.defaults.font.family = "-apple-system, 'SF Pro Display', system-ui, sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.font.weight = "500";
+        resolve();
+      };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+  return chartJsPromise;
+}
 
 const TOOLTIP_STYLE = {
   backgroundColor: "#2C2825",
@@ -1814,24 +1896,49 @@ function makeRecoveryTrendChart(canvasId, data) {
 }
 
 /* =========================================================
-   INIT ALL CHARTS
+   LAZY-LOAD CHARTS — only fetch Chart.js + render once a
+   chart scrolls into view
    ========================================================= */
-function initAllCharts() {
+function setupLazyCharts() {
   const physical = DATA.pillars.find(p => p.key === "physical");
   const capital = DATA.pillars.find(p => p.key === "capital");
   const discipline = DATA.pillars.find(p => p.key === "discipline");
+  const whoop = DATA.whoop;
 
-  makeRevenueChart(`chart-capital-revenue`, capital.revenueChart);
-  makeExpenseDonut(`chart-capital-expenses`, capital.expenses);
-  makeTrainingVolumeChart(`chart-physical-volume`, {
-    label: physical.weekSchedule.label,
-    today: physical.weekSchedule.today,
-    days: physical.weekSchedule.items.map(it => it.day),
-    data: physical.weekSchedule.items.map(it => it.km),
+  const initializers = {
+    "chart-capital-revenue": () => makeRevenueChart("chart-capital-revenue", capital.revenueChart),
+    "chart-capital-expenses": () => makeExpenseDonut("chart-capital-expenses", capital.expenses),
+    "chart-physical-volume": () => makeTrainingVolumeChart("chart-physical-volume", {
+      label: physical.weekSchedule.label,
+      today: physical.weekSchedule.today,
+      days: physical.weekSchedule.items.map(it => it.day),
+      data: physical.weekSchedule.items.map(it => it.km),
+    }),
+    "chart-discipline-tasks": () => makeTasksChart("chart-discipline-tasks", discipline.tasksChart),
+    "chart-discipline-karma": () => makeKarmaChart("chart-discipline-karma", discipline.karmaChart),
+    "chart-discipline-completion": () => makeCompletionRateChart("chart-discipline-completion", discipline.completionRateChart),
+  };
+
+  if (whoop.recoveryTrend && whoop.recoveryTrend.length > 1) {
+    initializers["chart-whoop-trend"] = () => makeRecoveryTrendChart("chart-whoop-trend", whoop.recoveryTrend);
+  }
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const init = initializers[entry.target.dataset.chartId];
+      if (init) loadChartJs().then(init);
+      obs.unobserve(entry.target);
+    });
+  }, { rootMargin: "200px" });
+
+  Object.keys(initializers).forEach(id => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    const wrap = canvas.closest(".chart-wrap") || canvas;
+    wrap.dataset.chartId = id;
+    observer.observe(wrap);
   });
-  makeTasksChart(`chart-discipline-tasks`, discipline.tasksChart);
-  makeKarmaChart(`chart-discipline-karma`, discipline.karmaChart);
-  makeCompletionRateChart(`chart-discipline-completion`, discipline.completionRateChart);
 }
 
 /* =========================================================
@@ -1880,9 +1987,47 @@ function renderFooter() {
 }
 
 /* =========================================================
+   FLOATING CLAUDE CHAT
+   ========================================================= */
+function setupChat() {
+  const fab = document.getElementById("chatFab");
+  const bar = document.getElementById("chatBar");
+  const input = document.getElementById("chatInput");
+
+  fab.innerHTML = svgIcon("chat", 24, 1.8);
+  document.getElementById("chatSend").innerHTML = svgIcon("send", 18, 2);
+  document.getElementById("chatClose").innerHTML = svgIcon("close", 18, 2);
+
+  function openBar() {
+    bar.classList.add("open");
+    fab.classList.add("hidden");
+    input.focus();
+  }
+  function closeBar() {
+    bar.classList.remove("open");
+    fab.classList.remove("hidden");
+  }
+  function send() {
+    const msg = input.value.trim();
+    if (!msg) return;
+    const prefixed = `Context: I'm Christian, checking my life dashboard. ${msg}`;
+    window.open(`https://claude.ai/new?q=${encodeURIComponent(prefixed)}`, "_blank");
+    input.value = "";
+  }
+
+  fab.addEventListener("click", openBar);
+  document.getElementById("chatClose").addEventListener("click", closeBar);
+  document.getElementById("chatSend").addEventListener("click", send);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") send();
+  });
+}
+
+/* =========================================================
    INIT
    ========================================================= */
 renderHeader();
+renderMotivation();
 renderFocusToday();
 renderWhoop();
 renderEmails();
@@ -1892,8 +2037,9 @@ renderPillars();
 renderAccounts();
 renderSubscriptions();
 renderFooter();
+setupChat();
 
-initAllCharts();
+setupLazyCharts();
 
 // unregister any existing service worker
 if ("serviceWorker" in navigator) {
