@@ -545,12 +545,13 @@ const DATA = {
     { color: "red",    text: "Task streak is at 0 — complete 5 tasks to restart it" },
     { color: "orange", text: "NRICH has earned $0 this month — Phase 1 shipping setup is blocking revenue" },
     { color: "red",    text: "Canva subscription ($20) is due today" },
-    { color: "red",    text: "CBA loan payment ($147) is 3 days overdue" },
+    { color: "red",    text: "5 overdue bills totaling $159 — Fitness Passports, ChatGPT, Apple Music, 2x Canva" },
     { color: "gray",   text: "Content day is Wednesday — check Notion calendar for what to film" },
-    { color: "green",  text: "Marathon Week 3: today is rest/easy 5km @ 8:00/km" },
+    { color: "green",  text: "Marathon Week 3: today is Saturday — 5km easy run @ 8:00/km" },
     { color: "gray",   text: "Gold Coast Marathon is 20 days away" },
     { color: "orange", text: "Bible reading — start or continue today's chapter" },
     { color: "orange", text: "Language practice — Czech and Māori (even 10 mins counts)" },
+    { color: "green",  text: "Recovery at 79% — good to train today" },
   ],
 
   emails: [
@@ -634,16 +635,17 @@ const DATA = {
       ],
       revenueChart: {
         label: "NRICH Revenue by Month",
-        labels: ["Mar", "Apr", "May", "Jun"],
-        data: [0, 0, 87, 0],
+        labels: ["Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        data: [0, 0, 0, 87, 0, 87, 0],
       },
       bills: {
         label: "Bills Due",
         items: [
-          { name: "CBA loan",        amount: "$147", due: "Overdue · 10 Jun", overdue: true },
-          { name: "Canva",           amount: "$20",  due: "Due today", dueToday: true },
-          { name: "Internet",        amount: "$80",  due: "14 Jun" },
-          { name: "CBA credit card", amount: "$60",  due: "16 Jun" },
+          { name: "Fitness Passports",  amount: "$69",    due: "Overdue · 5 Jun",  overdue: true },
+          { name: "ChatGPT Plus",       amount: "$30",    due: "Overdue · 4 Jun",  overdue: true },
+          { name: "Apple Music",        amount: "$19.99", due: "Overdue · 9 Jun",  overdue: true },
+          { name: "Canva",              amount: "$20",    due: "Overdue · 12 Jun", overdue: true },
+          { name: "Canva subscription", amount: "$20",    due: "Due today",       dueToday: true },
         ],
       },
       shopify: {
@@ -727,11 +729,11 @@ const DATA = {
       stats: [
         { label: "Streak", value: "0 days", dot: "red" },
         { label: "Best streak", value: "13 days" },
-        { label: "This week", value: "2 done", dot: "orange" },
-        { label: "Karma", value: "10,480", dot: "blue" },
+        { label: "This week", value: "3 done", dot: "orange" },
+        { label: "Karma", value: "10,482", dot: "blue" },
       ],
-      tasksChart: { label: "Weekly Tasks vs Goal", data: [0, 0, 4, 2], goal: 35 },
-      karmaChart: { label: "Karma Trend (7d)", data: [10460, 10463, 10469, 10476, 10480, 10480, 10480] },
+      tasksChart: { label: "Weekly Tasks vs Goal", data: [0, 0, 4, 3], goal: 70 },
+      karmaChart: { label: "Karma Trend (7d)", data: [10463, 10469, 10476, 10480, 10481, 10481, 10482] },
       habitTracker: {
         label: "Habit Tracker (30d)",
         items: [
