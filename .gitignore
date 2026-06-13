@@ -1,0 +1,6 @@
+# WHOOP OAuth tokens - contains secrets, never commit
+.whoop-tokens.json
+
+# Python
+__pycache__/
+*.pyc
