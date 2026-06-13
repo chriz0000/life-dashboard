@@ -339,7 +339,8 @@ const DATA = {
     today: "Sat",
     contentDays: ["Wed", "Sun"],
     events: [
-      { time: "7:00 AM", title: "5km easy run", sub: "Marathon training · Week 3, Day 6", color: "green" },
+      { time: "4:00 AM", title: "Start Morning Warm Up", sub: "Daily morning routine", color: "purple" },
+      { time: "7:00 AM", title: "5km easy run", sub: "Gold Coast Marathon training · Week 3, Day 6", color: "green" },
       { time: "Today", title: "Canva — $20 due", sub: "Subscription renewal", color: "amber" },
     ],
   },
@@ -353,7 +354,7 @@ const DATA = {
       color: "green",
       xp: 50,
       stats: [
-        { label: "Marathon", value: "Week 3/6", sub: "Race ~3 Jul" },
+        { label: "Gold Coast Marathon", value: "Week 3/6", sub: "ASICS · ~3 Jul" },
         { label: "Goal pace", value: "7:07/km" },
         { label: "WHOOP", value: "No data", dot: "amber" },
         { label: "Today", value: "5km easy run" },
@@ -513,7 +514,7 @@ const DATA = {
         label: "Today's Tasks",
         items: [
           { text: "Morning mobility routine", done: false },
-          { text: "Marathon training run", done: false },
+          { text: "Gold Coast Marathon training run", done: false },
           { text: "Inbox zero — Gmail", done: false },
           { text: "Log NRICH inventory count", done: false },
         ],
@@ -525,7 +526,19 @@ const DATA = {
     },
   ],
 
-  gmail: { unread: 1, sub: "Automated · Clear", badge: "1 NEW", badgeColor: "blue" },
+  emailAccounts: {
+    label: "Email accounts",
+    badge: "1 NEW", badgeColor: "blue",
+    accounts: [
+      { name: "Main Gmail", email: "Chrishstyles123@gmail.com", count: 1, color: "blue" },
+      { name: "iCloud", email: "christianstyles2015@icloud.com", count: 3, color: "gray" },
+      { name: "Personal", email: "christians.t@outlook.com", count: null, color: "gray" },
+      { name: "CS1", email: "christian1styles1@gmail.com", count: 715, color: "amber" },
+      { name: "First Wear", email: "1stfirstwear@gmail.com", count: 171, color: "amber" },
+      { name: "Newage Longevity", email: "newagelongevity@gmail.com", count: 92, color: "amber" },
+      { name: "No Brokies", email: "nobrokies@gmail.com", count: 109, color: "amber" },
+    ],
+  },
   whoopCard: {
     recovery: "--",
     sleep: "--",
@@ -540,7 +553,7 @@ const DATA = {
   ],
 
   meta: {
-    sources: "Gmail · Notion · NRICH · WHOOP · Manual",
+    sources: "Gmail · Apple Mail · Apple Calendar · Notion · NRICH · WHOOP · Manual",
   },
 };
 
@@ -573,11 +586,11 @@ function badgeStyle(colorKey) {
    ICONS — inline SVG line-art, inherits color via currentColor
    ========================================================= */
 const ICON_PATHS = {
-  physical: '<circle cx="15" cy="4" r="1.6"/><path d="M13 6.5l-1.5 3.5 3 2.3.8 5.7"/><path d="M11.5 10l-3.5 1.5"/><path d="M14 12l3 .8 2.3 4"/><path d="M11.5 17.5l-3 4"/><path d="M14.3 16.8l3 3.7"/>',
-  capital: '<ellipse cx="8" cy="17.5" rx="5" ry="2"/><ellipse cx="8" cy="14" rx="5" ry="2"/><ellipse cx="8" cy="10.5" rx="5" ry="2"/><path d="M17 16.5V5.5"/><path d="M13.2 9L17 5.2l3.8 3.8"/>',
-  brand: '<path d="M3 9.5v5a1 1 0 001 1h2.2l5.3 4V4.5l-5.3 4H4a1 1 0 00-1 1z"/><path d="M15.5 9a4 4 0 010 6"/><path d="M18.3 6.2a8 8 0 010 11.6"/>',
+  physical: '<circle cx="17" cy="4" r="2"/><path d="M15 22V14l-4-3 3-6 4 3v5"/><path d="M7 16l-2 6"/><path d="M2 12l4 2 4-3"/>',
+  capital: '<circle cx="9" cy="7" r="4"/><path d="M9 11c4 0 7 2 7 5"/><circle cx="15" cy="17" r="4"/>',
+  brand: '<path d="M18 8a3 3 0 010 6"/><path d="M10 8v8l-4-2v-4z"/><path d="M10 8l8-4v16l-8-4"/>',
   build: '<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>',
-  discipline: '<path d="M12 2.5c1.1 3-3 4.3-3 7.7a3 3 0 006 0c0-1-.7-2-.7-2 1.9 1.1 2.7 3 2.7 5a5 5 0 01-10 0c0-4.3 3-6.7 5-10.7z"/>',
+  discipline: '<path d="M12 22c4-4 8-7.5 8-12a8 8 0 00-16 0c0 4.5 4 8 8 12z"/><path d="M12 22c-2-2-4-3.5-4-6a4 4 0 018 0c0 2.5-2 4-4 6z"/>',
   mail: '<rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6.5 9-6.5"/>',
   doc: '<path d="M13.5 2.5h-7a2 2 0 00-2 2v15a2 2 0 002 2h11a2 2 0 002-2V8z"/><path d="M13.5 2.5V8h5"/><path d="M8.5 12.5h7M8.5 16h7"/>',
   whoop: '<path d="M2.5 12h3.2l1.6 4.2 3.4-9 2 4.8h6.8"/>',
@@ -1217,18 +1230,29 @@ function makeTasksChart(canvasId, cfg) {
    RENDER: INTEGRATIONS (Gmail, Notion, Subscriptions)
    ========================================================= */
 function renderIntegrations() {
-  const g = DATA.gmail;
+  const e = DATA.emailAccounts;
   const n = DATA.notion;
   const w = DATA.whoopCard;
 
-  const gmailHtml = `
-    <div class="integ-card">
-      <div class="integ-icon" style="color:${COLOR.blue}">${svgIcon("mail", 20)}</div>
-      <div class="integ-info">
-        <div class="integ-title">${g.unread} unread</div>
-        <div class="integ-sub">${g.sub}</div>
+  const emailAccountsHtml = `
+    <div class="subs-card">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div class="subs-title" style="display:inline-flex; align-items:center; gap:7px;">
+          <span style="color:${COLOR.blue}; display:flex;">${svgIcon("mail", 14)}</span>${e.label}
+        </div>
+        <span class="integ-badge" style="${badgeStyle(e.badgeColor)}">${e.badge}</span>
       </div>
-      <span class="integ-badge" style="${badgeStyle(g.badgeColor)}">${g.badge}</span>
+      <div class="list">
+        ${e.accounts.map(a => `
+          <div class="list-row">
+            <div class="list-main">
+              <span class="list-name">${dotSvg(a.color)}${a.name}</span>
+              <span class="list-sub">${a.email}</span>
+            </div>
+            <span class="list-amount">${a.count != null ? a.count.toLocaleString() : "—"}</span>
+          </div>
+        `).join("")}
+      </div>
     </div>
   `;
 
@@ -1271,7 +1295,7 @@ function renderIntegrations() {
     </div>
   `;
 
-  document.getElementById("integrations").innerHTML = gmailHtml + whoopHtml + notionHtml + subsHtml;
+  document.getElementById("integrations").innerHTML = emailAccountsHtml + whoopHtml + notionHtml + subsHtml;
 }
 
 /* =========================================================

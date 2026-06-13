@@ -1,4 +1,4 @@
-const CACHE_NAME = "life-dashboard-v1";
+const CACHE_NAME = "life-dashboard-v3";
 const PRECACHE_URLS = [
   "./",
   "./index.html",
