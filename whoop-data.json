@@ -1,0 +1,19 @@
+{
+  "synced_at": "2026-06-13T07:23:59.840863+00:00",
+  "recovery": {
+    "date": "2026-06-12T21:04:57.190Z",
+    "recovery_score": 79.0,
+    "hrv_ms": 55.97831,
+    "resting_heart_rate": 57.0
+  },
+  "sleep": {
+    "date": "2026-06-12T12:49:56.250Z",
+    "sleep_score": 89.0,
+    "efficiency_percentage": 94.408516
+  },
+  "strain": {
+    "date": "2026-06-12T12:49:56.250Z",
+    "strain_score": 5.7567663,
+    "average_heart_rate": 69
+  }
+}

@@ -469,7 +469,6 @@ const DATA = {
     { color: "gray",   text: "Gold Coast Marathon is 20 days away" },
     { color: "orange", text: "Bible reading — start or continue today's chapter" },
     { color: "orange", text: "Language practice — Czech and Māori (even 10 mins counts)" },
-    { color: "gray",   text: "WHOOP not connected — export data to track recovery" },
   ],
 
   emails: [
@@ -519,14 +518,14 @@ const DATA = {
         ],
       },
       whoop: {
-        connected: false,
+        connected: true,
         items: [
-          { label: "Recovery", value: "--" },
-          { label: "Sleep", value: "--" },
-          { label: "Strain", value: "--" },
-          { label: "HRV", value: "--" },
+          { label: "Recovery", value: "79%" },
+          { label: "Sleep", value: "89%" },
+          { label: "Strain", value: "5.8" },
+          { label: "HRV", value: "56ms" },
         ],
-        note: "Export WHOOP data to populate recovery, sleep and strain.",
+        note: "Synced from WHOOP · 12 Jun 2026.",
       },
       heartRateZones: [
         { zone: "Z1 · Recovery", range: "120–135 bpm", color: "blue" },
@@ -1740,11 +1739,11 @@ renderFooter();
 
 initAllCharts();
 
-// register service worker
+// unregister any existing service worker
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").then(reg => {
-    reg.update();
-  }).catch(() => {});
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    registrations.forEach(function(registration) { registration.unregister(); });
+  });
 }
 </script>
 </body>
