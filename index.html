@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Life Dashboard</title>
+<meta name="description" content="Christian's life dashboard" />
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0a0a0b" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Dashboard" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<link rel="icon" href="icon-192.png" type="image/png" />
+
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --card: #141416;
+    --stat: #1c1c1f;
+    --text: #e8e8ec;
+    --text-2: #a0a0a8;
+    --text-3: #68686f;
+    --red: #E24B4A;
+    --amber: #EF9F27;
+    --green: #1D9E75;
+    --blue: #378ADD;
+    --purple: #7F77DD;
+    --border: rgba(255,255,255,0.05);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body { background: var(--bg); }
+
+  body {
+    font-family: -apple-system, "SF Pro Display", system-ui, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .app {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 4px 2px 6px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .ring-wrap { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
+  .level-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--stat); stroke-width: 7; }
+  .ring-fg {
+    fill: none; stroke: var(--purple); stroke-width: 7; stroke-linecap: round;
+    stroke-dasharray: 263.9; stroke-dashoffset: 263.9;
+    transition: stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1) 0.2s;
+  }
+  .ring-center {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .ring-level { font-size: 23px; font-weight: 800; line-height: 1; letter-spacing: -0.5px; }
+  .ring-tag { font-size: 9px; letter-spacing: 1.5px; color: var(--text-3); font-weight: 700; margin-top: 3px; }
+
+  .hero-info { flex: 1; min-width: 0; }
+  .hero-name { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; }
+  .hero-title {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12.5px; color: var(--purple); font-weight: 700; margin-top: 4px;
+  }
+  .hero-meta { font-size: 12px; color: var(--text-3); margin-top: 6px; }
+  .hero-xp { font-size: 11px; color: var(--text-3); margin-top: 2px; font-weight: 600; }
+
+  /* ---------- Alerts ---------- */
+  .alerts { display: flex; flex-direction: column; gap: 6px; }
+  .alert {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card); border-radius: 10px; padding: 11px 13px;
+    font-size: 12.5px; color: var(--text-2); line-height: 1.35;
+    border-left: 3px solid var(--c);
+    animation: fadeUp 0.5s ease both;
+  }
+  .alert-icon { font-size: 15px; flex-shrink: 0; line-height: 1; }
+  .alert b { color: var(--text); font-weight: 700; }
+
+  /* ---------- Quick nav ---------- */
+  .quicknav {
+    display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 4px;
+    -ms-overflow-style: none; scrollbar-width: none;
+  }
+  .quicknav::-webkit-scrollbar { display: none; }
+  .nav-pill {
+    flex-shrink: 0; display: flex; align-items: center; gap: 6px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 22px;
+    padding: 9px 15px; font-size: 12px; font-weight: 700; color: var(--text-2);
+    white-space: nowrap; transition: transform .15s ease, background .15s ease;
+    -webkit-user-select: none; user-select: none;
+  }
+  .nav-pill:active { transform: scale(0.94); background: var(--stat); }
+  .nav-icon { font-size: 14px; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: 2px; }
+
+  /* ---------- Pillar cards ---------- */
+  .pillar {
+    background: var(--card); border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    animation: fadeUp 0.5s ease both;
+  }
+  .pillar-header {
+    display: flex; align-items: center; gap: 12px; padding: 15px 16px;
+    cursor: pointer; -webkit-user-select: none; user-select: none;
+    transition: background .15s ease;
+  }
+  .pillar-header:active { background: rgba(255,255,255,0.02); }
+  .pillar-icon {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    background: var(--icon-bg);
+  }
+  .pillar-meta { flex: 1; min-width: 0; }
+  .pillar-top-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .pillar-name { font-size: 15px; font-weight: 800; letter-spacing: -0.2px; }
+  .pillar-status {
+    font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+    background: var(--badge-bg); color: var(--badge-fg); white-space: nowrap;
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .pillar-xp-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .pillar-xp-bar { flex: 1; height: 4px; background: var(--stat); border-radius: 2px; overflow: hidden; }
+  .pillar-xp-fill {
+    height: 100%; border-radius: 2px; width: 0%; background: var(--fill);
+    transition: width 1.1s cubic-bezier(.4,0,.2,1) 0.15s;
+  }
+  .pillar-xp-pct { font-size: 11px; color: var(--text-3); font-weight: 700; flex-shrink: 0; min-width: 30px; text-align: right; }
+
+  .chevron {
+    width: 18px; height: 18px; flex-shrink: 0; color: var(--text-3);
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .pillar.expanded .chevron { transform: rotate(180deg); }
+
+  .pillar-body-wrap {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .4s cubic-bezier(.4,0,.2,1);
+  }
+  .pillar.expanded .pillar-body-wrap { grid-template-rows: 1fr; }
+  .pillar-body { overflow: hidden; min-height: 0; }
+  .pillar-body-inner {
+    padding: 2px 16px 18px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+
+  .section-label {
+    font-size: 10.5px; color: var(--text-3); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: -4px;
+  }
+
+  /* Stat grid */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-box { background: var(--stat); border-radius: 10px; padding: 10px 12px; }
+  .stat-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; }
+  .stat-value { font-size: 16px; font-weight: 800; margin-top: 5px; letter-spacing: -0.2px; display: flex; align-items: center; gap: 6px; }
+  .stat-sub { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+  .stat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--dot); }
+
+  /* Segments (training blocks / phases) */
+  .segments { display: flex; gap: 4px; }
+  .segment { flex: 1; height: 9px; border-radius: 4px; background: var(--stat); position: relative; }
+  .segment.done { background: var(--green); }
+  .segment.current { background: var(--purple); box-shadow: 0 0 0 3px rgba(127,119,221,0.18); }
+  .segment.active { background: var(--amber); animation: pulseSeg 2s ease-in-out infinite; }
+  .segment-labels { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-3); margin-top: 7px; font-weight: 600; }
+  @keyframes pulseSeg { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  /* Lists (bills, subs) */
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .list-row { display: flex; align-items: center; justify-content: space-between; background: var(--stat); border-radius: 10px; padding: 11px 13px; }
+  .list-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .list-name { font-size: 13px; font-weight: 700; }
+  .list-sub { font-size: 11px; color: var(--text-3); font-weight: 600; }
+  .list-sub.is-overdue { color: var(--red); }
+  .list-amount { font-size: 14.5px; font-weight: 800; flex-shrink: 0; padding-left: 10px; }
+  .list-amount.is-overdue { color: var(--red); }
+
+  /* Quest list */
+  .quest-row { display: flex; align-items: center; gap: 11px; background: var(--stat); border-radius: 10px; padding: 11px 13px; }
+  .quest-icon {
+    width: 21px; height: 21px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;
+  }
+  .quest-text { font-size: 13px; font-weight: 600; }
+
+  /* Inventory grid */
+  .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .inv-box { background: var(--stat); border-radius: 10px; padding: 10px 12px; }
+  .inv-name { font-size: 11px; color: var(--text-2); font-weight: 600; }
+  .inv-units { font-size: 19px; font-weight: 800; margin-top: 5px; letter-spacing: -0.3px; }
+  .inv-units span { font-size: 11px; color: var(--text-3); font-weight: 600; margin-left: 3px; }
+
+  /* Dev project rows */
+  .dev-row { display: flex; align-items: center; gap: 11px; background: var(--stat); border-radius: 10px; padding: 11px 13px; }
+  .dev-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .dev-name { font-size: 13px; font-weight: 700; flex: 1; }
+  .dev-status { font-size: 11px; color: var(--text-3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  /* Chart containers */
+  .chart-wrap { background: var(--stat); border-radius: 10px; padding: 12px 12px 8px; height: 170px; position: relative; }
+  .chart-wrap canvas { max-height: 100% !important; }
+
+  /* Integration / subscription cards */
+  .integ-card {
+    background: var(--card); border-radius: 16px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid var(--border);
+    animation: fadeUp 0.5s ease both;
+  }
+  .integ-icon {
+    width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    background: var(--stat);
+  }
+  .integ-info { flex: 1; min-width: 0; }
+  .integ-title { font-size: 13.5px; font-weight: 800; }
+  .integ-sub { font-size: 11.5px; color: var(--text-3); margin-top: 3px; font-weight: 600; }
+  .integ-badge {
+    font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 7px;
+    background: var(--badge-bg); color: var(--badge-fg); white-space: nowrap;
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+
+  .subs-card {
+    background: var(--card); border-radius: 16px; padding: 14px 16px;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 10px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .subs-title { font-size: 10.5px; color: var(--text-3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* Footer */
+  .footer {
+    text-align: center; padding-top: 6px; display: flex; flex-direction: column; gap: 5px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .footer-updated { font-size: 11px; color: var(--text-3); font-weight: 600; }
+  .footer-sources { font-size: 10.5px; color: var(--text-3); opacity: 0.6; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hero" id="hero"></header>
+
+  <section class="alerts" id="alerts"></section>
+
+  <nav class="quicknav" id="quicknav"></nav>
+
+  <main id="pillars"></main>
+
+  <section id="integrations" style="display:flex; flex-direction:column; gap:12px;"></section>
+
+  <footer class="footer" id="footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* =========================================================
+   DATA — replace these objects to update the dashboard.
+   ========================================================= */
+const DATA = {
+  user: {
+    name: "Christian",
+    level: 7,
+    title: "Apprentice",
+    location: "Brisbane",
+  },
+
+  alerts: [
+    { icon: "🔥", color: "red",   html: "Streak <b>broken</b> — 0 days" },
+    { icon: "💵", color: "amber", html: "NRICH revenue: <b>$0</b> in last 30 days" },
+    { icon: "📅", color: "amber", html: "<b>4 bills</b> due — $297 total" },
+    { icon: "📣", color: "amber", html: "Marketing <b>stalled</b> — Phase 1 incomplete" },
+  ],
+
+  pillars: [
+    {
+      key: "physical",
+      icon: "🏃",
+      name: "Physical",
+      status: "On track",
+      color: "green",
+      xp: 50,
+      stats: [
+        { label: "Marathon", value: "Week 3/6", sub: "Race ~3 Jul" },
+        { label: "Goal pace", value: "7:07/km" },
+        { label: "WHOOP", value: "No data", dot: "amber" },
+        { label: "Today", value: "Recovery easy 6km" },
+      ],
+      segments: {
+        label: "Training Block",
+        items: ["done", "done", "current", "future", "future", "future"],
+        sublabels: ["W1", "W2", "W3", "W4", "W5", "W6"],
+      },
+    },
+    {
+      key: "capital",
+      icon: "💰",
+      name: "Capital",
+      status: "Behind",
+      color: "red",
+      xp: 12,
+      stats: [
+        { label: "NRICH 90d", value: "$87", sub: "1 order · May 4" },
+        { label: "Lifetime", value: "$174" },
+        { label: "Personal loan", value: "$3,770" },
+        { label: "Monthly outflow", value: "~$460" },
+      ],
+      bills: {
+        label: "Bills Due",
+        items: [
+          { name: "CBA loan",        amount: "$147", due: "Overdue · Jun 10", overdue: true },
+          { name: "Canva",           amount: "$20",  due: "Jun 13" },
+          { name: "Internet",        amount: "$80",  due: "Jun 14" },
+          { name: "CBA credit card", amount: "$60",  due: "Jun 16" },
+        ],
+      },
+      chart: {
+        label: "NRICH Revenue by Month",
+        labels: ["Mar", "Apr", "May", "Jun"],
+        data: [0, 0, 87, 0],
+      },
+    },
+    {
+      key: "brand",
+      icon: "📣",
+      name: "Brand",
+      status: "Needs work",
+      color: "amber",
+      xp: 35,
+      stats: [
+        { label: "Post schedule", value: "Wed + Sun" },
+        { label: "Content pillars", value: "5" },
+      ],
+      quests: {
+        label: "Quests",
+        items: [
+          { text: "Calendar + pillars + guide", state: "done" },
+          { text: "Idea bank 50+", state: "done" },
+          { text: "Posting consistency", state: "unknown" },
+        ],
+      },
+    },
+    {
+      key: "build",
+      icon: "🛠️",
+      name: "Build",
+      status: "Stalled",
+      color: "amber",
+      xp: 18,
+      segments: {
+        label: "NRICH Marketing — 7 Phases",
+        items: ["active", "future", "future", "future", "future", "future", "future"],
+        sublabels: ["1", "2", "3", "4", "5", "6", "7"],
+      },
+      inventory: {
+        label: "Inventory",
+        items: [
+          { name: "Body oils", units: 34 },
+          { name: "Bath soaks", units: 36 },
+          { name: "Body scrubs", units: 25 },
+          { name: "Bundles", units: 1020 },
+        ],
+      },
+      devProjects: {
+        label: "Dev Projects",
+        items: [
+          { name: "Clawboard", status: "Active", color: "purple" },
+          { name: "OpenClaw", status: "Paused", color: "gray" },
+        ],
+      },
+    },
+    {
+      key: "discipline",
+      icon: "⚡",
+      name: "Discipline",
+      status: "Broken",
+      color: "red",
+      xp: 6,
+      stats: [
+        { label: "Streak", value: "0 days", dot: "red" },
+        { label: "Best streak", value: "13 days" },
+        { label: "This week", value: "2 done", dot: "amber" },
+        { label: "Karma", value: "10,480", dot: "blue" },
+      ],
+      karmaChart: {
+        label: "Karma Trend (7d)",
+        data: [10460, 10463, 10469, 10476, 10480, 10480, 10480],
+      },
+      tasksChart: {
+        label: "Weekly Tasks vs Goal",
+        data: [0, 0, 4, 2],
+        goal: 35,
+      },
+    },
+  ],
+
+  gmail: { unread: 1, sub: "Automated · Clear", badge: "1 NEW", badgeColor: "blue" },
+  notion: { title: "Content HQ", sub: "Updated Jun 9", badge: "SYNCED", badgeColor: "green" },
+  subscriptions: [
+    { name: "ChatGPT", amount: "$30", due: "Overdue", overdue: true },
+    { name: "Apple Music", amount: "$19.99", due: "Overdue", overdue: true },
+    { name: "Canva", amount: "$20", due: "Jun 13" },
+  ],
+
+  meta: {
+    sources: "Gmail · Notion · NRICH · WHOOP · Manual",
+  },
+};
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const COLOR = {
+  red: "#E24B4A",
+  amber: "#EF9F27",
+  green: "#1D9E75",
+  blue: "#378ADD",
+  purple: "#7F77DD",
+  gray: "#68686f",
+};
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function badgeStyle(colorKey) {
+  const hex = COLOR[colorKey] || COLOR.gray;
+  return `background:${hexToRgba(hex, 0.16)}; color:${hex};`;
+}
+
+/* =========================================================
+   RENDER: HERO
+   ========================================================= */
+function renderHero() {
+  const u = DATA.user;
+  const avgXp = Math.round(DATA.pillars.reduce((s, p) => s + p.xp, 0) / DATA.pillars.length);
+  const circumference = 2 * Math.PI * 42; // r=42
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-AU", {
+    weekday: "short", day: "numeric", month: "short", timeZone: "Australia/Brisbane",
+  });
+
+  document.getElementById("hero").innerHTML = `
+    <div class="ring-wrap">
+      <svg class="level-ring" viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="42"/>
+        <circle class="ring-fg" id="ringFg" cx="50" cy="50" r="42"
+          style="stroke-dasharray:${circumference.toFixed(2)}; stroke-dashoffset:${circumference.toFixed(2)};"/>
+      </svg>
+      <div class="ring-center">
+        <span class="ring-level">${u.level}</span>
+        <span class="ring-tag">LEVEL</span>
+      </div>
+    </div>
+    <div class="hero-info">
+      <div class="hero-name">${u.name}</div>
+      <div class="hero-title">⚔️ ${u.title}</div>
+      <div class="hero-meta">${dateStr} · ${u.location}</div>
+      <div class="hero-xp">${avgXp}% to Level ${u.level + 1}</div>
+    </div>
+  `;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const offset = circumference - (circumference * avgXp) / 100;
+      document.getElementById("ringFg").style.strokeDashoffset = offset.toFixed(2);
+    });
+  });
+}
+
+/* =========================================================
+   RENDER: ALERTS
+   ========================================================= */
+function renderAlerts() {
+  document.getElementById("alerts").innerHTML = DATA.alerts.map((a, i) => `
+    <div class="alert" style="--c:${COLOR[a.color]}; animation-delay:${i * 0.05}s">
+      <span class="alert-icon">${a.icon}</span>
+      <span>${a.html}</span>
+    </div>
+  `).join("");
+}
+
+/* =========================================================
+   RENDER: QUICK NAV
+   ========================================================= */
+function renderQuickNav() {
+  document.getElementById("quicknav").innerHTML = DATA.pillars.map(p => `
+    <button class="nav-pill" data-target="${p.key}">
+      <span class="nav-icon">${p.icon}</span>
+      <span>${p.name}</span>
+      <span class="nav-dot" style="background:${COLOR[p.color]}"></span>
+    </button>
+  `).join("");
+
+  document.querySelectorAll(".nav-pill").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = document.getElementById(`pillar-${btn.dataset.target}`);
+      if (!target) return;
+      if (!target.classList.contains("expanded")) {
+        togglePillar(target);
+      }
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+}
+
+/* =========================================================
+   RENDER: PILLAR BODY SECTIONS
+   ========================================================= */
+function statGrid(stats) {
+  return `
+    <div class="stat-grid">
+      ${stats.map(s => `
+        <div class="stat-box">
+          <div class="stat-label">${s.label}</div>
+          <div class="stat-value">${s.dot ? `<span class="stat-dot" style="--dot:${COLOR[s.dot]}"></span>` : ""}${s.value}</div>
+          ${s.sub ? `<div class="stat-sub">${s.sub}</div>` : ""}
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function segmentBlock(seg) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${seg.label}</div>
+      <div class="segments">
+        ${seg.items.map(state => `<div class="segment ${state}"></div>`).join("")}
+      </div>
+      ${seg.sublabels ? `<div class="segment-labels">${seg.sublabels.map(l => `<span>${l}</span>`).join("")}</div>` : ""}
+    </div>
+  `;
+}
+
+function billsBlock(bills) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${bills.label}</div>
+      <div class="list">
+        ${bills.items.map(b => `
+          <div class="list-row">
+            <div class="list-main">
+              <span class="list-name">${b.name}</span>
+              <span class="list-sub ${b.overdue ? "is-overdue" : ""}">${b.due}</span>
+            </div>
+            <span class="list-amount ${b.overdue ? "is-overdue" : ""}">${b.amount}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function questsBlock(quests) {
+  const ICONS = {
+    done: { char: "✓", bg: hexToRgba(COLOR.green, 0.18), fg: COLOR.green },
+    unknown: { char: "?", bg: hexToRgba(COLOR.amber, 0.18), fg: COLOR.amber },
+  };
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${quests.label}</div>
+      <div class="list">
+        ${quests.items.map(q => {
+          const ic = ICONS[q.state] || ICONS.unknown;
+          return `
+            <div class="quest-row">
+              <span class="quest-icon" style="background:${ic.bg}; color:${ic.fg}">${ic.char}</span>
+              <span class="quest-text">${q.text}</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function inventoryBlock(inv) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${inv.label}</div>
+      <div class="inv-grid">
+        ${inv.items.map(i => `
+          <div class="inv-box">
+            <div class="inv-name">${i.name}</div>
+            <div class="inv-units">${i.units.toLocaleString()}<span>units</span></div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function devProjectsBlock(dev) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${dev.label}</div>
+      <div class="list">
+        ${dev.items.map(d => `
+          <div class="dev-row">
+            <span class="dev-dot" style="background:${COLOR[d.color]}"></span>
+            <span class="dev-name">${d.name}</span>
+            <span class="dev-status">${d.status}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function chartBlock(id, label) {
+  return `
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">${label}</div>
+      <div class="chart-wrap"><canvas id="${id}"></canvas></div>
+    </div>
+  `;
+}
+
+/* =========================================================
+   RENDER: PILLARS
+   ========================================================= */
+function renderPillars() {
+  const html = DATA.pillars.map((p, i) => {
+    const sections = [];
+    if (p.stats) sections.push(statGrid(p.stats));
+    if (p.segments) sections.push(segmentBlock(p.segments));
+    if (p.bills) sections.push(billsBlock(p.bills));
+    if (p.chart) sections.push(chartBlock(`chart-${p.key}`, p.chart.label));
+    if (p.quests) sections.push(questsBlock(p.quests));
+    if (p.inventory) sections.push(inventoryBlock(p.inventory));
+    if (p.devProjects) sections.push(devProjectsBlock(p.devProjects));
+    if (p.karmaChart) sections.push(chartBlock(`chart-${p.key}-karma`, p.karmaChart.label));
+    if (p.tasksChart) sections.push(chartBlock(`chart-${p.key}-tasks`, p.tasksChart.label));
+
+    return `
+      <section class="pillar" id="pillar-${p.key}" style="animation-delay:${i * 0.06}s">
+        <div class="pillar-header" data-key="${p.key}">
+          <div class="pillar-icon" style="--icon-bg:${hexToRgba(COLOR[p.color], 0.15)}">${p.icon}</div>
+          <div class="pillar-meta">
+            <div class="pillar-top-row">
+              <span class="pillar-name">${p.name}</span>
+              <span class="pillar-status" style="${badgeStyle(p.color)}">${p.status}</span>
+            </div>
+            <div class="pillar-xp-row">
+              <div class="pillar-xp-bar"><div class="pillar-xp-fill" data-xp="${p.xp}" style="--fill:${COLOR[p.color]}"></div></div>
+              <span class="pillar-xp-pct">${p.xp}% XP</span>
+            </div>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="pillar-body-wrap">
+          <div class="pillar-body">
+            <div class="pillar-body-inner">
+              ${sections.join("")}
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }).join("");
+
+  document.getElementById("pillars").innerHTML = html;
+
+  // animate XP bars in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".pillar-xp-fill").forEach(el => {
+        el.style.width = `${el.dataset.xp}%`;
+      });
+    });
+  });
+
+  // expand / collapse
+  document.querySelectorAll(".pillar-header").forEach(header => {
+    header.addEventListener("click", () => togglePillar(header.closest(".pillar")));
+  });
+}
+
+const chartInstances = {};
+
+function togglePillar(pillarEl) {
+  const wasExpanded = pillarEl.classList.contains("expanded");
+  pillarEl.classList.toggle("expanded");
+
+  if (!wasExpanded) {
+    const key = pillarEl.querySelector(".pillar-header").dataset.key;
+    // lazy-init charts after the expand transition starts
+    setTimeout(() => initChartsFor(key), 80);
+  }
+}
+
+function initChartsFor(key) {
+  const p = DATA.pillars.find(x => x.key === key);
+  if (!p) return;
+
+  if (p.chart && !chartInstances[`chart-${key}`]) {
+    chartInstances[`chart-${key}`] = makeRevenueChart(`chart-${key}`, p.chart);
+  }
+  if (p.karmaChart && !chartInstances[`chart-${key}-karma`]) {
+    chartInstances[`chart-${key}-karma`] = makeKarmaChart(`chart-${key}-karma`, p.karmaChart);
+  }
+  if (p.tasksChart && !chartInstances[`chart-${key}-tasks`]) {
+    chartInstances[`chart-${key}-tasks`] = makeTasksChart(`chart-${key}-tasks`, p.tasksChart);
+  }
+}
+
+/* =========================================================
+   CHARTS
+   ========================================================= */
+Chart.defaults.color = "#68686f";
+Chart.defaults.font.family = "-apple-system, 'SF Pro Display', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.font.weight = "600";
+
+function makeRevenueChart(canvasId, cfg) {
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  const colors = cfg.data.map(v => v > 0 ? COLOR.green : "#2a2a2e");
+  return new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: cfg.labels,
+      datasets: [{
+        data: cfg.data,
+        backgroundColor: colors,
+        borderRadius: 6,
+        maxBarThickness: 36,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#1c1c1f",
+          titleColor: "#e8e8ec",
+          bodyColor: "#e8e8ec",
+          padding: 8,
+          cornerRadius: 8,
+          callbacks: { label: (c) => `$${c.parsed.y}` },
+        },
+      },
+      scales: {
+        x: { grid: { display: false }, border: { display: false } },
+        y: {
+          grid: { color: "rgba(255,255,255,0.04)" },
+          border: { display: false },
+          ticks: { callback: (v) => `$${v}` },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}
+
+function lastNDayLabels(n) {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const today = new Date();
+  const labels = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    labels.push(days[d.getDay()]);
+  }
+  return labels;
+}
+
+function makeKarmaChart(canvasId, cfg) {
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+  gradient.addColorStop(0, hexToRgba(COLOR.blue, 0.25));
+  gradient.addColorStop(1, hexToRgba(COLOR.blue, 0));
+
+  const min = Math.min(...cfg.data);
+  const max = Math.max(...cfg.data);
+  const pad = Math.max(4, Math.round((max - min) * 0.4));
+
+  return new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: lastNDayLabels(cfg.data.length),
+      datasets: [{
+        data: cfg.data,
+        borderColor: COLOR.blue,
+        backgroundColor: gradient,
+        fill: true,
+        tension: 0.35,
+        pointRadius: 3,
+        pointBackgroundColor: COLOR.blue,
+        pointBorderColor: "#0a0a0b",
+        pointBorderWidth: 1.5,
+        borderWidth: 2.5,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#1c1c1f",
+          titleColor: "#e8e8ec",
+          bodyColor: "#e8e8ec",
+          padding: 8,
+          cornerRadius: 8,
+        },
+      },
+      scales: {
+        x: { grid: { display: false }, border: { display: false } },
+        y: {
+          grid: { color: "rgba(255,255,255,0.04)" },
+          border: { display: false },
+          min: min - pad,
+          max: max + pad,
+          ticks: { maxTicksLimit: 4 },
+        },
+      },
+    },
+  });
+}
+
+const goalLinePlugin = {
+  id: "goalLine",
+  afterDatasetsDraw(chart, args, opts) {
+    if (!opts || opts.value == null) return;
+    const { ctx, chartArea, scales } = chart;
+    const y = scales.y.getPixelForValue(opts.value);
+    if (y < chartArea.top || y > chartArea.bottom) return;
+    ctx.save();
+    ctx.strokeStyle = opts.color || "#68686f";
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath();
+    ctx.moveTo(chartArea.left, y);
+    ctx.lineTo(chartArea.right, y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = opts.color || "#68686f";
+    ctx.font = "700 10px -apple-system, sans-serif";
+    ctx.textAlign = "right";
+    ctx.fillText(opts.label || "", chartArea.right - 4, y - 6);
+    ctx.restore();
+  },
+};
+
+function makeTasksChart(canvasId, cfg) {
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  return new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: lastNDayLabels(cfg.data.length),
+      datasets: [{
+        data: cfg.data,
+        backgroundColor: COLOR.purple,
+        borderRadius: 6,
+        maxBarThickness: 28,
+      }],
+    },
+    plugins: [goalLinePlugin],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#1c1c1f",
+          titleColor: "#e8e8ec",
+          bodyColor: "#e8e8ec",
+          padding: 8,
+          cornerRadius: 8,
+        },
+        goalLine: { value: cfg.goal, color: "#68686f", label: `Goal ${cfg.goal}` },
+      },
+      scales: {
+        x: { grid: { display: false }, border: { display: false } },
+        y: {
+          grid: { color: "rgba(255,255,255,0.04)" },
+          border: { display: false },
+          beginAtZero: true,
+          max: Math.max(cfg.goal * 1.15, Math.max(...cfg.data) * 1.4),
+          ticks: { maxTicksLimit: 4 },
+        },
+      },
+    },
+  });
+}
+
+/* =========================================================
+   RENDER: INTEGRATIONS (Gmail, Notion, Subscriptions)
+   ========================================================= */
+function renderIntegrations() {
+  const g = DATA.gmail;
+  const n = DATA.notion;
+
+  const gmailHtml = `
+    <div class="integ-card">
+      <div class="integ-icon">📧</div>
+      <div class="integ-info">
+        <div class="integ-title">${g.unread} unread</div>
+        <div class="integ-sub">${g.sub}</div>
+      </div>
+      <span class="integ-badge" style="${badgeStyle(g.badgeColor)}">${g.badge}</span>
+    </div>
+  `;
+
+  const notionHtml = `
+    <div class="integ-card">
+      <div class="integ-icon">📓</div>
+      <div class="integ-info">
+        <div class="integ-title">${n.title}</div>
+        <div class="integ-sub">${n.sub}</div>
+      </div>
+      <span class="integ-badge" style="${badgeStyle(n.badgeColor)}">${n.badge}</span>
+    </div>
+  `;
+
+  const subsHtml = `
+    <div class="subs-card">
+      <div class="subs-title">Subscriptions</div>
+      <div class="list">
+        ${DATA.subscriptions.map(s => `
+          <div class="list-row">
+            <div class="list-main">
+              <span class="list-name">${s.name}</span>
+              <span class="list-sub ${s.overdue ? "is-overdue" : ""}">${s.due}</span>
+            </div>
+            <span class="list-amount ${s.overdue ? "is-overdue" : ""}">${s.amount}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+
+  document.getElementById("integrations").innerHTML = gmailHtml + notionHtml + subsHtml;
+}
+
+/* =========================================================
+   RENDER: FOOTER
+   ========================================================= */
+function renderFooter() {
+  const now = new Date();
+  const stamp = now.toLocaleString("en-AU", {
+    weekday: "short", day: "numeric", month: "short",
+    hour: "numeric", minute: "2-digit",
+    timeZone: "Australia/Brisbane",
+  });
+  document.getElementById("footer").innerHTML = `
+    <div class="footer-updated">Last updated ${stamp} (Brisbane)</div>
+    <div class="footer-sources">${DATA.meta.sources}</div>
+  `;
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+renderHero();
+renderAlerts();
+renderQuickNav();
+renderPillars();
+renderIntegrations();
+renderFooter();
+
+// expand the first pillar (Physical) by default
+const firstPillar = document.getElementById(`pillar-${DATA.pillars[0].key}`);
+if (firstPillar) {
+  togglePillar(firstPillar);
+}
+
+// register service worker
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
