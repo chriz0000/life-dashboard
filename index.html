@@ -936,7 +936,7 @@ function renderHeader() {
         <div class="greeting">${greeting}, ${DATA.user.name}</div>
         <div class="date">${dateStr}</div>
       </div>
-      <div class="refresh-btn tappable" id="refreshBtn" title="Refresh">${svgIcon("refresh", 18, 2)}</div>
+      <div class="refresh-btn tappable" id="refreshBtn" title="Refresh" onclick="this.style.transform='rotate(360deg)';this.style.transition='transform 0.6s';setTimeout(function(){location.reload()},300)">${svgIcon("refresh", 18, 2)}</div>
     </div>
     <div class="life-score-block" id="lifeScoreToggle">
       ${circularGauge({ percent: score, size: 140, stroke: 12, color: scoreColor, valueText: score, sublabel: "/ 100", valueSize: 40 })}
