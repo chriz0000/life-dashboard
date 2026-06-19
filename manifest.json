@@ -1,8 +1,8 @@
 {
   "name": "Life Dashboard",
   "short_name": "Dashboard",
-  "start_url": "/life-dashboard/",
-  "scope": "/life-dashboard/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#FAF8F5",
   "theme_color": "#FAF8F5",
