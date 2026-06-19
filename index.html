@@ -2054,11 +2054,10 @@ setupChat();
 
 setupLazyCharts();
 
-// unregister any existing service worker
+// service worker forces a fresh network fetch on every launch so the
+// home-screen icon never gets stuck showing a stale cached copy
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    registrations.forEach(function(registration) { registration.unregister(); });
-  });
+  navigator.serviceWorker.register("sw.js");
 }
 </script>
 </body>
