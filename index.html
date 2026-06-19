@@ -97,12 +97,6 @@
   .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
   .greeting { font-size: 28px; font-weight: 600; letter-spacing: -0.4px; }
   .date { font-size: 16px; color: var(--text-2); margin-top: 2px; }
-  .refresh-btn {
-    width: 36px; height: 36px; border-radius: 50%; background: var(--well);
-    display: flex; align-items: center; justify-content: center; color: var(--text-2);
-    flex-shrink: 0; transition: transform 0.2s ease, background-color 0.2s ease;
-  }
-  .refresh-btn:active { transform: scale(0.9) rotate(180deg); background: var(--track); }
 
   .life-score-block {
     display: flex; align-items: center; gap: 24px; margin-top: 20px; cursor: pointer;
@@ -543,22 +537,21 @@ const DATA = {
 
   focusToday: [
     { color: "red",    text: "Task streak is at 0 — complete 5 tasks today to restart it" },
-    { color: "red",    text: "CBA personal loan ($53) is due today" },
-    { color: "red",    text: "4 overdue bills totaling $189 — Fitness Passports $69, Internet $80, ChatGPT $30, Rev Plan $10" },
-    { color: "orange", text: "Recovery at 47% — keep today's intervals controlled, prioritize sleep tonight" },
+    { color: "red",    text: "5 overdue bills totaling $242 — CBA loan $53, Fitness Passports $69, Internet $80, ChatGPT $30, Rev Plan $10" },
+    { color: "orange", text: "Recovery at 47% — keep today light, prioritize sleep tonight" },
     { color: "green",  text: "Markets brought in $430 this month (Square) — NRICH online still $0" },
-    { color: "green",  text: "Marathon Week 4: today is Thursday — 10km intervals (6×800m @ 4:30/km)" },
-    { color: "orange", text: "Gold Coast Marathon is 15 days away — sharpen the speed work" },
+    { color: "green",  text: "Marathon Week 4: today is a rest day — mobility work only, save the legs" },
+    { color: "orange", text: "Gold Coast Marathon (4-5 Jul) is 15 days away — sharpen the speed work" },
     { color: "gray",   text: "Content days are Wed/Sun — check Notion calendar (last updated 9 Jun)" },
     { color: "orange", text: "Bible reading — Genesis 1, start today's chapter" },
     { color: "orange", text: "Language practice — Czech and Māori (even 10 mins counts)" },
   ],
 
   emails: [
-    { sender: "Gold Coast Marathon", subject: "ASICS Gold Coast Marathon ENTRY CONFIRMED — your race pack details and timeline", time: "3h ago" },
-    { sender: "Revolut",             subject: "Important information about your account", time: "1d ago" },
-    { sender: "Tanda",               subject: "New Roster: 15th Jun", time: "1d ago" },
-    { sender: "Dan Martell",         subject: "The #1 reason founders stay stuck", time: "2d ago" },
+    { sender: "Moonshot AI (Kimi)",   subject: "Kimi K2.7 Code is now available",                 time: "4d ago" },
+    { sender: "Google",               subject: "New privacy settings for Search services",        time: "9d ago" },
+    { sender: "Moonshot AI (Kimi)",   subject: "New optional feature: Auto-Recharge is now live",  time: "14d ago" },
+    { sender: "Google Account Security", subject: "Security alert — Claude for Gmail access granted", time: "22d ago" },
   ],
 
   whoop: {
@@ -578,8 +571,8 @@ const DATA = {
     contentDays: ["Wed", "Sun"],
     events: [
       { time: "4:00 AM", title: "Morning Warm Up", sub: "Daily mobility & stretching routine", color: "blue", detail: "10 min mobility flow — hips, ankles, shoulders — followed by 5 min breathing exercise." },
-      { time: "7:00 AM", title: "10km intervals", sub: "Gold Coast Marathon training · Week 4, Day 4 · 6×800m @ 4:30/km", color: "green", detail: "10km total — 6 x 800m intervals @ 4:30/km with 400m jog recovery. Warm up 2km, cool down 2km. Recovery is low (47%) — hold the pace, don't chase it." },
-      { time: "Today", title: "CBA loan — $53 due", sub: "Fortnightly personal loan repayment", color: "orange", detail: "$53 fortnightly repayment (~$3,770 remaining of $4k loan). Auto-debits the day after UG pay." },
+      { time: "Today", title: "Rest day", sub: "Gold Coast Marathon training · Week 4, Day 5", color: "green", detail: "Full rest day — mobility work and stretching only. Recovery is low (47%) — let the body catch up before Saturday's easy run." },
+      { time: "Today", title: "5 bills overdue — $242 total", sub: "CBA loan $53, Fitness Passports $69, Internet $80, ChatGPT $30, Rev Plan $10", color: "orange", detail: "CBA personal loan ($53, ~$3,770 remaining of $4k loan) became overdue 18 Jun. Clear the oldest first — Fitness Passports has been overdue since 5 Jun." },
     ],
   },
 
@@ -592,7 +585,7 @@ const DATA = {
       weight: 0.15,
       status: "On track",
       color: "green",
-      marathon: { name: "Gold Coast Marathon", note: "ASICS Gold Coast Marathon", daysOut: 15, paceInfo: "Goal: sub-4:00 · Avg pace 5:41/km · Z2 heart rate" },
+      marathon: { name: "Gold Coast Marathon", note: "ASICS Gold Coast Marathon", raceDate: "2026-07-05", paceInfo: "Goal: sub-4:00 · Avg pace 5:41/km · Z2 heart rate" },
       trainingBlock: {
         label: "Training Block · Week 4 of 6",
         items: ["done", "done", "done", "current", "future", "future"],
@@ -645,7 +638,7 @@ const DATA = {
           { name: "Internet",          amount: "$80", due: "Overdue · 14 Jun", overdue: true },
           { name: "ChatGPT Plus",      amount: "$30", due: "Overdue · 4 Jun",  overdue: true },
           { name: "Rev Plan",          amount: "$10", due: "Overdue · 17 Jun", overdue: true },
-          { name: "CBA personal loan", amount: "$53", due: "Due today",        dueToday: true },
+          { name: "CBA personal loan", amount: "$53", due: "Overdue · 18 Jun", overdue: true },
         ],
       },
       shopify: {
@@ -733,7 +726,7 @@ const DATA = {
         { label: "Karma", value: "10,487", dot: "blue" },
       ],
       tasksChart: { label: "Weekly Tasks vs Goal", data: [0, 4, 3, 1], goal: 70 },
-      karmaChart: { label: "Karma Trend (7d)", data: [10481, 10483, 10485, 10486, 10487, 10487, 10487] },
+      karmaChart: { label: "Karma Trend (7d)", data: [10483, 10485, 10486, 10487, 10487, 10487, 10487] },
       habitTracker: {
         label: "Habit Tracker (30d)",
         items: [
@@ -797,13 +790,7 @@ const DATA = {
   ],
 
   emailAccounts: [
-    { name: "Main Gmail", count: 1, recentSubjects: ["Welcome to your new dashboard"] },
-    { name: "iCloud", count: 3, recentSubjects: ["iCloud storage almost full", "Your subscription receipt", "Photos memory ready to view"] },
-    { name: "Personal (Outlook)", count: 0, recentSubjects: [] },
-    { name: "CS1", count: 715, recentSubjects: ["Order #4821 has shipped", "New review on your store", "Inventory low: Body oils"] },
-    { name: "First Wear", count: 171, recentSubjects: ["New customer message", "Payment received", "Shipping label created"] },
-    { name: "Newage Longevity", count: 92, recentSubjects: ["Subscription renewal reminder", "New product inquiry"] },
-    { name: "No Brokies", count: 109, recentSubjects: ["Community post needs approval", "New member joined"] },
+    { name: "Gmail (chrishstyles123@gmail.com)", count: 201, recentSubjects: ["Kimi K2.7 Code is now available", "New privacy settings for Search services", "New optional feature: Auto-Recharge is now live"] },
   ],
 
   subscriptions: [
@@ -813,10 +800,41 @@ const DATA = {
   ],
 
   meta: {
-    updated: "10:56 PM",
+    updated: "10:11 PM",
     sources: "Todoist · Square · Shopify · Gmail · Notion · WHOOP",
   },
 };
+
+/* =========================================================
+   KEEP DATE-DEPENDENT FIELDS IN SYNC WITH THE REAL CALENDAR
+   so "today" stays correct between refreshes without needing
+   a manual day-of-week edit every cycle.
+   ========================================================= */
+(function syncDates() {
+  const DAY_ABBR = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const now = new Date();
+  const brisbaneNow = new Date(now.toLocaleString("en-US", { timeZone: "Australia/Brisbane" }));
+  const todayAbbr = DAY_ABBR[brisbaneNow.getDay()];
+
+  DATA.schedule.today = todayAbbr;
+
+  const physical = DATA.pillars.find(p => p.key === "physical");
+  physical.weekSchedule.today = todayAbbr;
+  const todayPlan = physical.weekSchedule.items.find(it => it.day === todayAbbr);
+  if (todayPlan) {
+    physical.today = { title: `Today: ${todayPlan.workout}`, sub: todayPlan.detail };
+  }
+
+  const raceDate = new Date(`${physical.marathon.raceDate}T00:00:00+10:00`);
+  physical.marathon.daysOut = Math.max(0, Math.ceil((raceDate - brisbaneNow) / 86400000));
+
+  const weeksTotal = physical.trainingBlock.items.length;
+  const weeksRemaining = Math.max(1, Math.ceil(physical.marathon.daysOut / 7));
+  const currentWeekIdx = Math.min(weeksTotal - 1, Math.max(0, weeksTotal - weeksRemaining));
+  physical.trainingBlock.items = physical.trainingBlock.items.map((_, i) =>
+    i < currentWeekIdx ? "done" : i === currentWeekIdx ? "current" : "future"
+  );
+})();
 
 /* =========================================================
    HELPERS
@@ -857,7 +875,6 @@ const ICON_PATHS = {
   knowledge: '<path d="M22 9L12 4 2 9l10 5 10-5z"/><path d="M6 11.2v4.8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4.8"/>',
   chevron: '<polyline points="6 9 12 15 18 9"/>',
   check: '<path d="M20 6L9 17l-5-5"/>',
-  refresh: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0020.49 15"/>',
   chat: '<path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>',
   send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
   close: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
@@ -936,7 +953,6 @@ function renderHeader() {
         <div class="greeting">${greeting}, ${DATA.user.name}</div>
         <div class="date">${dateStr}</div>
       </div>
-      <div class="refresh-btn tappable" id="refreshBtn" title="Refresh" onclick="this.style.transform='rotate(360deg)';this.style.transition='transform 0.6s';setTimeout(function(){location.reload()},300)">${svgIcon("refresh", 18, 2)}</div>
     </div>
     <div class="life-score-block" id="lifeScoreToggle">
       ${circularGauge({ percent: score, size: 140, stroke: 12, color: scoreColor, valueText: score, sublabel: "/ 100", valueSize: 40 })}
@@ -958,11 +974,6 @@ function renderHeader() {
   `;
 
   animateGauges(document.getElementById("header"));
-
-  document.getElementById("refreshBtn").addEventListener("click", (e) => {
-    e.stopPropagation();
-    location.reload();
-  });
 
   document.getElementById("lifeScoreToggle").addEventListener("click", () => {
     document.getElementById("lifeScoreToggle").classList.toggle("expanded");
@@ -1396,7 +1407,7 @@ function renderPillars() {
       }));
       sections.push(labeled(p.trainingBlock.label, segmentBlock(p.trainingBlock)));
       sections.push(labeled("Today", listRows([{ name: p.today.title, sub: p.today.sub, isCurrent: true }])));
-      sections.push(labeled("Week 3 Schedule", weekTableBlock(p.weekSchedule)));
+      sections.push(labeled("This Week's Schedule", weekTableBlock(p.weekSchedule)));
       sections.push(labeled("Weekly Training Volume (km)", chartBlock(`chart-${p.key}-volume`)));
       sections.push(labeled("Heart Rate Zones", listRows(p.heartRateZones.map(z => ({
         name: z.zone, dotColor: z.color, amount: z.range,
