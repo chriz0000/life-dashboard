@@ -8,7 +8,8 @@
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#FAF8F5" />
+<meta name="theme-color" content="#FAF8F5" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#171512" media="(prefers-color-scheme: dark)" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Dashboard" />
@@ -18,2044 +19,421 @@
 <style>
   :root {
     --bg: #FAF8F5;
-    --card: #FFFFFF;
-    --text: #2C2825;
-    --text-2: #8A8279;
-    --text-3: #B5AFA8;
-    --blue: #5B8DB8;
-    --green: #5B9A6F;
-    --orange: #C68B4B;
-    --red: #C45C4A;
-    --purple: #8B7BB5;
-    --track: #EDEAE6;
-    --well: #F5F2EE;
-    --separator: rgba(120,100,80,0.08);
-    --shadow: 0 1px 3px rgba(120,100,80,0.06), 0 1px 2px rgba(120,100,80,0.03);
-    --taupe: #A3927F;
+    --ink: #2C2825;
+    --ink-2: #8A8279;
+    --ink-3: #B5AFA8;
+    --hairline: rgba(120, 100, 80, 0.14);
+    --well: rgba(120, 100, 80, 0.05);
+    --good: #5B9A6F;
+    --warning: #C68B4B;
+    --critical: #C45C4A;
+    --info: #5B8DB8;
+    --neutral: #B5AFA8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #171512;
+      --ink: #EDEAE5;
+      --ink-2: #9B948B;
+      --ink-3: #6E675F;
+      --hairline: rgba(255, 255, 255, 0.10);
+      --well: rgba(255, 255, 255, 0.04);
+      --good: #79B08C;
+      --warning: #D9A05F;
+      --critical: #D97965;
+      --info: #7FA9CC;
+      --neutral: #6E675F;
+    }
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   html, body { background: var(--bg); }
-
   body {
-    font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-    color: var(--text);
-    font-size: 16px;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.45;
     -webkit-font-smoothing: antialiased;
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
-    min-height: 100vh;
-    overflow-x: hidden;
   }
 
-  .app {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 28px 28px 56px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  body { overflow-x: hidden; }
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 20px 48px; }
+
+  section { padding: 20px 0; border-top: 1px solid var(--hairline); }
+  section:first-of-type { border-top: none; padding-top: 0; }
+
+  .label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ink-2); margin-bottom: 12px;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
   }
+  .label .flag { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--ink-3); }
 
-  /* ---------- Layout grids ---------- */
-  .top-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; align-items: stretch; }
-  .second-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; align-items: stretch; }
-  .pillars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .pillars-grid > *:last-child:nth-child(odd) { grid-column: 1 / -1; }
-  .bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  /* status color hook: each level sets --c */
+  .lv-good { --c: var(--good); }
+  .lv-warning { --c: var(--warning); }
+  .lv-critical { --c: var(--critical); }
+  .lv-info { --c: var(--info); }
+  .lv-neutral { --c: var(--neutral); }
 
-  @media (max-width: 980px) {
-    .top-row, .second-row, .pillars-grid, .bottom-row { grid-template-columns: 1fr; }
-  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--neutral)); flex-shrink: 0; }
 
-  /* ---------- Card ---------- */
-  .card {
-    background: var(--card); border-radius: 20px; padding: 24px; box-shadow: var(--shadow);
-    display: flex; flex-direction: column; gap: 16px; animation: fadeUp 0.5s ease both;
-  }
+  /* ---------- header ---------- */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .date { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); }
+  .greeting { font-size: 21px; font-weight: 650; letter-spacing: -0.01em; margin-top: 2px; }
+  .hero { text-align: right; }
+  .hero-value { font-size: 48px; font-weight: 650; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
+  .hero-value small { font-size: 15px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
+  .hero-label { font-size: 12px; color: var(--ink-2); margin-top: 2px; }
 
-  /* ---------- Section headers ---------- */
-  .section-header, .subsection-label {
-    font-size: 13px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.6px; color: var(--text-2);
-  }
-  .top-section-header { padding-left: 4px; }
-
-  /* ---------- Gauges ---------- */
-  .gauge { position: relative; flex-shrink: 0; }
-  .gauge-arc { transition: stroke-dashoffset 1.3s cubic-bezier(.4,0,.2,1) 0.2s; }
-  .gauge-center {
-    position: absolute; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center;
-  }
-  .gauge-value { font-weight: 700; letter-spacing: -0.5px; line-height: 1; }
-  .gauge-sublabel { font-size: 11px; color: var(--text-2); font-weight: 600; margin-top: 4px; }
-
-  /* ---------- Header card ---------- */
-  .header-card { justify-content: center; }
-  .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .greeting { font-size: 28px; font-weight: 600; letter-spacing: -0.4px; }
-  .date { font-size: 16px; color: var(--text-2); margin-top: 2px; }
-
-  .life-score-block {
-    display: flex; align-items: center; gap: 24px; margin-top: 20px; cursor: pointer;
-    -webkit-user-select: none; user-select: none;
-  }
-  .life-score-text { display: flex; flex-direction: column; gap: 8px; flex: 1; }
-  .life-score-title { font-size: 15px; font-weight: 600; color: var(--text); }
-  .life-score-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
-  .life-score-breakdown { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; overflow: hidden; }
-  .life-score-block.expanded .life-score-breakdown { grid-template-rows: 1fr; }
-  .life-score-breakdown-inner { overflow: hidden; min-height: 0; }
-  .life-score-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 7px 0; font-size: 13px; color: var(--text-2); border-top: 1px solid var(--separator);
-  }
-  .life-score-item:first-child { border-top: none; padding-top: 10px; }
-  .life-score-item b { color: var(--text); font-weight: 600; }
-
-  /* ---------- Focus list ---------- */
-  .focus-list { display: flex; flex-direction: column; }
+  /* ---------- focus ---------- */
   .focus-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 12px 0; border-bottom: 1px solid var(--separator);
+    display: flex; align-items: flex-start; gap: 10px; padding: 8px 0;
+    cursor: pointer; user-select: none; -webkit-user-select: none;
   }
-  .focus-item:first-child { padding-top: 0; }
-  .focus-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .focus-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
-  .focus-num { font-size: 14px; color: var(--text-3); font-weight: 600; flex-shrink: 0; width: 20px; }
-  .focus-text { font-size: 16px; font-weight: 400; line-height: 1.5; }
+  .focus-check {
+    width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--hairline);
+    flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; color: #fff;
+  }
+  .focus-item .dot { margin-top: 7px; }
+  .focus-text { font-size: 14px; }
   .focus-item.done { opacity: 0.4; }
   .focus-item.done .focus-text { text-decoration: line-through; }
-  .focus-checkbox {
-    width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--track);
-    flex-shrink: 0; margin-top: 3px; display: flex; align-items: center; justify-content: center;
-    color: #fff; transition: background-color 0.2s ease, border-color 0.2s ease;
-  }
-  .focus-item.done .focus-checkbox { background: var(--green); border-color: var(--green); }
-  .tappable { cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; -webkit-user-select: none; user-select: none; }
-  .tappable:active { transform: scale(0.98); }
+  .focus-item.done .focus-check { background: var(--good); border-color: var(--good); }
 
-  /* ---------- Email list ---------- */
-  .email-list { display: flex; flex-direction: column; }
-  .email-row-wrap {
-    position: relative; overflow: hidden; border-bottom: 1px solid var(--separator);
-    max-height: 200px; transition: max-height 0.3s ease, opacity 0.3s ease;
-  }
-  .email-row-wrap:last-child { border-bottom: none; }
-  .email-row-wrap.removing { max-height: 0; opacity: 0; border-bottom: none; }
-  .email-row {
-    display: flex; flex-direction: column; gap: 4px; padding: 13px 0;
-    background: var(--card); position: relative; z-index: 1; transition: transform 0.3s ease;
-  }
-  .email-row-wrap:first-child .email-row { padding-top: 0; }
-  .email-row-wrap:last-child .email-row { padding-bottom: 0; }
-  .email-row-wrap.swiped .email-row { transform: translateX(-84px); }
-  .email-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .email-sender { font-size: 15px; font-weight: 600; letter-spacing: -0.1px; }
-  .email-time { font-size: 13px; color: var(--text-3); flex-shrink: 0; font-weight: 400; }
-  .email-subject { font-size: 14px; color: var(--text-2); white-space: normal; line-height: 1.4; }
-  .email-dismiss {
-    position: absolute; top: 0; right: -84px; bottom: 0; width: 84px;
-    background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; border-radius: 10px; transition: right 0.3s ease;
-  }
-  .email-row-wrap.swiped .email-dismiss { right: 0; }
+  /* ---------- stat tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 8px; }
+  .tile { background: var(--well); border-radius: 10px; padding: 10px 12px; }
+  .tile-label { font-size: 11px; color: var(--ink-2); }
+  .tile-value { font-size: 19px; font-weight: 650; margin-top: 2px; letter-spacing: -0.01em; }
+  .tile-sub { font-size: 11px; color: var(--ink-2); margin-top: 1px; display: flex; align-items: center; gap: 5px; }
 
-  /* ---------- Schedule ---------- */
-  .day-bar { display: flex; gap: 6px; margin-bottom: 16px; }
-  .day-cell {
-    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-    padding: 10px 0; border-radius: 12px; background: var(--well);
-    font-size: 13px; font-weight: 600; color: var(--text-2);
+  /* ---------- training ---------- */
+  .train-line { font-size: 14px; margin-bottom: 4px; }
+  .train-line b { font-weight: 650; }
+  .train-sub { font-size: 12px; color: var(--ink-2); margin-bottom: 12px; }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .week-cell {
+    border-radius: 8px; padding: 7px 2px; text-align: center; cursor: pointer;
+    background: var(--well); user-select: none; -webkit-user-select: none; min-width: 0;
   }
-  .day-cell.is-today { background: var(--blue); color: #fff; }
-  .timeline { display: flex; flex-direction: column; gap: 16px; }
-  .timeline-row { display: flex; gap: 14px; align-items: flex-start; }
-  .timeline-time { font-size: 13px; color: var(--text-3); font-weight: 600; width: 64px; flex-shrink: 0; padding-top: 2px; }
-  .timeline-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
-  .timeline-content { flex: 1; min-width: 0; }
-  .timeline-title { font-size: 16px; font-weight: 500; }
-  .timeline-sub { font-size: 13px; color: var(--text-3); margin-top: 3px; }
-  .timeline-detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; overflow: hidden; }
-  .timeline-row.expanded .timeline-detail { grid-template-rows: 1fr; }
-  .timeline-detail-inner { overflow: hidden; min-height: 0; }
-  .timeline-detail-text { font-size: 13px; color: var(--text-3); padding-top: 8px; line-height: 1.5; }
+  .week-cell .d { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .week-cell .w { font-size: 11px; font-weight: 500; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .week-cell.today { box-shadow: inset 0 0 0 1.5px var(--info); }
+  .week-cell.today .d { color: var(--info); }
+  .week-cell.selected:not(.today) { box-shadow: inset 0 0 0 1.5px var(--hairline); }
+  .week-detail { font-size: 12.5px; color: var(--ink-2); margin-top: 10px; }
+  .week-detail b { color: var(--ink); font-weight: 600; }
 
-  /* ---------- Quick stats ---------- */
-  .quick-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .quick-stat-item {
-    display: flex; align-items: center; gap: 12px; background: var(--well);
-    border-radius: 14px; padding: 12px;
+  /* ---------- money ---------- */
+  .rev { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; }
+  .rev-label { font-size: 14px; }
+  .rev-sub { font-size: 12px; color: var(--ink-2); }
+  .rev-value { font-size: 19px; font-weight: 650; }
+  .bill {
+    display: flex; align-items: center; gap: 10px; padding: 9px 0;
+    border-top: 1px solid var(--hairline); cursor: pointer; user-select: none; -webkit-user-select: none;
   }
-  .quick-stat-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-  .quick-stat-name { font-size: 14px; font-weight: 600; }
-  .quick-stat-status { font-size: 12px; color: var(--text-2); }
+  .bill-name { font-size: 14px; flex: 1; min-width: 0; }
+  .bill-due { font-size: 12px; color: var(--ink-2); }
+  .bill-amount { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; min-width: 56px; }
+  .pill {
+    font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+    background: color-mix(in srgb, var(--c) 14%, transparent);
+    color: var(--ink); display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+  }
+  .pill .dot { width: 6px; height: 6px; }
+  .bill.paid .bill-name, .bill.paid .bill-amount, .bill.paid .bill-due { text-decoration: line-through; color: var(--ink-3); }
 
-  /* ---------- Pillar cards ---------- */
-  .pillar-card {
-    background: var(--card); border-radius: 20px; padding: 24px; box-shadow: var(--shadow);
-    display: flex; flex-direction: column; gap: 18px; animation: fadeUp 0.5s ease both;
-  }
-  .pillar-header { display: flex; align-items: center; gap: 14px; }
-  .pillar-icon {
-    width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--icon-bg); color: var(--icon-fg);
-  }
-  .pillar-info { flex: 1; min-width: 0; }
-  .pillar-name { font-size: 19px; font-weight: 600; letter-spacing: -0.2px; }
-  .pillar-status { font-size: 13px; font-weight: 500; margin-top: 2px; }
-  .pillar-body { display: flex; flex-direction: column; gap: 18px; }
+  /* ---------- pillars ---------- */
+  .pillar { padding: 8px 0; }
+  .pillar-top { display: flex; align-items: baseline; gap: 8px; }
+  .pillar-name { font-size: 14px; font-weight: 600; }
+  .pillar-status { font-size: 12px; color: var(--ink-2); flex: 1; display: inline-flex; align-items: center; gap: 6px; }
+  .pillar-score { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .meter { height: 4px; border-radius: 2px; margin-top: 6px; background: color-mix(in srgb, var(--c) 16%, transparent); overflow: hidden; }
+  .meter-fill { height: 100%; border-radius: 2px; background: var(--c); width: 0%; transition: width 0.8s cubic-bezier(.4,0,.2,1); }
 
-  /* ---------- Stat grid ---------- */
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .stat-grid.cols-2 { grid-template-columns: 1fr 1fr; }
-  .stat-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-  .stat-box { background: var(--well); border-radius: 14px; padding: 16px; }
-  .stat-label { font-size: 12px; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-  .stat-value { font-size: 26px; font-weight: 600; margin-top: 8px; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
-  .stat-sub { font-size: 13px; color: var(--text-3); margin-top: 4px; }
-  @media (max-width: 1240px) {
-    .stat-grid.cols-4 { grid-template-columns: 1fr 1fr; }
-  }
+  /* ---------- footer ---------- */
+  .footer { padding-top: 20px; border-top: 1px solid var(--hairline); text-align: center; }
+  .footer div { font-size: 12px; color: var(--ink-3); }
 
-  /* ---------- Hero stat (countdown gauge) ---------- */
-  .hero-stat-block {
-    background: var(--well); border-radius: 16px; padding: 20px;
-    display: flex; align-items: center; gap: 24px;
+  .error {
+    font-size: 13px; color: var(--critical); padding: 12px; border-radius: 10px;
+    background: color-mix(in srgb, var(--critical) 10%, transparent); margin-bottom: 16px; display: none;
   }
-  .hero-stat-text { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
-  .hero-stat-title { font-size: 16px; font-weight: 600; }
-  .hero-stat-sub { font-size: 13px; color: var(--text-2); line-height: 1.5; }
-  .hero-stat-pace { font-size: 13px; color: var(--text-3); margin-top: 2px; line-height: 1.5; }
-
-  /* ---------- Segments (training / phases) ---------- */
-  .segments { display: flex; gap: 5px; }
-  .segment { flex: 1; height: 10px; border-radius: 5px; background: var(--track); }
-  .segment.done { background: var(--green); }
-  .segment.current { background: var(--blue); }
-  .segment.active { background: var(--orange); animation: pulseSeg 2s ease-in-out infinite; }
-  .segment-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-3); margin-top: 8px; font-weight: 500; }
-  @keyframes pulseSeg { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-  /* ---------- Lists ---------- */
-  .list { display: flex; flex-direction: column; gap: 10px; }
-  .list-row { display: flex; align-items: center; justify-content: space-between; background: var(--well); border-radius: 14px; padding: 14px 16px; }
-  .list-row.is-current { box-shadow: inset 0 0 0 1.5px var(--blue); }
-  .list-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-  .list-name { font-size: 16px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-  .list-sub { font-size: 13px; color: var(--text-3); }
-  .list-sub.is-overdue { color: var(--red); }
-  .list-sub.is-due-today { color: var(--orange); }
-  .list-amount { font-size: 16px; font-weight: 600; flex-shrink: 0; padding-left: 12px; }
-  .list-amount.is-overdue { color: var(--red); }
-  .list-amount.is-due-today { color: var(--orange); }
-
-  /* ---------- Generic dot ---------- */
-  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-
-  /* ---------- Progress rows (knowledge) ---------- */
-  .progress-rows { display: flex; flex-direction: column; gap: 18px; }
-  .progress-rows.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; }
-  .progress-rows.cols-2 > div:last-child { grid-column: 1 / -1; }
-  .progress-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 8px; }
-  .progress-name { font-size: 16px; font-weight: 500; }
-  .progress-value { font-size: 13px; color: var(--text-2); flex-shrink: 0; text-align: right; }
-  .progress-track { height: 8px; background: var(--track); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; border-radius: 4px; width: 0%; background: var(--blue); transition: width 1.1s cubic-bezier(.4,0,.2,1) 0.15s; }
-  .progress-sub { font-size: 13px; color: var(--text-3); margin-top: 7px; }
-  .progress-pct { font-size: 12px; color: var(--text-3); font-weight: 600; margin-left: 6px; }
-
-  /* ---------- Habit tracker (30 day) ---------- */
-  .habit-grid-30 { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; }
-  .habit-cell-30 {
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    background: var(--well); border-radius: 10px; padding: 10px 4px;
-  }
-  .habit-cell-30 .habit-day { font-size: 10px; color: var(--text-3); font-weight: 600; text-transform: uppercase; }
-  @media (max-width: 700px) {
-    .habit-grid-30 { grid-template-columns: repeat(6, 1fr); }
-  }
-
-  /* ---------- Check rows (quests / tasks) ---------- */
-  .check-row { display: flex; align-items: center; gap: 12px; background: var(--well); border-radius: 14px; padding: 14px 16px; }
-  .check-icon {
-    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .check-text { font-size: 15px; font-weight: 500; }
-
-  /* ---------- Inventory grid ---------- */
-  .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .inv-box { background: var(--well); border-radius: 14px; padding: 16px; }
-  .inv-name { font-size: 13px; color: var(--text-2); font-weight: 500; }
-  .inv-units { font-size: 22px; font-weight: 600; margin-top: 6px; letter-spacing: -0.2px; }
-  .inv-units span { font-size: 13px; color: var(--text-3); font-weight: 400; margin-left: 4px; }
-
-  /* ---------- Chart ---------- */
-  .chart-wrap { background: var(--well); border-radius: 14px; padding: 16px 16px 12px; height: 230px; position: relative; }
-  .chart-wrap.short { height: 180px; }
-  .chart-wrap canvas { max-height: 100% !important; }
-
-  /* ---------- Placeholder ---------- */
-  .placeholder { background: var(--well); border-radius: 14px; padding: 18px; color: var(--text-3); font-size: 14px; line-height: 1.6; }
-
-  /* ---------- Week table (training schedule) ---------- */
-  .week-table { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
-  .week-table-cell {
-    background: var(--well); border-radius: 14px; padding: 14px 8px; text-align: center;
-    display: flex; flex-direction: column; gap: 8px; cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .week-table-cell:active { transform: scale(0.96); }
-  .week-table-cell.is-today { background: var(--blue); color: #fff; }
-  .week-table-cell.is-selected:not(.is-today) { box-shadow: inset 0 0 0 1.5px var(--blue); }
-  .week-table-day { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .week-table-workout { font-size: 13px; font-weight: 500; line-height: 1.3; }
-  .week-detail {
-    background: var(--well); border-radius: 14px; padding: 14px 16px;
-    font-size: 13px; color: var(--text-2); line-height: 1.5; margin-top: 4px;
-  }
-  .week-detail b { color: var(--text); }
-  @media (max-width: 700px) {
-    .week-table { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  /* ---------- Data table (bills) ---------- */
-  .data-table { width: 100%; border-collapse: collapse; }
-  .data-table th {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-2);
-    text-align: left; padding: 0 10px 10px; font-weight: 600;
-  }
-  .data-table th.amount-col, .data-table td.amount-col { text-align: right; }
-  .data-table td { padding: 14px 10px; font-size: 15px; border-top: 1px solid var(--separator); }
-  .data-table tr:first-child td { border-top: none; }
-  .data-table td.amount-col { font-weight: 600; }
-  .data-table tr.is-paid td { text-decoration: line-through; color: var(--text-3) !important; }
-  .data-table tr { cursor: pointer; }
-  .status-pill {
-    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 8px;
-    display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
-  }
-  .status-pill.overdue { background: rgba(196,92,74,0.1); color: var(--red); }
-  .status-pill.due-today { background: rgba(198,139,75,0.1); color: var(--orange); }
-  .status-pill.upcoming { background: var(--track); color: var(--text-2); }
-  .status-pill.paid { background: rgba(91,154,111,0.1); color: var(--green); }
-
-  /* ---------- Accounts ---------- */
-  .account-list { display: flex; flex-direction: column; }
-  .account-row { display: flex; flex-direction: column; gap: 0; padding: 12px 0; border-bottom: 1px solid var(--separator); cursor: pointer; }
-  .account-row:first-child { padding-top: 0; }
-  .account-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .account-row-top { display: flex; align-items: center; justify-content: space-between; }
-  .account-name { font-size: 15px; font-weight: 500; }
-  .account-badge {
-    font-size: 13px; font-weight: 600; color: var(--text-2);
-    background: var(--well); border-radius: 8px; padding: 4px 10px;
-  }
-  .account-badge.has-unread { color: var(--blue); background: rgba(91,141,184,0.1); }
-  .account-subjects { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; overflow: hidden; }
-  .account-row.expanded .account-subjects { grid-template-rows: 1fr; }
-  .account-subjects-inner { overflow: hidden; min-height: 0; }
-  .account-subject { font-size: 13px; color: var(--text-3); padding-top: 7px; margin-top: 7px; border-top: 1px solid var(--separator); line-height: 1.4; }
-  .account-subjects-empty { font-size: 13px; color: var(--text-3); padding-top: 7px; margin-top: 7px; border-top: 1px solid var(--separator); }
-
-  /* ---------- WHOOP ---------- */
-  .whoop-card { transition: background-color 0.4s ease, box-shadow 0.4s ease; }
-  .whoop-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .whoop-band { font-size: 13px; font-weight: 600; }
-  .whoop-main { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
-  .whoop-gauges { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
-  .whoop-side { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 14px; }
-  .whoop-trend-placeholder {
-    background: var(--well); border-radius: 14px; padding: 14px 16px;
-    font-size: 13px; color: var(--text-3); line-height: 1.5;
-  }
-  @media (max-width: 980px) {
-    .whoop-gauges { justify-content: center; width: 100%; }
-  }
-
-  /* ---------- Verse block (Spirit) ---------- */
-  .verse-block {
-    background: var(--well); border-radius: 14px; padding: 26px 24px;
-    font-size: 18px; font-style: italic; line-height: 1.6; color: var(--text); text-align: center;
-  }
-  .verse-ref {
-    font-size: 13px; font-style: normal; font-weight: 600; color: var(--text-2);
-    margin-top: 14px; letter-spacing: 0.3px;
-  }
-
-  /* ---------- Knowledge area cards ---------- */
-  .knowledge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .knowledge-card { background: var(--well); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
-  .knowledge-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .knowledge-card-name { font-size: 16px; font-weight: 600; }
-  .knowledge-card-status {
-    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 8px;
-    background: var(--track); color: var(--text-2); white-space: nowrap;
-  }
-  .knowledge-card-meta { font-size: 13px; color: var(--text-3); }
-  .knowledge-card-milestone { font-size: 13px; color: var(--text-2); line-height: 1.5; }
-  .knowledge-card-milestone b { color: var(--text); font-weight: 600; }
-  @media (max-width: 700px) {
-    .knowledge-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ---------- Footer ---------- */
-  .footer { text-align: center; padding-top: 4px; display: flex; flex-direction: column; gap: 6px; animation: fadeUp 0.5s ease both; }
-  .footer-updated { font-size: 13px; color: var(--text-3); font-weight: 500; }
-  .footer-sources { font-size: 12px; color: var(--text-3); opacity: 0.7; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ---------- Paid / done list rows ---------- */
-  .list-row.is-paid .list-name, .list-row.is-paid .list-amount, .list-row.is-paid .list-sub {
-    text-decoration: line-through; color: var(--text-3) !important;
-  }
-  .paid-badge {
-    font-size: 12px; font-weight: 600; color: var(--green);
-    background: rgba(91,154,111,0.1); border-radius: 6px; padding: 2px 9px; margin-left: 8px;
-    display: inline-flex; align-items: center; gap: 3px;
-  }
-  .list-row:not(.is-paid) .paid-badge { display: none; }
-
-  .stat-box.tappable:active, .hero-stat-block.tappable:active { background: var(--track); }
-
-  /* ---------- Daily motivation line ---------- */
-  .motivation-line {
-    text-align: center; font-style: italic; font-size: 17px; line-height: 1.5;
-    color: var(--taupe); padding-top: 20px; border-top: 1px solid var(--separator);
-    animation: fadeUp 0.5s ease both;
-  }
-
-  /* ---------- Floating Claude chat ---------- */
-  .chat-fab {
-    position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%;
-    background: var(--card); color: var(--text-2); display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 6px 20px rgba(120,100,80,0.18), var(--shadow); cursor: pointer; z-index: 1000;
-    transition: transform 0.2s ease, opacity 0.25s ease;
-  }
-  .chat-fab:active { transform: scale(0.92); }
-  .chat-fab.hidden { opacity: 0; transform: scale(0.7); pointer-events: none; }
-  .chat-bar {
-    position: fixed; bottom: 24px; right: 24px; left: 24px; max-width: 460px; margin-left: auto;
-    background: var(--card); border-radius: 18px; box-shadow: 0 6px 20px rgba(120,100,80,0.18), var(--shadow);
-    display: flex; align-items: center; gap: 8px; padding: 10px; z-index: 1000;
-    transform: translateY(calc(100% + 24px)); opacity: 0; transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
-  }
-  .chat-bar.open { transform: translateY(0); opacity: 1; }
-  .chat-input {
-    flex: 1; border: none; outline: none; background: var(--well); border-radius: 12px;
-    padding: 12px 14px; font-size: 15px; color: var(--text); font-family: inherit; min-width: 0;
-  }
-  .chat-send, .chat-close {
-    width: 40px; height: 40px; border-radius: 50%; border: none; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-  }
-  .chat-send { background: var(--blue); color: #fff; }
-  .chat-close { background: var(--well); color: var(--text-2); }
-  .chat-send:active, .chat-close:active { transform: scale(0.9); }
+  .error.show { display: block; }
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- TOP ROW: header + life score gauge | focus today -->
-  <div class="top-row">
-    <div class="card header-card" id="header"></div>
-    <div class="card focus-card">
-      <div class="section-header">Focus Today</div>
-      <ol class="focus-list" id="focusList"></ol>
-    </div>
-  </div>
-
-  <!-- Daily motivation line -->
-  <div class="motivation-line" id="motivationLine"></div>
-
-  <!-- WHOOP: recovery, sleep, strain at a glance -->
-  <div class="card whoop-card" id="whoop-card"></div>
-
-  <!-- SECOND ROW: email intelligence | schedule | quick stats -->
-  <div class="second-row">
-    <div class="card" id="email-card">
-      <div class="section-header">Email Intelligence</div>
-      <div class="email-list" id="emailList"></div>
-    </div>
-    <div class="card" id="schedule-card">
-      <div class="section-header">Today's Schedule</div>
-      <div id="schedule"></div>
-    </div>
-    <div class="card" id="quickstats-card">
-      <div class="section-header">Quick Stats</div>
-      <div class="quick-stats-grid" id="quickStats"></div>
-    </div>
-  </div>
-
-  <!-- MAIN SECTION: pillars, 2-column grid, always expanded -->
-  <div class="section-header top-section-header">Pillars</div>
-  <div class="pillars-grid" id="pillars"></div>
-
-  <!-- BOTTOM ROW: accounts | subscriptions -->
-  <div class="bottom-row">
-    <div class="card" id="accounts-card">
-      <div class="section-header">Accounts</div>
-      <div class="account-list" id="accountsList"></div>
-    </div>
-    <div class="card" id="subs-card">
-      <div class="section-header">Subscriptions</div>
-      <table class="data-table" id="subsTable"></table>
-    </div>
-  </div>
-
+  <div class="error" id="error"></div>
+  <section><div class="header" id="header"></div></section>
+  <section><div class="label">Focus today</div><div id="focus"></div></section>
+  <section><div class="label">Recovery<span class="flag" id="whoopFlag"></span></div><div id="whoop"></div></section>
+  <section><div class="label">Training</div><div id="training"></div></section>
+  <section><div class="label">Money</div><div id="money"></div></section>
+  <section><div class="label">Pillars</div><div id="pillars"></div></section>
   <footer class="footer" id="footer"></footer>
-
-</div>
-
-<!-- Floating Claude chat -->
-<div class="chat-fab" id="chatFab" title="Ask Claude"></div>
-<div class="chat-bar" id="chatBar">
-  <input class="chat-input" id="chatInput" type="text" placeholder="Ask Claude about your dashboard..." />
-  <button class="chat-send" id="chatSend" title="Send"></button>
-  <button class="chat-close" id="chatClose" title="Close"></button>
 </div>
 
 <script>
-/* =========================================================
-   DATA — replace these objects to update the dashboard.
-   ========================================================= */
-const DATA = {
-  user: {
-    name: "Christian",
-    location: "Brisbane",
-  },
+"use strict";
 
-  focusToday: [
-    { color: "red",    text: "Task streak is at 0 — complete 5 tasks today to restart it" },
-    { color: "red",    text: "5 overdue bills totaling $242 — CBA loan $53, Fitness Passports $69, Internet $80, ChatGPT $30, Rev Plan $10" },
-    { color: "orange", text: "Recovery at 47% — keep today light, prioritize sleep tonight" },
-    { color: "green",  text: "Markets brought in $430 this month (Square) — NRICH online still $0" },
-    { color: "green",  text: "Marathon Week 4: today is a rest day — mobility work only, save the legs" },
-    { color: "orange", text: "Gold Coast Marathon (4-5 Jul) is 15 days away — sharpen the speed work" },
-    { color: "gray",   text: "Content days are Wed/Sun — check Notion calendar (last updated 9 Jun)" },
-    { color: "orange", text: "Bible reading — Genesis 1, start today's chapter" },
-    { color: "orange", text: "Language practice — Czech and Māori (even 10 mins counts)" },
-  ],
+const $ = (id) => document.getElementById(id);
+const TZ = "Australia/Brisbane";
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const CHECK = '<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 
-  emails: [
-    { sender: "Moonshot AI (Kimi)",   subject: "Kimi K2.7 Code is now available",                 time: "4d ago" },
-    { sender: "Google",               subject: "New privacy settings for Search services",        time: "9d ago" },
-    { sender: "Moonshot AI (Kimi)",   subject: "New optional feature: Auto-Recharge is now live",  time: "14d ago" },
-    { sender: "Google Account Security", subject: "Security alert — Claude for Gmail access granted", time: "22d ago" },
-  ],
-
-  whoop: {
-    recovery: 47,
-    sleep: 82,
-    strain: 14.78,
-    strainMax: 21,
-    hrv: 47,
-    restingHr: 61,
-    date: "18 Jun 2026",
-    recoveryTrend: [47],
-  },
-
-  schedule: {
-    days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    today: "Thu",
-    contentDays: ["Wed", "Sun"],
-    events: [
-      { time: "4:00 AM", title: "Morning Warm Up", sub: "Daily mobility & stretching routine", color: "blue", detail: "10 min mobility flow — hips, ankles, shoulders — followed by 5 min breathing exercise." },
-      { time: "Today", title: "Rest day", sub: "Gold Coast Marathon training · Week 4, Day 5", color: "green", detail: "Full rest day — mobility work and stretching only. Recovery is low (47%) — let the body catch up before Saturday's easy run." },
-      { time: "Today", title: "5 bills overdue — $242 total", sub: "CBA loan $53, Fitness Passports $69, Internet $80, ChatGPT $30, Rev Plan $10", color: "orange", detail: "CBA personal loan ($53, ~$3,770 remaining of $4k loan) became overdue 18 Jun. Clear the oldest first — Fitness Passports has been overdue since 5 Jun." },
-    ],
-  },
-
-  pillars: [
-    {
-      key: "physical",
-      icon: "physical",
-      name: "Physical",
-      score: 70,
-      weight: 0.15,
-      status: "On track",
-      color: "green",
-      marathon: { name: "Gold Coast Marathon", note: "ASICS Gold Coast Marathon", raceDate: "2026-07-05", paceInfo: "Goal: sub-4:00 · Avg pace 5:41/km · Z2 heart rate" },
-      trainingBlock: {
-        label: "Training Block · Week 4 of 6",
-        items: ["done", "done", "done", "current", "future", "future"],
-        sublabels: ["W1", "W2", "W3", "W4", "W5", "W6"],
-      },
-      today: { title: "Today: 10km intervals", sub: "6×800m @ 4:30/km · Zone 3-4 effort" },
-      weekSchedule: {
-        today: "Thu",
-        items: [
-          { day: "Mon", workout: "Rest", km: 0, detail: "Full rest day — mobility work and stretching only." },
-          { day: "Tue", workout: "8km tempo", km: 8, detail: "8km @ tempo pace (~5:00/km) — Zone 3-4 effort." },
-          { day: "Wed", workout: "6km easy", km: 6, detail: "6km @ easy pace (~6:30/km) — Zone 2, conversational." },
-          { day: "Thu", workout: "10km intervals", km: 10, detail: "10km total — 6 x 800m intervals @ 4:30/km with 400m jog recovery." },
-          { day: "Fri", workout: "Rest", km: 0, detail: "Full rest day — mobility work and stretching only." },
-          { day: "Sat", workout: "5km easy", km: 5, detail: "5km @ 8:00/km — recovery focus, keep heart rate in Zone 2." },
-          { day: "Sun", workout: "22km long run", km: 22, detail: "22km long run @ 5:50/km — fuel every 45 mins, practice race-day nutrition." },
-        ],
-      },
-      heartRateZones: [
-        { zone: "Z1 · Recovery", range: "120–135 bpm", color: "blue" },
-        { zone: "Z2 · Easy", range: "136–150 bpm", color: "green" },
-        { zone: "Z3 · Tempo", range: "151–165 bpm", color: "orange" },
-        { zone: "Z4 · Threshold", range: "166–178 bpm", color: "red" },
-        { zone: "Z5 · Max", range: "179+ bpm", color: "dark" },
-      ],
-    },
-    {
-      key: "capital",
-      icon: "capital",
-      name: "Capital",
-      score: 37,
-      weight: 0.20,
-      status: "Behind",
-      color: "red",
-      stats: [
-        { label: "Revenue (Jun)", value: "$430", sub: "Square markets · NRICH $0" },
-        { label: "Lifetime revenue", value: "$30,011", sub: "Square + Shopify" },
-        { label: "Personal loan", value: "$3,770", sub: "CBA" },
-        { label: "Monthly outflow", value: "~$460" },
-      ],
-      revenueChart: {
-        label: "Revenue by Month (markets + online)",
-        labels: ["Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        data: [4347, 661, 244, 540, 889, 3643, 430],
-      },
-      bills: {
-        label: "Bills Due",
-        items: [
-          { name: "Fitness Passports", amount: "$69", due: "Overdue · 5 Jun",  overdue: true },
-          { name: "Internet",          amount: "$80", due: "Overdue · 14 Jun", overdue: true },
-          { name: "ChatGPT Plus",      amount: "$30", due: "Overdue · 4 Jun",  overdue: true },
-          { name: "Rev Plan",          amount: "$10", due: "Overdue · 17 Jun", overdue: true },
-          { name: "CBA personal loan", amount: "$53", due: "Overdue · 18 Jun", overdue: true },
-        ],
-      },
-      shopify: {
-        label: "Shopify Store Health",
-        productsListed: 20,
-        activeProducts: 18,
-        inventoryUnits: 1115,
-      },
-      expenses: {
-        label: "Monthly Expense Breakdown",
-        items: [
-          { name: "Rent & bills", amount: 250, color: "blue" },
-          { name: "Subscriptions", amount: 70, color: "gray" },
-          { name: "Loan payments", amount: 147, color: "orange" },
-        ],
-      },
-    },
-    {
-      key: "brand",
-      icon: "brand",
-      name: "Brand",
-      score: 35,
-      weight: 0.10,
-      status: "Needs work",
-      color: "orange",
-      contentSchedule: { label: "Post schedule", value: "Wed + Sun" },
-      notion: { label: "Content HQ", value: "Synced", sub: "Updated 9 Jun" },
-      contentPillars: {
-        label: "Content Pillars",
-        items: ["Becoming", "Build", "Train", "Fuel", "Real Life"],
-      },
-      postingStatus: {
-        label: "Posting Status",
-        items: [
-          { text: "Calendar + pillars + guide set up", state: "done" },
-          { text: "Idea bank 50+ entries", state: "done" },
-          { text: "Posting consistency", state: "pending" },
-        ],
-      },
-    },
-    {
-      key: "build",
-      icon: "build",
-      name: "Build",
-      score: 18,
-      weight: 0.15,
-      status: "Stalled",
-      color: "red",
-      marketingPhases: {
-        label: "NRICH Marketing — 7 Phases",
-        current: "Phase 1: Shipping setup",
-        items: ["active", "future", "future", "future", "future", "future", "future"],
-        sublabels: ["1", "2", "3", "4", "5", "6", "7"],
-      },
-      inventory: {
-        label: "Inventory",
-        items: [
-          { name: "Body oils", units: 34 },
-          { name: "Bath soaks", units: 36 },
-          { name: "Body scrubs", units: 25 },
-          { name: "Bundles", units: 1020 },
-        ],
-      },
-      devProjects: {
-        label: "Dev Projects",
-        items: [
-          { name: "Clawboard", status: "Active", color: "blue" },
-          { name: "OpenClaw", status: "Paused", color: "gray" },
-        ],
-      },
-    },
-    {
-      key: "discipline",
-      icon: "discipline",
-      name: "Discipline",
-      score: 21,
-      weight: 0.15,
-      status: "Broken",
-      color: "red",
-      streak: 0,
-      stats: [
-        { label: "Streak", value: "0 days", dot: "red" },
-        { label: "Best streak", value: "13 days" },
-        { label: "This week", value: "1 done", dot: "red" },
-        { label: "Karma", value: "10,487", dot: "blue" },
-      ],
-      tasksChart: { label: "Weekly Tasks vs Goal", data: [0, 4, 3, 1], goal: 70 },
-      karmaChart: { label: "Karma Trend (7d)", data: [10483, 10485, 10486, 10487, 10487, 10487, 10487] },
-      habitTracker: {
-        label: "Habit Tracker (30d)",
-        items: [
-          false, false, true, false, false, true, false, false, false, true,
-          true, true, true, true, true, true, true, true, true, true, true, true, true,
-          false, false, true, true, false, false, false,
-        ],
-      },
-      completionRateChart: {
-        label: "Daily Completion Rate — Last 30 Days",
-        data: [
-          10, 20, 0, 30, 40, 20, 10, 0, 30, 20,
-          70, 80, 90, 100, 100, 90, 80, 90, 100, 100, 90, 80, 70,
-          0, 0, 100, 100, 0, 0, 0,
-        ],
-      },
-      todoistTasks: {
-        label: "Today's Tasks",
-        items: [
-          { text: "Morning mobility routine", done: false },
-          { text: "Gold Coast Marathon training run", done: false },
-          { text: "Inbox zero — Gmail", done: false },
-          { text: "Log NRICH inventory count", done: false },
-        ],
-      },
-    },
-    {
-      key: "spirit",
-      icon: "spirit",
-      name: "Spirit",
-      score: 10,
-      weight: 0.10,
-      status: "Just starting",
-      color: "orange",
-      readingPlan: {
-        totalDays: 365,
-        currentBook: "Genesis",
-        todaysReading: "Genesis 1",
-      },
-      devotionalStreak: 0,
-      verse: { text: "Trust in the Lord with all your heart", reference: "Proverbs 3:5" },
-      notes: { placeholder: "No notes today" },
-    },
-    {
-      key: "knowledge",
-      icon: "knowledge",
-      name: "Knowledge",
-      score: 5,
-      weight: 0.15,
-      status: "Not started",
-      color: "red",
-      weeklyHours: 0,
-      areas: [
-        { name: "Czech", type: "language", level: 0, maxLevel: 10, status: "Beginner", hours: 0, milestone: "Learn 50 basic words" },
-        { name: "Māori", type: "language", level: 0, maxLevel: 10, status: "Beginner", hours: 0, milestone: "Learn basic greetings (mihi)" },
-        { name: "Reading", type: "reading", booksCompleted: 0, goal: 12, currentBook: "None" },
-        { name: "Fighting / Martial Arts", type: "status", status: "Research phase", nextStep: "Find a gym in Gold Coast area" },
-        { name: "Gun License", type: "status", status: "Not started", nextStep: "Research QLD firearms licensing requirements" },
-      ],
-    },
-  ],
-
-  emailAccounts: [
-    { name: "Gmail (chrishstyles123@gmail.com)", count: 201, recentSubjects: ["Kimi K2.7 Code is now available", "New privacy settings for Search services", "New optional feature: Auto-Recharge is now live"] },
-  ],
-
-  subscriptions: [
-    { name: "ChatGPT",     amount: "$30",    due: "Overdue", overdue: true },
-    { name: "Apple Music", amount: "$19.99", due: "Overdue", overdue: true },
-    { name: "Canva",       amount: "$20",    due: "Due today", dueToday: true },
-  ],
-
-  meta: {
-    updated: "7:51 AM",
-    sources: "Todoist · Square · Shopify · Gmail · Notion · WHOOP",
-  },
-};
-
-/* =========================================================
-   KEEP DATE-DEPENDENT FIELDS IN SYNC WITH THE REAL CALENDAR
-   so "today" stays correct between refreshes without needing
-   a manual day-of-week edit every cycle.
-   ========================================================= */
-(function syncDates() {
-  const DAY_ABBR = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const now = new Date();
-  const brisbaneNow = new Date(now.toLocaleString("en-US", { timeZone: "Australia/Brisbane" }));
-  const todayAbbr = DAY_ABBR[brisbaneNow.getDay()];
-
-  DATA.schedule.today = todayAbbr;
-
-  const physical = DATA.pillars.find(p => p.key === "physical");
-  physical.weekSchedule.today = todayAbbr;
-  const todayPlan = physical.weekSchedule.items.find(it => it.day === todayAbbr);
-  if (todayPlan) {
-    physical.today = { title: `Today: ${todayPlan.workout}`, sub: todayPlan.detail };
-  }
-
-  const raceDate = new Date(`${physical.marathon.raceDate}T00:00:00+10:00`);
-  physical.marathon.daysOut = Math.max(0, Math.ceil((raceDate - brisbaneNow) / 86400000));
-
-  const weeksTotal = physical.trainingBlock.items.length;
-  const weeksRemaining = Math.max(1, Math.ceil(physical.marathon.daysOut / 7));
-  const currentWeekIdx = Math.min(weeksTotal - 1, Math.max(0, weeksTotal - weeksRemaining));
-  physical.trainingBlock.items = physical.trainingBlock.items.map((_, i) =>
-    i < currentWeekIdx ? "done" : i === currentWeekIdx ? "current" : "future"
-  );
-})();
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-const COLOR = {
-  red: "#C45C4A",
-  orange: "#C68B4B",
-  yellow: "#D9A746",
-  green: "#5B9A6F",
-  blue: "#5B8DB8",
-  purple: "#8B7BB5",
-  gray: "#B5AFA8",
-  dark: "#2C2825",
-};
-
-function hexToRgba(hex, alpha) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+function brisbaneNow() {
+  return new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
+}
+function todayKey() {
+  const d = brisbaneNow();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function store(key, value) {
+  try {
+    if (value === undefined) return JSON.parse(localStorage.getItem(key));
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch { return null; }
+}
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
 
-function dotSvg(colorKey, size = 9) {
-  const c = COLOR[colorKey] || COLOR.gray;
-  return `<svg width="${size}" height="${size}" viewBox="0 0 8 8" style="flex-shrink:0"><circle cx="4" cy="4" r="4" fill="${c}"/></svg>`;
-}
+/* ---------- header ---------- */
+function renderHeader(data) {
+  const now = brisbaneNow();
+  const hour = now.getHours();
+  const greeting = hour >= 17 || hour < 5 ? "Good evening" : hour >= 12 ? "Good afternoon" : "Good morning";
+  const dateStr = now.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" });
+  const score = Math.round(data.pillars.reduce((sum, p) => sum + p.score * p.weight, 0));
 
-/* =========================================================
-   ICONS — inline SVG line-art, inherits color via currentColor
-   ========================================================= */
-const ICON_PATHS = {
-  physical: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
-  capital: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>',
-  brand: '<path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h3l2-3h6l2 3h3a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/>',
-  build: '<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>',
-  discipline: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
-  spirit: '<path d="M3 4.5h6a3 3 0 013 3v13a2.5 2.5 0 00-2.5-2.5H3z"/><path d="M21 4.5h-6a3 3 0 00-3 3v13a2.5 2.5 0 012.5-2.5H21z"/>',
-  knowledge: '<path d="M22 9L12 4 2 9l10 5 10-5z"/><path d="M6 11.2v4.8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4.8"/>',
-  chevron: '<polyline points="6 9 12 15 18 9"/>',
-  check: '<path d="M20 6L9 17l-5-5"/>',
-  chat: '<path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>',
-  send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
-  close: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
-};
-
-function svgIcon(name, size = 18, strokeWidth = 1.5) {
-  return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[name] || ""}</svg>`;
-}
-
-/* =========================================================
-   GAUGES — circular SVG gauges with animated stroke-dashoffset
-   ========================================================= */
-function circularGauge({ percent, size = 120, stroke = 10, color, valueText, sublabel, valueSize }) {
-  const radius = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const center = size / 2;
-  const pct = Math.max(0, Math.min(100, percent));
-  const targetOffset = circumference * (1 - pct / 100);
-  const vSize = valueSize || Math.round(size * 0.28);
-  return `
-    <div class="gauge" style="width:${size}px; height:${size}px;">
-      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-        <circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="var(--track)" stroke-width="${stroke}"/>
-        <circle class="gauge-arc" cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="${color}"
-          stroke-width="${stroke}" stroke-linecap="round"
-          stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-          data-offset="${targetOffset}"
-          transform="rotate(-90 ${center} ${center})"/>
-      </svg>
-      <div class="gauge-center">
-        <div class="gauge-value" style="font-size:${vSize}px;">${valueText}</div>
-        ${sublabel ? `<div class="gauge-sublabel">${sublabel}</div>` : ""}
-      </div>
+  $("header").innerHTML = `
+    <div>
+      <div class="date">${dateStr}</div>
+      <div class="greeting">${greeting}, ${esc(data.user.name)}</div>
+    </div>
+    <div class="hero">
+      <div class="hero-value">${score}<small> / 100</small></div>
+      <div class="hero-label">Life score</div>
     </div>
   `;
 }
 
-function animateGauges(root = document) {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      root.querySelectorAll(".gauge-arc").forEach(el => {
-        el.style.strokeDashoffset = el.dataset.offset;
-      });
-    });
-  });
-}
-
-/* =========================================================
-   RENDER: HEADER
-   ========================================================= */
-function computeLifeScore() {
-  const total = DATA.pillars.reduce((sum, p) => sum + p.score * p.weight, 0);
-  return Math.round(total);
-}
-
-function renderHeader() {
-  const now = new Date();
-  const hour = parseInt(
-    now.toLocaleString("en-AU", { hour: "numeric", hour12: false, timeZone: "Australia/Brisbane" }),
-    10
-  ) % 24;
-  let greeting = "Good morning";
-  if (hour >= 12 && hour < 17) greeting = "Good afternoon";
-  else if (hour >= 17 || hour < 5) greeting = "Good evening";
-
-  const dateStr = now.toLocaleDateString("en-AU", {
-    weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Brisbane",
-  });
-
-  const score = computeLifeScore();
-  const scoreColor = score >= 60 ? COLOR.green : score >= 30 ? COLOR.orange : COLOR.red;
-
-  document.getElementById("header").innerHTML = `
-    <div class="header-top">
-      <div>
-        <div class="greeting">${greeting}, ${DATA.user.name}</div>
-        <div class="date">${dateStr}</div>
-      </div>
+/* ---------- focus (checked state kept per day) ---------- */
+function renderFocus(data) {
+  const key = `ld:focus:${todayKey()}`;
+  const done = store(key) || [];
+  $("focus").innerHTML = data.focusToday.map((f, i) => `
+    <div class="focus-item lv-${f.level} ${done[i] ? "done" : ""}" data-i="${i}">
+      <span class="focus-check">${done[i] ? CHECK : ""}</span>
+      <span class="dot"></span>
+      <span class="focus-text">${esc(f.text)}</span>
     </div>
-    <div class="life-score-block" id="lifeScoreToggle">
-      ${circularGauge({ percent: score, size: 140, stroke: 12, color: scoreColor, valueText: score, sublabel: "/ 100", valueSize: 40 })}
-      <div class="life-score-text">
-        <div class="life-score-title">Life score</div>
-        <div class="life-score-desc">Weighted average across all 7 pillars. Tap to see how each pillar contributes.</div>
-        <div class="life-score-breakdown">
-          <div class="life-score-breakdown-inner">
-            ${DATA.pillars.map(p => `
-              <div class="life-score-item">
-                <span>${p.name} <span style="color:var(--text-3)">(${Math.round(p.weight * 100)}% weight)</span></span>
-                <b>${p.score}/100 → +${(p.score * p.weight).toFixed(1)}</b>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  animateGauges(document.getElementById("header"));
-
-  document.getElementById("lifeScoreToggle").addEventListener("click", () => {
-    document.getElementById("lifeScoreToggle").classList.toggle("expanded");
-  });
-}
-
-/* =========================================================
-   RENDER: DAILY MOTIVATION
-   ========================================================= */
-function renderMotivation() {
-  const recovery = DATA.whoop.recovery;
-  const streak = DATA.pillars.find(p => p.key === "discipline").streak;
-  const daysOut = DATA.pillars.find(p => p.key === "physical").marathon.daysOut;
-
-  let message;
-  if (recovery > 80) message = "Your body is primed — make today count";
-  else if (recovery < 50) message = "Recovery is low — prioritize rest and fundamentals";
-  else if (streak > 0) message = "Streak alive — keep the momentum going";
-  else if (streak === 0) message = "Day one. Every streak starts with one task";
-  else if (daysOut < 14) message = "Race is close — trust the training";
-  else message = "Awareness is the first step to change";
-
-  document.getElementById("motivationLine").textContent = message;
-}
-
-/* =========================================================
-   RENDER: FOCUS TODAY
-   ========================================================= */
-function renderFocusToday() {
-  const done = JSON.parse(sessionStorage.getItem("focusDone") || "[]");
-  document.getElementById("focusList").innerHTML = DATA.focusToday.map((f, i) => `
-    <li class="focus-item tappable ${done[i] ? "done" : ""}" data-index="${i}">
-      <span class="focus-checkbox">${done[i] ? svgIcon("check", 12, 2.5) : ""}</span>
-      <span class="focus-dot" style="background:${COLOR[f.color]}"></span>
-      <span class="focus-num">${i + 1}.</span>
-      <span class="focus-text">${f.text}</span>
-    </li>
   `).join("");
 
-  document.querySelectorAll(".focus-item").forEach(item => {
+  $("focus").querySelectorAll(".focus-item").forEach((item) => {
     item.addEventListener("click", () => {
-      const i = item.dataset.index;
-      const done = JSON.parse(sessionStorage.getItem("focusDone") || "[]");
+      const i = +item.dataset.i;
+      const done = store(key) || [];
       done[i] = !done[i];
-      sessionStorage.setItem("focusDone", JSON.stringify(done));
-      item.classList.toggle("done");
-      item.querySelector(".focus-checkbox").innerHTML = done[i] ? svgIcon("check", 12, 2.5) : "";
+      store(key, done);
+      item.classList.toggle("done", done[i]);
+      item.querySelector(".focus-check").innerHTML = done[i] ? CHECK : "";
     });
   });
 }
 
-/* =========================================================
-   RENDER: EMAIL INTELLIGENCE
-   ========================================================= */
-function renderEmails() {
-  document.getElementById("emailList").innerHTML = DATA.emails.map((e, i) => `
-    <div class="email-row-wrap" data-index="${i}">
-      <div class="email-row tappable">
-        <div class="email-top">
-          <span class="email-sender">${e.sender}</span>
-          <span class="email-time">${e.time}</span>
-        </div>
-        <div class="email-subject">${e.subject}</div>
+/* ---------- whoop (live from whoop-data.json) ---------- */
+function renderWhoop(whoop) {
+  if (!whoop || !whoop.recovery) {
+    $("whoop").innerHTML = `<div class="tile-sub">No WHOOP data — run whoop_sync.py</div>`;
+    $("whoopFlag").textContent = "";
+    return;
+  }
+  const rec = Math.round(whoop.recovery.recovery_score);
+  const band = rec >= 67 ? ["Recovered", "good"] : rec >= 34 ? ["Moderate", "warning"] : ["Low", "critical"];
+
+  const synced = new Date(whoop.synced_at);
+  const ageH = (Date.now() - synced) / 3600000;
+  const syncedStr = synced.toLocaleDateString("en-AU", { day: "numeric", month: "short", timeZone: TZ });
+  $("whoopFlag").textContent = ageH > 36 ? `Stale — synced ${syncedStr}` : `Synced ${syncedStr}`;
+
+  const tiles = [
+    { label: "Recovery", value: `${rec}%`, sub: band[0], level: band[1] },
+    { label: "Sleep", value: `${Math.round(whoop.sleep.sleep_score)}%` },
+    { label: "Strain", value: whoop.strain.strain_score.toFixed(1), sub: "of 21" },
+    { label: "HRV", value: `${Math.round(whoop.recovery.hrv_ms)}`, sub: "ms" },
+    { label: "Resting HR", value: `${Math.round(whoop.recovery.resting_heart_rate)}`, sub: "bpm" },
+  ];
+  $("whoop").innerHTML = `<div class="tiles">${tiles.map((t) => `
+    <div class="tile">
+      <div class="tile-label">${t.label}</div>
+      <div class="tile-value">${t.value}</div>
+      ${t.sub ? `<div class="tile-sub ${t.level ? `lv-${t.level}` : ""}">${t.level ? '<span class="dot"></span>' : ""}${t.sub}</div>` : ""}
+    </div>
+  `).join("")}</div>`;
+}
+
+/* ---------- training (countdown + week computed from real calendar) ---------- */
+function renderTraining(data) {
+  const m = data.marathon;
+  const now = brisbaneNow();
+  const race = new Date(`${m.raceDate}T00:00:00+10:00`);
+  const daysOut = Math.ceil((race - now) / 86400000);
+  const raceStr = race.toLocaleDateString("en-AU", { day: "numeric", month: "short", timeZone: TZ });
+
+  let line, sub;
+  if (daysOut < 0) {
+    line = `<b>${esc(m.name)}</b> — raced ${raceStr}`;
+    sub = "Race day has passed — set the next goal in data.json.";
+  } else {
+    const week = Math.min(m.blockWeeks, Math.max(1, m.blockWeeks - Math.ceil(daysOut / 7) + 1));
+    line = `<b>${esc(m.name)}</b> — ${daysOut === 0 ? "race day" : `${daysOut} day${daysOut === 1 ? "" : "s"} to go`} · ${raceStr}`;
+    sub = `Week ${week} of ${m.blockWeeks} · ${esc(m.goal)}`;
+  }
+
+  const todayAbbr = DAYS[now.getDay()];
+  const todayIdx = data.week.findIndex((w) => w.day === todayAbbr);
+
+  $("training").innerHTML = `
+    <div class="train-line">${line}</div>
+    <div class="train-sub">${sub}</div>
+    <div class="week" id="weekStrip">${data.week.map((w, i) => `
+      <div class="week-cell ${i === todayIdx ? "today selected" : ""}" data-i="${i}">
+        <div class="d">${w.day}</div>
+        <div class="w">${esc(w.workout)}</div>
       </div>
-      <div class="email-dismiss">Dismiss</div>
-    </div>
-  `).join("");
-
-  document.querySelectorAll(".email-row-wrap").forEach(wrap => {
-    const row = wrap.querySelector(".email-row");
-    const dismiss = wrap.querySelector(".email-dismiss");
-    row.addEventListener("click", () => wrap.classList.toggle("swiped"));
-    dismiss.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      wrap.classList.remove("swiped");
-      wrap.classList.add("removing");
-      wrap.addEventListener("transitionend", () => wrap.remove(), { once: true });
-    });
-  });
-}
-
-/* =========================================================
-   RENDER: TODAY'S SCHEDULE
-   ========================================================= */
-function renderSchedule() {
-  const s = DATA.schedule;
-
-  const dayBar = s.days.map(d => `
-    <div class="day-cell ${d === s.today ? "is-today" : ""}">
-      <span>${d}</span>
-      ${s.contentDays.includes(d) ? dotSvg("blue", 6) : ""}
-    </div>
-  `).join("");
-
-  const timeline = s.events.map(e => `
-    <div class="timeline-row tappable">
-      <div class="timeline-time">${e.time}</div>
-      <div class="timeline-dot" style="background:${COLOR[e.color]}"></div>
-      <div class="timeline-content">
-        <div class="timeline-title">${e.title}</div>
-        <div class="timeline-sub">${e.sub}</div>
-        ${e.detail ? `<div class="timeline-detail"><div class="timeline-detail-inner"><div class="timeline-detail-text">${e.detail}</div></div></div>` : ""}
-      </div>
-    </div>
-  `).join("");
-
-  document.getElementById("schedule").innerHTML = `
-    <div class="day-bar">${dayBar}</div>
-    <div class="timeline">${timeline}</div>
+    `).join("")}</div>
+    <div class="week-detail" id="weekDetail"></div>
   `;
 
-  document.querySelectorAll("#schedule .timeline-row").forEach(row => {
-    if (!row.querySelector(".timeline-detail")) return;
-    row.addEventListener("click", () => row.classList.toggle("expanded"));
-  });
-}
+  const detail = $("weekDetail");
+  const show = (i) => { detail.innerHTML = `<b>${data.week[i].day}</b> — ${esc(data.week[i].detail)}`; };
+  show(todayIdx >= 0 ? todayIdx : 0);
 
-/* =========================================================
-   RENDER: QUICK STATS (key numbers from every pillar)
-   ========================================================= */
-function renderQuickStats() {
-  document.getElementById("quickStats").innerHTML = DATA.pillars.map(p => `
-    <div class="quick-stat-item">
-      ${circularGauge({ percent: p.score, size: 44, stroke: 4, color: COLOR[p.color], valueText: p.score, valueSize: 13 })}
-      <div class="quick-stat-info">
-        <span class="quick-stat-name">${p.name}</span>
-        <span class="quick-stat-status" style="color:${COLOR[p.color]}">${p.status}</span>
-      </div>
-    </div>
-  `).join("");
-
-  animateGauges(document.getElementById("quickStats"));
-}
-
-/* =========================================================
-   SHARED BLOCK BUILDERS
-   ========================================================= */
-function labeled(label, innerHtml) {
-  return `<div><div class="subsection-label" style="margin-bottom:10px;">${label}</div>${innerHtml}</div>`;
-}
-
-function statGrid(items, cols) {
-  const colClass = cols === 2 ? "cols-2" : cols === 4 ? "cols-4" : "";
-  return `
-    <div class="stat-grid ${colClass}">
-      ${items.map(s => `
-        <div class="stat-box tappable">
-          <div class="stat-label">${s.label}</div>
-          <div class="stat-value">${s.dot ? `<span class="dot" style="background:${COLOR[s.dot]}"></span>` : ""}${s.value}</div>
-          ${s.sub ? `<div class="stat-sub">${s.sub}</div>` : ""}
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function heroGaugeBlock({ percent, color, valueText, sublabel, title, sub, pace }) {
-  return `
-    <div class="hero-stat-block">
-      ${circularGauge({ percent, size: 130, stroke: 11, color, valueText, sublabel, valueSize: 36 })}
-      <div class="hero-stat-text">
-        <div class="hero-stat-title">${title}</div>
-        <div class="hero-stat-sub">${sub}</div>
-        ${pace ? `<div class="hero-stat-pace">${pace}</div>` : ""}
-      </div>
-    </div>
-  `;
-}
-
-function segmentBlock(seg) {
-  return `
-    <div class="segments">
-      ${seg.items.map(state => `<div class="segment ${state}"></div>`).join("")}
-    </div>
-    ${seg.sublabels ? `<div class="segment-labels">${seg.sublabels.map(l => `<span>${l}</span>`).join("")}</div>` : ""}
-  `;
-}
-
-function listRows(items) {
-  return `
-    <div class="list">
-      ${items.map(it => `
-        <div class="list-row ${it.isCurrent ? "is-current" : ""}">
-          <div class="list-main">
-            <span class="list-name">${it.dotColor ? dotSvg(it.dotColor) : ""}${it.name}</span>
-            ${it.sub ? `<span class="list-sub ${it.overdue ? "is-overdue" : ""} ${it.dueToday ? "is-due-today" : ""}">${it.sub}</span>` : ""}
-          </div>
-          ${it.amount != null ? `<span class="list-amount ${it.overdue ? "is-overdue" : ""} ${it.dueToday ? "is-due-today" : ""}">${it.amount}</span>` : ""}
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-/* ---------- Week schedule as a horizontal table with detail panel ---------- */
-function weekTableBlock(ws) {
-  const todayIndex = ws.items.findIndex(it => it.day === ws.today);
-  const cells = ws.items.map((it, i) => `
-    <div class="week-table-cell ${it.day === ws.today ? "is-today" : ""} ${i === todayIndex ? "is-selected" : ""}" data-index="${i}">
-      <span class="week-table-day">${it.day}${it.day === ws.today ? " · Today" : ""}</span>
-      <span class="week-table-workout">${it.workout}</span>
-    </div>
-  `).join("");
-
-  return `
-    <div class="week-table" id="weekTable">${cells}</div>
-    <div class="week-detail" id="weekDetail"><b>${ws.items[todayIndex].day}</b> — ${ws.items[todayIndex].detail}</div>
-  `;
-}
-
-function setupWeekTable(ws) {
-  const table = document.getElementById("weekTable");
-  const detail = document.getElementById("weekDetail");
-  if (!table) return;
-  table.querySelectorAll(".week-table-cell").forEach(cell => {
+  $("weekStrip").querySelectorAll(".week-cell").forEach((cell) => {
     cell.addEventListener("click", () => {
-      const it = ws.items[parseInt(cell.dataset.index, 10)];
-      table.querySelectorAll(".week-table-cell").forEach(c => c.classList.remove("is-selected"));
-      cell.classList.add("is-selected");
-      detail.innerHTML = `<b>${it.day}</b> — ${it.detail}`;
+      $("weekStrip").querySelectorAll(".week-cell").forEach((c) => c.classList.remove("selected"));
+      cell.classList.add("selected");
+      show(+cell.dataset.i);
     });
   });
 }
 
-/* ---------- Bills table ---------- */
-function billsTableBlock(items, tableId) {
-  const statusFor = (it) => {
-    if (it.overdue) return `<span class="status-pill overdue">Overdue</span>`;
-    if (it.dueToday) return `<span class="status-pill due-today">Due today</span>`;
-    return `<span class="status-pill upcoming">Upcoming</span>`;
-  };
-  return `
-    <table class="data-table" id="${tableId}">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th class="amount-col">Amount</th>
-          <th>Due</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${items.map(it => `
-          <tr data-overdue="${!!it.overdue}" data-due-today="${!!it.dueToday}">
-            <td>${it.name}</td>
-            <td class="amount-col">${it.amount}</td>
-            <td>${it.due}</td>
-            <td>${statusFor(it)}</td>
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
-  `;
-}
+/* ---------- money (tap a bill to mark paid; kept per day) ---------- */
+function renderMoney(data) {
+  const key = `ld:paid:${todayKey()}`;
+  const paid = store(key) || {};
+  const rev = data.money.revenue;
 
-function setupBillsTable(tableId) {
-  const table = document.getElementById(tableId);
-  if (!table) return;
-  table.querySelectorAll("tbody tr").forEach(row => {
-    const statusCell = row.children[3];
+  const pillFor = (b) =>
+    b.status === "overdue" ? `<span class="pill lv-critical"><span class="dot"></span>Overdue</span>`
+    : b.status === "due-today" ? `<span class="pill lv-warning"><span class="dot"></span>Due today</span>`
+    : `<span class="pill lv-neutral"><span class="dot"></span>Upcoming</span>`;
+
+  $("money").innerHTML = `
+    <div class="rev">
+      <div>
+        <div class="rev-label">${esc(rev.label)}</div>
+        <div class="rev-sub">${esc(rev.sub)}</div>
+      </div>
+      <div class="rev-value">${esc(rev.value)}</div>
+    </div>
+    ${data.money.bills.map((b, i) => `
+      <div class="bill ${paid[b.name] ? "paid" : ""}" data-name="${esc(b.name)}">
+        <div class="bill-name">${esc(b.name)}<span class="bill-due"> · ${esc(b.due)}</span></div>
+        ${paid[b.name] ? `<span class="pill lv-good">${CHECK}Paid</span>` : pillFor(b)}
+        <div class="bill-amount">${esc(b.amount)}</div>
+      </div>
+    `).join("")}
+  `;
+
+  $("money").querySelectorAll(".bill").forEach((row, i) => {
     row.addEventListener("click", () => {
-      const wasPaid = row.classList.toggle("is-paid");
-      if (wasPaid) {
-        statusCell.innerHTML = `<span class="status-pill paid">${svgIcon("check", 10, 3)} Paid</span>`;
-      } else {
-        if (row.dataset.overdue === "true") statusCell.innerHTML = `<span class="status-pill overdue">Overdue</span>`;
-        else if (row.dataset.dueToday === "true") statusCell.innerHTML = `<span class="status-pill due-today">Due today</span>`;
-        else statusCell.innerHTML = `<span class="status-pill upcoming">Upcoming</span>`;
-      }
+      const paid = store(key) || {};
+      const name = data.money.bills[i].name;
+      paid[name] = !paid[name];
+      store(key, paid);
+      row.classList.toggle("paid", !!paid[name]);
+      row.querySelector(".pill").outerHTML = paid[name]
+        ? `<span class="pill lv-good">${CHECK}Paid</span>`
+        : pillFor(data.money.bills[i]);
     });
   });
 }
 
-function checkRows(items) {
-  return `
-    <div class="list">
-      ${items.map(it => {
-        const done = it.state === "done" || it.done === true;
-        const pending = it.state === "pending";
-        let bg, fg, icon;
-        if (done) { bg = hexToRgba(COLOR.green, 0.1); fg = COLOR.green; icon = svgIcon("check", 12, 2.5); }
-        else if (pending) { bg = hexToRgba(COLOR.orange, 0.1); fg = COLOR.orange; icon = ""; }
-        else { bg = "var(--track)"; fg = COLOR.gray; icon = ""; }
-        return `
-          <div class="check-row">
-            <span class="check-icon" style="background:${bg}; color:${fg}">${icon}</span>
-            <span class="check-text">${it.text}</span>
-          </div>
-        `;
-      }).join("")}
-    </div>
-  `;
-}
-
-function inventoryBlock(items) {
-  return `
-    <div class="inv-grid">
-      ${items.map(i => `
-        <div class="inv-box">
-          <div class="inv-name">${i.name}</div>
-          <div class="inv-units">${i.units.toLocaleString()}<span>units</span></div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function progressRows(items, cols2) {
-  return `
-    <div class="progress-rows ${cols2 ? "cols-2" : ""}">
-      ${items.map((it, i) => `
-        <div>
-          <div class="progress-row-top">
-            <span class="progress-name">${it.name}</span>
-            <span class="progress-value">${it.value}<span class="progress-pct">${it.percent}%</span></span>
-          </div>
-          <div class="progress-track"><div class="progress-fill" data-pct="${it.percent}" id="progress-${i}-${it.name.replace(/[^a-zA-Z0-9]/g, "")}"></div></div>
-          ${it.sub ? `<div class="progress-sub">${it.sub}</div>` : ""}
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function animateProgressRows(root) {
-  root.querySelectorAll(".progress-fill").forEach(el => {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      el.style.width = `${el.dataset.pct}%`;
-    }));
-  });
-}
-
-/* ---------- Knowledge area cards ---------- */
-function computeKnowledgeScore(areas) {
-  const pcts = areas.map(a => {
-    if (a.type === "language") return (a.level / a.maxLevel) * 100;
-    if (a.type === "reading") return (a.booksCompleted / a.goal) * 100;
-    if (a.status === "Research phase") return 5;
-    return 0;
-  });
-  return Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length);
-}
-
-function knowledgeAreaCard(a) {
-  if (a.type === "language") {
-    const pct = Math.round((a.level / a.maxLevel) * 100);
-    return `
-      <div class="knowledge-card">
-        <div class="knowledge-card-top">
-          <span class="knowledge-card-name">${a.name}</span>
-          <span class="knowledge-card-status">${a.status}</span>
-        </div>
-        <div class="progress-row-top">
-          <span class="progress-value">Level ${a.level}/${a.maxLevel}</span>
-          <span class="progress-value">${a.hours}h practiced</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" data-pct="${pct}"></div></div>
-        <div class="knowledge-card-milestone">Next milestone: <b>${a.milestone}</b></div>
+/* ---------- pillars ---------- */
+function renderPillars(data) {
+  $("pillars").innerHTML = data.pillars.map((p) => `
+    <div class="pillar lv-${p.level}">
+      <div class="pillar-top">
+        <span class="pillar-name">${esc(p.name)}</span>
+        <span class="pillar-status"><span class="dot"></span>${esc(p.status)}</span>
+        <span class="pillar-score">${p.score}</span>
       </div>
-    `;
-  }
-  if (a.type === "reading") {
-    const pct = Math.round((a.booksCompleted / a.goal) * 100);
-    return `
-      <div class="knowledge-card">
-        <div class="knowledge-card-top">
-          <span class="knowledge-card-name">${a.name}</span>
-          <span class="knowledge-card-status">${a.booksCompleted}/${a.goal} books</span>
-        </div>
-        <div class="knowledge-card-meta">Current book: ${a.currentBook}</div>
-        <div class="progress-track"><div class="progress-fill" data-pct="${pct}"></div></div>
-        <div class="knowledge-card-milestone">${a.booksCompleted} books completed in 2026 · Goal: ${a.goal} this year</div>
-      </div>
-    `;
-  }
-  return `
-    <div class="knowledge-card">
-      <div class="knowledge-card-top">
-        <span class="knowledge-card-name">${a.name}</span>
-        <span class="knowledge-card-status">${a.status}</span>
-      </div>
-      <div class="knowledge-card-milestone">Next step: <b>${a.nextStep}</b></div>
-    </div>
-  `;
-}
-
-/* ---------- Habit tracker — full 30 days ---------- */
-function habitTracker30Block(items) {
-  const labels = lastNDayLabels(items.length);
-  return `
-    <div class="habit-grid-30" id="habitTracker30">
-      ${items.map((done, i) => `
-        <div class="habit-cell-30">
-          <span class="habit-day">${labels[i]}</span>
-          <span class="habit-dot">${dotSvg(done ? "green" : "red", 11)}</span>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function placeholderBlock(text) {
-  return `<div class="placeholder">${text}</div>`;
-}
-
-function chartBlock(id, short) {
-  return `<div class="chart-wrap ${short ? "short" : ""}"><canvas id="${id}"></canvas></div>`;
-}
-
-/* =========================================================
-   RENDER: PILLARS (always expanded, 2-column grid)
-   ========================================================= */
-const GRID_PILLAR_KEYS = ["physical", "capital", "brand", "build", "discipline", "spirit", "knowledge"];
-
-function renderPillars() {
-  const html = GRID_PILLAR_KEYS.map((key, i) => {
-    const p = DATA.pillars.find(x => x.key === key);
-    const sections = [];
-
-    if (p.key === "physical") {
-      const raceDate = new Date();
-      raceDate.setDate(raceDate.getDate() + p.marathon.daysOut);
-      const raceDateStr = raceDate.toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: "Australia/Brisbane" });
-      const doneCount = p.trainingBlock.items.filter(s => s === "done").length;
-      const currentCount = p.trainingBlock.items.filter(s => s === "current").length;
-      const blockPct = Math.round(((doneCount + currentCount * 0.5) / p.trainingBlock.items.length) * 100);
-
-      sections.push(heroGaugeBlock({
-        percent: blockPct, color: COLOR.green, valueText: p.marathon.daysOut, sublabel: "days to go",
-        title: p.marathon.name, sub: `${p.marathon.note} · ${raceDateStr}`, pace: p.marathon.paceInfo,
-      }));
-      sections.push(labeled(p.trainingBlock.label, segmentBlock(p.trainingBlock)));
-      sections.push(labeled("Today", listRows([{ name: p.today.title, sub: p.today.sub, isCurrent: true }])));
-      sections.push(labeled("This Week's Schedule", weekTableBlock(p.weekSchedule)));
-      sections.push(labeled("Weekly Training Volume (km)", chartBlock(`chart-${p.key}-volume`)));
-      sections.push(labeled("Heart Rate Zones", listRows(p.heartRateZones.map(z => ({
-        name: z.zone, dotColor: z.color, amount: z.range,
-      })))));
-    }
-
-    if (p.key === "capital") {
-      sections.push(statGrid(p.stats, 4));
-      sections.push(labeled(p.revenueChart.label, chartBlock(`chart-${p.key}-revenue`)));
-      sections.push(labeled(p.expenses.label, chartBlock(`chart-${p.key}-expenses`)));
-      sections.push(labeled(p.bills.label, billsTableBlock(p.bills.items.map(b => ({
-        name: b.name, due: b.due, amount: b.amount, overdue: b.overdue, dueToday: b.dueToday,
-      })), "bills-capital")));
-      sections.push(labeled(p.shopify.label, statGrid([
-        { label: "Products listed", value: p.shopify.productsListed },
-        { label: "Active products", value: p.shopify.activeProducts },
-        { label: "Inventory units", value: p.shopify.inventoryUnits.toLocaleString() },
-      ])));
-    }
-
-    if (p.key === "brand") {
-      sections.push(statGrid([
-        { label: p.contentSchedule.label, value: p.contentSchedule.value },
-        { label: p.notion.label, value: p.notion.value, sub: p.notion.sub },
-      ], 2));
-      sections.push(labeled(p.contentPillars.label, listRows(p.contentPillars.items.map(name => ({
-        name, dotColor: "blue",
-      })))));
-      sections.push(labeled(p.postingStatus.label, checkRows(p.postingStatus.items)));
-    }
-
-    if (p.key === "build") {
-      sections.push(labeled(p.marketingPhases.label, segmentBlock(p.marketingPhases) + `<div class="progress-sub" style="margin-top:12px;">${p.marketingPhases.current}</div>`));
-      sections.push(labeled(p.inventory.label, inventoryBlock(p.inventory.items)));
-      sections.push(labeled(p.devProjects.label, listRows(p.devProjects.items.map(d => ({
-        name: d.name, dotColor: d.color, amount: d.status,
-      })))));
-    }
-
-    if (p.key === "discipline") {
-      sections.push(statGrid(p.stats, 4));
-      sections.push(labeled(p.tasksChart.label, chartBlock(`chart-${p.key}-tasks`)));
-      sections.push(labeled(p.karmaChart.label, chartBlock(`chart-${p.key}-karma`)));
-      sections.push(labeled(p.completionRateChart.label, chartBlock(`chart-${p.key}-completion`)));
-      sections.push(labeled(p.habitTracker.label, habitTracker30Block(p.habitTracker.items)));
-      sections.push(labeled(p.todoistTasks.label, checkRows(p.todoistTasks.items)));
-    }
-
-    if (p.key === "spirit") {
-      const now = new Date();
-      const brisbaneNow = new Date(now.toLocaleString("en-US", { timeZone: "Australia/Brisbane" }));
-      const startOfYear = new Date(brisbaneNow.getFullYear(), 0, 0);
-      const dayOfYear = Math.floor((brisbaneNow - startOfYear) / 86400000);
-      const totalDays = p.readingPlan.totalDays;
-      const yearPct = Math.round((dayOfYear / totalDays) * 100);
-
-      sections.push(statGrid([
-        { label: "Reading Plan", value: `Day ${dayOfYear}`, sub: `of ${totalDays} days` },
-        { label: "Current Book", value: p.readingPlan.currentBook },
-        { label: "Devotional Streak", value: `${p.devotionalStreak} day${p.devotionalStreak === 1 ? "" : "s"}`, dot: p.devotionalStreak > 0 ? "green" : "red" },
-      ]));
-      sections.push(progressRows([
-        { name: "Bible Reading Plan — Year Progress", value: `Day ${dayOfYear} of ${totalDays}`, percent: yearPct },
-      ]));
-      sections.push(labeled("Today's Reading", listRows([
-        { name: p.readingPlan.todaysReading, sub: p.readingPlan.currentBook, isCurrent: true },
-      ])));
-      sections.push(labeled("Verse of the Day", `
-        <div class="verse-block">
-          “${p.verse.text}”
-          <div class="verse-ref">— ${p.verse.reference}</div>
-        </div>
-      `));
-      sections.push(labeled("Reflection Notes", placeholderBlock(p.notes.placeholder)));
-    }
-
-    if (p.key === "knowledge") {
-      const score = computeKnowledgeScore(p.areas);
-      sections.push(heroGaugeBlock({
-        percent: score, color: COLOR[p.color], valueText: `${score}%`, sublabel: "score",
-        title: "Overall Knowledge Score", sub: "Based on language levels, reading progress, and goal milestones across all areas.",
-        pace: `Learning hours this week: ${p.weeklyHours}`,
-      }));
-      sections.push(labeled("Learning Areas", `<div class="knowledge-grid">${p.areas.map(knowledgeAreaCard).join("")}</div>`));
-    }
-
-    return `
-      <section class="pillar-card" id="pillar-${p.key}" style="animation-delay:${i * 0.05}s">
-        <div class="pillar-header">
-          <div class="pillar-icon" style="--icon-bg:${hexToRgba(COLOR[p.color], 0.06)}; --icon-fg:${COLOR[p.color]}">${svgIcon(p.icon, 24)}</div>
-          ${circularGauge({ percent: p.score, size: 48, stroke: 4, color: COLOR[p.color], valueText: p.score, valueSize: 14 })}
-          <div class="pillar-info">
-            <div class="pillar-name">${p.name}</div>
-            <div class="pillar-status" style="color:${COLOR[p.color]}">${p.status}</div>
-          </div>
-        </div>
-        <div class="pillar-body">
-          ${sections.join("")}
-        </div>
-      </section>
-    `;
-  }).join("");
-
-  document.getElementById("pillars").innerHTML = html;
-
-  animateGauges(document.getElementById("pillars"));
-
-  // week schedule table interactivity
-  const physical = DATA.pillars.find(p => p.key === "physical");
-  setupWeekTable(physical.weekSchedule);
-
-  // bills: tap to mark as paid
-  setupBillsTable("bills-capital");
-}
-
-/* =========================================================
-   RENDER: WHOOP
-   ========================================================= */
-function renderWhoop() {
-  const w = DATA.whoop;
-  let band, color;
-  if (w.recovery >= 67) { band = "Recovered"; color = COLOR.green; }
-  else if (w.recovery >= 34) { band = "Moderate"; color = COLOR.yellow; }
-  else { band = "Low"; color = COLOR.red; }
-
-  const strainPct = Math.min(100, (w.strain / w.strainMax) * 100);
-
-  const hasTrend = w.recoveryTrend && w.recoveryTrend.length > 1;
-  const trendHtml = hasTrend
-    ? chartBlock("chart-whoop-trend", true)
-    : `<div class="whoop-trend-placeholder">7-day recovery trend will appear here once more days are synced.</div>`;
-
-  const card = document.getElementById("whoop-card");
-  card.style.background = hexToRgba(color, 0.06);
-  card.style.boxShadow = `inset 0 0 0 1px ${hexToRgba(color, 0.18)}, var(--shadow)`;
-
-  card.innerHTML = `
-    <div class="whoop-header">
-      <div class="section-header">WHOOP</div>
-      <div class="whoop-band" style="color:${color}">${band} · Synced ${w.date}</div>
-    </div>
-    <div class="whoop-main">
-      <div class="whoop-gauges">
-        ${circularGauge({ percent: w.recovery, size: 150, stroke: 14, color, valueText: `${w.recovery}%`, sublabel: "Recovery", valueSize: 34 })}
-        ${circularGauge({ percent: w.sleep, size: 110, stroke: 10, color: COLOR.blue, valueText: `${w.sleep}%`, sublabel: "Sleep", valueSize: 24 })}
-        ${circularGauge({ percent: strainPct, size: 110, stroke: 10, color: COLOR.purple, valueText: w.strain.toFixed(1), sublabel: "Strain /21", valueSize: 24 })}
-      </div>
-      <div class="whoop-side">
-        <div class="stat-grid cols-2">
-          <div class="stat-box">
-            <div class="stat-label">HRV</div>
-            <div class="stat-value">${w.hrv}ms</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Resting HR</div>
-            <div class="stat-value">${w.restingHr} bpm</div>
-          </div>
-        </div>
-        ${trendHtml}
-      </div>
-    </div>
-  `;
-
-  animateGauges(card);
-}
-
-/* =========================================================
-   CHARTS
-   ========================================================= */
-let chartJsPromise = null;
-function loadChartJs() {
-  if (!chartJsPromise) {
-    chartJsPromise = new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js";
-      script.onload = () => {
-        Chart.defaults.color = "#8A8279";
-        Chart.defaults.font.family = "-apple-system, 'SF Pro Display', system-ui, sans-serif";
-        Chart.defaults.font.size = 12;
-        Chart.defaults.font.weight = "500";
-        resolve();
-      };
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-  return chartJsPromise;
-}
-
-const TOOLTIP_STYLE = {
-  backgroundColor: "#2C2825",
-  titleColor: "#FAF8F5",
-  bodyColor: "#FAF8F5",
-  padding: 10,
-  cornerRadius: 8,
-};
-
-function makeRevenueChart(canvasId, cfg) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  const colors = cfg.data.map(v => v > 0 ? COLOR.green : "#EDEAE6");
-  return new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: cfg.labels,
-      datasets: [{
-        data: cfg.data,
-        backgroundColor: colors,
-        borderRadius: 8,
-        maxBarThickness: 56,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { ...TOOLTIP_STYLE, callbacks: { label: (c) => `$${c.parsed.y}` } },
-      },
-      scales: {
-        x: { grid: { display: false }, border: { display: false } },
-        y: {
-          grid: { color: "rgba(120,100,80,0.06)" },
-          border: { display: false },
-          ticks: { callback: (v) => `$${v}` },
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-}
-
-function lastNDayLabels(n) {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const today = new Date();
-  const labels = [];
-  for (let i = n - 1; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    labels.push(days[d.getDay()]);
-  }
-  return labels;
-}
-
-function makeKarmaChart(canvasId, cfg) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 0, 0, 220);
-  gradient.addColorStop(0, hexToRgba(COLOR.blue, 0.18));
-  gradient.addColorStop(1, hexToRgba(COLOR.blue, 0));
-
-  const min = Math.min(...cfg.data);
-  const max = Math.max(...cfg.data);
-  const pad = Math.max(4, Math.round((max - min) * 0.4));
-
-  return new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: lastNDayLabels(cfg.data.length),
-      datasets: [{
-        data: cfg.data,
-        borderColor: COLOR.blue,
-        backgroundColor: gradient,
-        fill: true,
-        tension: 0.35,
-        pointRadius: 4,
-        pointBackgroundColor: COLOR.blue,
-        pointBorderColor: "#FFFFFF",
-        pointBorderWidth: 1.5,
-        borderWidth: 2.5,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: TOOLTIP_STYLE,
-      },
-      scales: {
-        x: { grid: { display: false }, border: { display: false } },
-        y: {
-          grid: { color: "rgba(120,100,80,0.06)" },
-          border: { display: false },
-          min: min - pad,
-          max: max + pad,
-          ticks: { maxTicksLimit: 4 },
-        },
-      },
-    },
-  });
-}
-
-const goalLinePlugin = {
-  id: "goalLine",
-  afterDatasetsDraw(chart, args, opts) {
-    if (!opts || opts.value == null) return;
-    const { ctx, chartArea, scales } = chart;
-    const y = scales.y.getPixelForValue(opts.value);
-    if (y < chartArea.top || y > chartArea.bottom) return;
-    ctx.save();
-    ctx.strokeStyle = opts.color || "#8A8279";
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([5, 4]);
-    ctx.beginPath();
-    ctx.moveTo(chartArea.left, y);
-    ctx.lineTo(chartArea.right, y);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = opts.color || "#8A8279";
-    ctx.font = "600 11px -apple-system, sans-serif";
-    ctx.textAlign = "right";
-    ctx.fillText(opts.label || "", chartArea.right - 4, y - 6);
-    ctx.restore();
-  },
-};
-
-function makeTasksChart(canvasId, cfg) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  return new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: lastNDayLabels(cfg.data.length),
-      datasets: [{
-        data: cfg.data,
-        backgroundColor: COLOR.blue,
-        borderRadius: 8,
-        maxBarThickness: 44,
-      }],
-    },
-    plugins: [goalLinePlugin],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: TOOLTIP_STYLE,
-        goalLine: { value: cfg.goal, color: "#8A8279", label: `Goal ${cfg.goal}` },
-      },
-      scales: {
-        x: { grid: { display: false }, border: { display: false } },
-        y: {
-          grid: { color: "rgba(120,100,80,0.06)" },
-          border: { display: false },
-          beginAtZero: true,
-          max: Math.max(cfg.goal * 1.15, Math.max(...cfg.data) * 1.4),
-          ticks: { maxTicksLimit: 4 },
-        },
-      },
-    },
-  });
-}
-
-/* ---------- Training volume bar chart (Physical) ---------- */
-function makeTrainingVolumeChart(canvasId, cfg) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  const colors = cfg.days.map(d => d === cfg.today ? COLOR.green : COLOR.blue);
-  return new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: cfg.days,
-      datasets: [{
-        data: cfg.data,
-        backgroundColor: colors,
-        borderRadius: 8,
-        maxBarThickness: 44,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { ...TOOLTIP_STYLE, callbacks: { label: (c) => `${c.parsed.y} km` } },
-      },
-      scales: {
-        x: { grid: { display: false }, border: { display: false } },
-        y: {
-          grid: { color: "rgba(120,100,80,0.06)" },
-          border: { display: false },
-          beginAtZero: true,
-          ticks: { callback: (v) => `${v}km`, maxTicksLimit: 5 },
-        },
-      },
-    },
-  });
-}
-
-/* ---------- Expense breakdown donut (Capital) ---------- */
-function makeExpenseDonut(canvasId, cfg) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  return new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: cfg.items.map(i => i.name),
-      datasets: [{
-        data: cfg.items.map(i => i.amount),
-        backgroundColor: cfg.items.map(i => COLOR[i.color] || COLOR.gray),
-        borderColor: "#FFFFFF",
-        borderWidth: 2,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: "62%",
-      plugins: {
-        legend: {
-          position: "right",
-          labels: { boxWidth: 12, boxHeight: 12, padding: 14 },
-        },
-        tooltip: { ...TOOLTIP_STYLE, callbacks: { label: (c) => `${c.label}: $${c.parsed}` } },
-      },
-    },
-  });
-}
-
-/* ---------- Daily completion rate line chart, 30 days (Discipline) ---------- */
-function makeCompletionRateChart(canvasId, cfg) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 0, 0, 220);
-  gradient.addColorStop(0, hexToRgba(COLOR.green, 0.18));
-  gradient.addColorStop(1, hexToRgba(COLOR.green, 0));
-
-  return new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: lastNDayLabels(cfg.data.length),
-      datasets: [{
-        data: cfg.data,
-        borderColor: COLOR.green,
-        backgroundColor: gradient,
-        fill: true,
-        tension: 0.3,
-        pointRadius: 0,
-        borderWidth: 2.5,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { ...TOOLTIP_STYLE, callbacks: { label: (c) => `${c.parsed.y}%` } },
-      },
-      scales: {
-        x: { grid: { display: false }, border: { display: false }, ticks: { maxTicksLimit: 6 } },
-        y: {
-          grid: { color: "rgba(120,100,80,0.06)" },
-          border: { display: false },
-          min: 0, max: 100,
-          ticks: { callback: (v) => `${v}%`, maxTicksLimit: 5 },
-        },
-      },
-    },
-  });
-}
-
-/* ---------- WHOOP recovery trend sparkline ---------- */
-function makeRecoveryTrendChart(canvasId, data) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 0, 0, 180);
-  gradient.addColorStop(0, hexToRgba(COLOR.green, 0.18));
-  gradient.addColorStop(1, hexToRgba(COLOR.green, 0));
-
-  return new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: lastNDayLabels(data.length),
-      datasets: [{
-        data,
-        borderColor: COLOR.green,
-        backgroundColor: gradient,
-        fill: true,
-        tension: 0.35,
-        pointRadius: 3,
-        pointBackgroundColor: COLOR.green,
-        pointBorderColor: "#FFFFFF",
-        pointBorderWidth: 1.5,
-        borderWidth: 2.5,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { ...TOOLTIP_STYLE, callbacks: { label: (c) => `Recovery: ${c.parsed.y}%` } },
-      },
-      scales: {
-        x: { grid: { display: false }, border: { display: false } },
-        y: {
-          grid: { color: "rgba(120,100,80,0.06)" },
-          border: { display: false },
-          min: 0, max: 100,
-          ticks: { callback: (v) => `${v}%`, maxTicksLimit: 4 },
-        },
-      },
-    },
-  });
-}
-
-/* =========================================================
-   LAZY-LOAD CHARTS — only fetch Chart.js + render once a
-   chart scrolls into view
-   ========================================================= */
-function setupLazyCharts() {
-  const physical = DATA.pillars.find(p => p.key === "physical");
-  const capital = DATA.pillars.find(p => p.key === "capital");
-  const discipline = DATA.pillars.find(p => p.key === "discipline");
-  const whoop = DATA.whoop;
-
-  const initializers = {
-    "chart-capital-revenue": () => makeRevenueChart("chart-capital-revenue", capital.revenueChart),
-    "chart-capital-expenses": () => makeExpenseDonut("chart-capital-expenses", capital.expenses),
-    "chart-physical-volume": () => makeTrainingVolumeChart("chart-physical-volume", {
-      label: physical.weekSchedule.label,
-      today: physical.weekSchedule.today,
-      days: physical.weekSchedule.items.map(it => it.day),
-      data: physical.weekSchedule.items.map(it => it.km),
-    }),
-    "chart-discipline-tasks": () => makeTasksChart("chart-discipline-tasks", discipline.tasksChart),
-    "chart-discipline-karma": () => makeKarmaChart("chart-discipline-karma", discipline.karmaChart),
-    "chart-discipline-completion": () => makeCompletionRateChart("chart-discipline-completion", discipline.completionRateChart),
-  };
-
-  if (whoop.recoveryTrend && whoop.recoveryTrend.length > 1) {
-    initializers["chart-whoop-trend"] = () => makeRecoveryTrendChart("chart-whoop-trend", whoop.recoveryTrend);
-  }
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const init = initializers[entry.target.dataset.chartId];
-      if (init) loadChartJs().then(init);
-      obs.unobserve(entry.target);
-    });
-  }, { rootMargin: "200px" });
-
-  Object.keys(initializers).forEach(id => {
-    const canvas = document.getElementById(id);
-    if (!canvas) return;
-    const wrap = canvas.closest(".chart-wrap") || canvas;
-    wrap.dataset.chartId = id;
-    observer.observe(wrap);
-  });
-}
-
-/* =========================================================
-   RENDER: ACCOUNTS
-   ========================================================= */
-function renderAccounts() {
-  document.getElementById("accountsList").innerHTML = DATA.emailAccounts.map(a => `
-    <div class="account-row">
-      <div class="account-row-top">
-        <span class="account-name">${a.name}</span>
-        <span class="account-badge ${a.count > 0 ? "has-unread" : ""}">${a.count > 0 ? a.count.toLocaleString() : "—"}</span>
-      </div>
-      <div class="account-subjects">
-        <div class="account-subjects-inner">
-          ${a.recentSubjects && a.recentSubjects.length
-            ? a.recentSubjects.map(s => `<div class="account-subject">${s}</div>`).join("")
-            : `<div class="account-subjects-empty">No recent emails</div>`}
-        </div>
-      </div>
+      <div class="meter"><div class="meter-fill" data-pct="${p.score}"></div></div>
     </div>
   `).join("");
 
-  document.querySelectorAll("#accountsList .account-row").forEach(row => {
-    row.addEventListener("click", () => row.classList.toggle("expanded"));
-  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    $("pillars").querySelectorAll(".meter-fill").forEach((el) => {
+      el.style.width = `${el.dataset.pct}%`;
+    });
+  }));
+}
+
+/* ---------- footer ---------- */
+function renderFooter(data) {
+  const updated = new Date(data.meta.updatedAt);
+  const str = updated.toLocaleString("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: TZ });
+  $("footer").innerHTML = `<div>Data updated ${str}</div><div>${esc(data.meta.sources)}</div>`;
 }
 
 /* =========================================================
-   RENDER: SUBSCRIPTIONS
+   LOAD + AUTO-REFRESH
+   data.json and whoop-data.json are fetched fresh (no cache)
+   on load, whenever the app regains focus, and every 5 min —
+   so a redeploy shows up without reinstalling or hard-reloading.
    ========================================================= */
-function renderSubscriptions() {
-  document.getElementById("subsTable").outerHTML = billsTableBlock(DATA.subscriptions.map(s => ({
-    name: s.name, due: s.due, amount: s.amount, overdue: s.overdue, dueToday: s.dueToday,
-  })), "subsTable");
-  setupBillsTable("subsTable");
-}
+let rendered = false;
 
-/* =========================================================
-   RENDER: FOOTER
-   ========================================================= */
-function renderFooter() {
-  document.getElementById("footer").innerHTML = `
-    <div class="footer-updated">Updated ${DATA.meta.updated}</div>
-    <div class="footer-sources">${DATA.meta.sources}</div>
-  `;
-}
-
-/* =========================================================
-   FLOATING CLAUDE CHAT
-   ========================================================= */
-function setupChat() {
-  const fab = document.getElementById("chatFab");
-  const bar = document.getElementById("chatBar");
-  const input = document.getElementById("chatInput");
-
-  fab.innerHTML = svgIcon("chat", 24, 1.8);
-  document.getElementById("chatSend").innerHTML = svgIcon("send", 18, 2);
-  document.getElementById("chatClose").innerHTML = svgIcon("close", 18, 2);
-
-  function openBar() {
-    bar.classList.add("open");
-    fab.classList.add("hidden");
-    input.focus();
+async function refresh() {
+  let data, whoop;
+  try {
+    [data, whoop] = await Promise.all([
+      fetch("data.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      fetch("whoop-data.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    ]);
+  } catch (e) {
+    if (!rendered) $("error").classList.add("show"), $("error").textContent = `Couldn't load dashboard data (${e.message}). Retrying automatically.`;
+    return;
   }
-  function closeBar() {
-    bar.classList.remove("open");
-    fab.classList.remove("hidden");
-  }
-  function send() {
-    const msg = input.value.trim();
-    if (!msg) return;
-    const prefixed = `Context: I'm Christian, checking my life dashboard. ${msg}`;
-    window.open(`https://claude.ai/new?q=${encodeURIComponent(prefixed)}`, "_blank");
-    input.value = "";
-  }
-
-  fab.addEventListener("click", openBar);
-  document.getElementById("chatClose").addEventListener("click", closeBar);
-  document.getElementById("chatSend").addEventListener("click", send);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") send();
-  });
+  $("error").classList.remove("show");
+  renderHeader(data);
+  renderFocus(data);
+  renderWhoop(whoop);
+  renderTraining(data);
+  renderMoney(data);
+  renderPillars(data);
+  renderFooter(data);
+  rendered = true;
 }
 
-/* =========================================================
-   INIT
-   ========================================================= */
-renderHeader();
-renderMotivation();
-renderFocusToday();
-renderWhoop();
-renderEmails();
-renderSchedule();
-renderQuickStats();
-renderPillars();
-renderAccounts();
-renderSubscriptions();
-renderFooter();
-setupChat();
+refresh();
+setInterval(refresh, 5 * 60 * 1000);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") refresh();
+});
 
-setupLazyCharts();
-
-// service worker forces a fresh network fetch on every launch so the
-// home-screen icon never gets stuck showing a stale cached copy
+// network-first service worker: the installed home-screen app always
+// fetches the live page instead of a stale cached copy
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }

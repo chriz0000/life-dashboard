@@ -4,6 +4,12 @@ Run through this every time the dashboard refreshes (the automated cycle runs
 every ~5 hours). Goal: every number on the dashboard should be traceable to a
 live source, not stale prose.
 
+**All dashboard data now lives in `data.json` — a refresh cycle should only
+edit `data.json` (and `whoop-data.json` via `whoop_sync.py`), never
+`index.html`.** The page fetches both JSON files with no caching on every
+load, whenever the app regains focus, and every 5 minutes, so a pushed
+`data.json` shows up on the installed app without any reinstall or hard reload.
+
 ## 1. Verify connections are live
 
 Before trusting any data, confirm each source actually responds:
@@ -16,69 +22,54 @@ Before trusting any data, confirm each source actually responds:
 - [ ] **WHOOP** — check `whoop-data.json`'s `synced_at`. This dashboard's remote
       environment has no WHOOP credentials — WHOOP only refreshes when
       `whoop_sync.py` is run somewhere that holds `.whoop-tokens.json` (currently:
-      manually, on desktop). If `synced_at` is more than ~24h old, flag it as stale
-      rather than guessing new numbers.
+      manually, on desktop). The page flags itself as "Stale" automatically when
+      `synced_at` is more than ~36h old — never guess new numbers.
 
 If any source errors out, stop and report it rather than leaving old data in place.
 
-## 2. Pull fresh data per section
+## 2. Update `data.json` per section
 
-| Section | Source | What to update |
+| `data.json` field | Source | What to update |
 |---|---|---|
-| Recovery / Sleep / Strain | `whoop-data.json` | Pull latest values as-is (see WHOOP note above) |
-| Bills & subscriptions | Todoist (`💰 My Bills & Debts`, `📺 Subscriptions` projects) | Re-check every due date against today; recompute overdue/due-today/upcoming status — don't carry over yesterday's wording |
-| Revenue (Square) | Square `payments.list`, `begin_time` = 1st of current month | Sum `amount_money` for the month |
-| Revenue (Shopify) | Shopify `list-orders` | Count + sum orders this month |
-| Karma / streak / completion | Todoist `get-productivity-stats` | `karma`, `karmaGraphData` (last 7 entries), `goals.currentDailyStreak`, `weekItems` |
-| Content calendar | Notion search "Content Calendar" | Last-updated timestamp shown in Brand pillar |
-| Email highlights | Gmail `search_threads` (`in:inbox`, most recent) | Top 3-4 threads with sender/subject/relative time |
-| Marathon countdown / training week | Computed automatically | See note below — no manual edit needed |
+| `focusToday` | Everything below | Regenerate the prose highlights from current bill/recovery/revenue numbers — don't carry over yesterday's wording. `level` is `good` / `warning` / `critical` / `neutral` |
+| `money.bills` | Todoist (`💰 My Bills & Debts`, `📺 Subscriptions` projects) | Re-check every due date against today; set `status` to `overdue` / `due-today` / `upcoming` |
+| `money.revenue` | Square `payments.list` (`begin_time` = 1st of month) + Shopify `list-orders` | Sum the month; note the Square/online split in `sub` |
+| `pillars[*].score` / `status` / `level` | Judgement + Todoist `get-productivity-stats` | `level` drives the color, same values as above |
+| `marathon` / `week` | Manual | Only when the training plan changes; countdown and current week are computed from `raceDate` at load time |
+| `meta.updatedAt` | — | Set to the current ISO timestamp with `+10:00` offset |
+
+WHOOP values are **not** in `data.json` — the page reads `whoop-data.json`
+directly, so `whoop_sync.py` output is live without a second copy.
 
 ## 3. Self-updating fields — don't hand-edit these
 
-The script now derives the following from the real calendar at load time
-(see the `syncDates()` block right after the `DATA` object). **Do not
-hand-edit them** — fix the anchor data instead if something looks wrong:
+The page derives these from the real calendar at load time — fix the anchor
+data in `data.json` instead if something looks wrong:
 
-- `schedule.today` / `weekSchedule.today` — today's weekday abbreviation
-- `physical.today` — pulled from the matching `weekSchedule` entry for today
-- `physical.marathon.daysOut` — computed from `physical.marathon.raceDate` (fixed ISO date)
-- `physical.trainingBlock.items` (done/current/future) — computed from days remaining to the race
+- Today's weekday highlight in the week strip
+- Days-to-race countdown and "Week N of M" — computed from `marathon.raceDate`
+  (if the race date passes, the page says so; set the next goal in `data.json`)
+- Life score — weighted average of `pillars[*].score × weight`
+- WHOOP staleness flag — from `whoop-data.json`'s `synced_at`
 
-If the race date changes, update `marathon.raceDate` once — everything else follows.
-
-## 4. Things that are still manual (flag, don't fabricate)
-
-- `focusToday` — prose highlights regenerated from current bill/recovery/revenue
-  numbers each cycle (not computed automatically)
-- `schedule.events` — today's agenda; should match `weekSchedule` for the
-  current day, not be left over from a previous day
-- `spirit.readingPlan.currentBook` / `todaysReading` — manual, tracks actual reading progress
-- `knowledge.areas` — manual, tracks actual study progress
-- Todoist task list under Discipline → "Today's Tasks" — these are illustrative
-  daily intentions, **not** pulled from a real Todoist project. If you want this
-  live, create a dedicated Todoist project for daily habits.
-
-## 5. Known data-quality issue to clean up (not fixed automatically)
+## 4. Known data-quality issue to clean up (not fixed automatically)
 
 The Todoist `💰 My Bills & Debts` project has duplicate/conflicting entries
 (e.g. two different "Internet" bills at $50 and $80, two "CBA credit card"
-entries, two "Zip" entries — looks like leftovers from an old tracker mixed
-with a new one, some tagged `Christian` vs `Karin`). Don't auto-resolve this —
-it needs a human pass to decide which entries are current. Until cleaned up,
-the Capital pillar only reflects the bills already curated in the dashboard,
-not the full Todoist project.
+entries, two "Zip" entries — leftovers from an old tracker mixed with a new
+one, some tagged `Christian` vs `Karin`). Don't auto-resolve this — it needs a
+human pass. Until cleaned up, the Money section only reflects the bills
+already curated in `data.json`, not the full Todoist project.
 
-## 6. Connections that are NOT live (by design, for now)
+## 5. Connections that are NOT live (by design, for now)
 
-Only one Gmail account (`chrishstyles123@gmail.com`) is connected. The other
-inboxes once listed (iCloud, Personal Outlook, and the separate business
-inboxes for other brands) have no MCP/API access from this environment and
-were removed from the live dashboard rather than left as stale placeholders.
-Re-add them once they have a real connection.
+Only one Gmail account (`chrishstyles123@gmail.com`) is connected. Other
+inboxes have no MCP/API access from this environment and were removed from
+the dashboard rather than left as stale placeholders.
 
-## 7. Finally
+## 6. Finally
 
-- [ ] Update `meta.updated` to the current time
+- [ ] Set `meta.updatedAt` to the current time (ISO, `+10:00`)
 - [ ] Confirm `meta.sources` still lists only sources actually wired up
+- [ ] Validate: `python3 -c "import json; json.load(open('data.json'))"`
 - [ ] Commit with a clear message (e.g. `Auto-update: <date> <time> — dashboard refresh`)

@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "updatedAt": "2026-06-20T07:51:00+10:00",
+    "sources": "Todoist · Square · Shopify · Gmail · Notion · WHOOP"
+  },
+  "user": { "name": "Christian" },
+
+  "focusToday": [
+    { "level": "critical", "text": "Task streak is at 0 — complete 5 tasks today to restart it" },
+    { "level": "critical", "text": "5 overdue bills totaling $242 — CBA loan $53, Fitness Passports $69, Internet $80, ChatGPT $30, Rev Plan $10" },
+    { "level": "warning",  "text": "Recovery at 47% — keep today light, prioritize sleep tonight" },
+    { "level": "good",     "text": "Markets brought in $430 this month (Square) — NRICH online still $0" },
+    { "level": "warning",  "text": "Bible reading — Genesis 1, start today's chapter" },
+    { "level": "warning",  "text": "Language practice — Czech and Māori (even 10 mins counts)" },
+    { "level": "neutral",  "text": "Content days are Wed/Sun — check Notion calendar" }
+  ],
+
+  "marathon": {
+    "name": "Gold Coast Marathon",
+    "raceDate": "2026-07-05",
+    "goal": "Sub-4:00 · avg 5:41/km · Z2",
+    "blockWeeks": 6
+  },
+
+  "week": [
+    { "day": "Mon", "workout": "Rest", "km": 0,  "detail": "Rest — full rest day, mobility work and stretching only." },
+    { "day": "Tue", "workout": "8k",   "km": 8,  "detail": "Tempo — 8km @ tempo pace (~5:00/km), Zone 3–4 effort." },
+    { "day": "Wed", "workout": "6k",   "km": 6,  "detail": "Easy — 6km @ easy pace (~6:30/km), Zone 2, conversational." },
+    { "day": "Thu", "workout": "10k",  "km": 10, "detail": "Intervals — 10km total, 6 × 800m @ 4:30/km with 400m jog recovery." },
+    { "day": "Fri", "workout": "Rest", "km": 0,  "detail": "Rest — full rest day, mobility work and stretching only." },
+    { "day": "Sat", "workout": "5k",   "km": 5,  "detail": "Easy — 5km @ 8:00/km, recovery focus, heart rate in Zone 2." },
+    { "day": "Sun", "workout": "22k",  "km": 22, "detail": "Long run — 22km @ 5:50/km, fuel every 45 mins, practice race-day nutrition." }
+  ],
+
+  "money": {
+    "revenue": { "label": "Revenue (Jun)", "value": "$430", "sub": "Square markets · NRICH online $0" },
+    "bills": [
+      { "name": "Fitness Passports", "amount": "$69",    "due": "5 Jun",  "status": "overdue" },
+      { "name": "Internet",          "amount": "$80",    "due": "14 Jun", "status": "overdue" },
+      { "name": "ChatGPT Plus",      "amount": "$30",    "due": "4 Jun",  "status": "overdue" },
+      { "name": "Rev Plan",          "amount": "$10",    "due": "17 Jun", "status": "overdue" },
+      { "name": "CBA personal loan", "amount": "$53",    "due": "18 Jun", "status": "overdue" },
+      { "name": "Apple Music",       "amount": "$19.99", "due": "—",      "status": "overdue" },
+      { "name": "Canva",             "amount": "$20",    "due": "today",  "status": "due-today" }
+    ]
+  },
+
+  "pillars": [
+    { "key": "physical",   "name": "Physical",   "score": 70, "weight": 0.15, "status": "On track",      "level": "good" },
+    { "key": "capital",    "name": "Capital",    "score": 37, "weight": 0.20, "status": "Behind",        "level": "critical" },
+    { "key": "brand",      "name": "Brand",      "score": 35, "weight": 0.10, "status": "Needs work",    "level": "warning" },
+    { "key": "build",      "name": "Build",      "score": 18, "weight": 0.15, "status": "Stalled",       "level": "critical" },
+    { "key": "discipline", "name": "Discipline", "score": 21, "weight": 0.15, "status": "Broken",        "level": "critical" },
+    { "key": "spirit",     "name": "Spirit",     "score": 10, "weight": 0.10, "status": "Just starting", "level": "warning" },
+    { "key": "knowledge",  "name": "Knowledge",  "score": 5,  "weight": 0.15, "status": "Not started",   "level": "critical" }
+  ]
+}
