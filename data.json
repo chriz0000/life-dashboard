@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updatedAt": "2026-07-11T21:37:00+10:00",
+    "updatedAt": "2026-07-12T06:03:00+10:00",
     "sources": "Todoist · Square · Shopify · Gmail · Notion · WHOOP"
   },
   "user": { "name": "Christian" },
@@ -12,7 +12,8 @@
     { "level": "warning",  "text": "WHOOP hasn't synced since 18 Jun — run whoop_sync.py on desktop" },
     { "level": "warning",  "text": "Gold Coast Marathon is done — pick the next running goal and update the training block" },
     { "level": "good",     "text": "Bible reading — Genesis 1, start today's chapter" },
-    { "level": "neutral",  "text": "Language practice — Czech and Māori (even 10 mins counts)" }
+    { "level": "neutral",  "text": "Language practice — Czech and Māori (even 10 mins counts)" },
+    { "level": "good",     "text": "Markets brought in $268.50 on 4 Jul (Square)" }
   ],
 
   "marathon": {
@@ -33,7 +34,7 @@
   ],
 
   "money": {
-    "revenue": { "label": "Revenue (Jun)", "value": "$430", "sub": "Square markets · Jul not synced (needs connector approval)" },
+    "revenue": { "label": "Revenue (Jul)", "value": "$268.50", "sub": "Square markets $268.50 · Shopify $0" },
     "bills": [
       { "name": "Internet",          "amount": "$80",    "due": "14 Jun", "status": "overdue" },
       { "name": "Rev Plan",          "amount": "$10",    "due": "17 Jun", "status": "overdue" },
