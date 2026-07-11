@@ -1,18 +1,18 @@
 {
   "meta": {
-    "updatedAt": "2026-06-20T07:51:00+10:00",
+    "updatedAt": "2026-07-11T21:37:00+10:00",
     "sources": "Todoist · Square · Shopify · Gmail · Notion · WHOOP"
   },
   "user": { "name": "Christian" },
 
   "focusToday": [
-    { "level": "critical", "text": "Task streak is at 0 — complete 5 tasks today to restart it" },
-    { "level": "critical", "text": "5 overdue bills totaling $242 — CBA loan $53, Fitness Passports $69, Internet $80, ChatGPT $30, Rev Plan $10" },
-    { "level": "warning",  "text": "Recovery at 47% — keep today light, prioritize sleep tonight" },
-    { "level": "good",     "text": "Markets brought in $430 this month (Square) — NRICH online still $0" },
-    { "level": "warning",  "text": "Bible reading — Genesis 1, start today's chapter" },
-    { "level": "warning",  "text": "Language practice — Czech and Māori (even 10 mins counts)" },
-    { "level": "neutral",  "text": "Content days are Wed/Sun — check Notion calendar" }
+    { "level": "critical", "text": "Task streak is at 0 — nothing completed in Todoist since mid-June; 5 tasks today restarts it" },
+    { "level": "critical", "text": "$390 of bills overdue — oldest is Internet $80 (14 Jun); CBA credit card is the priority debt (~$1,402 at 20.99%)" },
+    { "level": "warning",  "text": "6 subscriptions unpaid (~$116/mo) — ChatGPT, Netflix, Apple One, Amazon Prime, Revolut, Apple Music" },
+    { "level": "warning",  "text": "WHOOP hasn't synced since 18 Jun — run whoop_sync.py on desktop" },
+    { "level": "warning",  "text": "Gold Coast Marathon is done — pick the next running goal and update the training block" },
+    { "level": "good",     "text": "Bible reading — Genesis 1, start today's chapter" },
+    { "level": "neutral",  "text": "Language practice — Czech and Māori (even 10 mins counts)" }
   ],
 
   "marathon": {
@@ -33,24 +33,29 @@
   ],
 
   "money": {
-    "revenue": { "label": "Revenue (Jun)", "value": "$430", "sub": "Square markets · NRICH online $0" },
+    "revenue": { "label": "Revenue (Jun)", "value": "$430", "sub": "Square markets · Jul not synced (needs connector approval)" },
     "bills": [
-      { "name": "Fitness Passports", "amount": "$69",    "due": "5 Jun",  "status": "overdue" },
       { "name": "Internet",          "amount": "$80",    "due": "14 Jun", "status": "overdue" },
-      { "name": "ChatGPT Plus",      "amount": "$30",    "due": "4 Jun",  "status": "overdue" },
       { "name": "Rev Plan",          "amount": "$10",    "due": "17 Jun", "status": "overdue" },
       { "name": "CBA personal loan", "amount": "$53",    "due": "18 Jun", "status": "overdue" },
-      { "name": "Apple Music",       "amount": "$19.99", "due": "—",      "status": "overdue" },
-      { "name": "Canva",             "amount": "$20",    "due": "today",  "status": "due-today" }
+      { "name": "CBA credit card",   "amount": "$50",    "due": "22 Jun", "status": "overdue" },
+      { "name": "Zip",               "amount": "$50",    "due": "28 Jun", "status": "overdue" },
+      { "name": "CBA loan",          "amount": "$147",   "due": "8 Jul",  "status": "overdue" },
+      { "name": "ChatGPT Plus",      "amount": "$30",    "due": "4 Jun",  "status": "overdue" },
+      { "name": "Amazon Prime",      "amount": "$9.99",  "due": "21 Jun", "status": "overdue" },
+      { "name": "Netflix",           "amount": "$20.99", "due": "24 Jun", "status": "overdue" },
+      { "name": "Apple One / iCloud","amount": "$22.99", "due": "28 Jun", "status": "overdue" },
+      { "name": "Revolut Premium",   "amount": "$11.99", "due": "28 Jun", "status": "overdue" },
+      { "name": "Apple Music",       "amount": "$19.99", "due": "9 Jul",  "status": "overdue" }
     ]
   },
 
   "pillars": [
     { "key": "physical",   "name": "Physical",   "score": 70, "weight": 0.15, "status": "On track",      "level": "good" },
-    { "key": "capital",    "name": "Capital",    "score": 37, "weight": 0.20, "status": "Behind",        "level": "critical" },
+    { "key": "capital",    "name": "Capital",    "score": 30, "weight": 0.20, "status": "Behind",        "level": "critical" },
     { "key": "brand",      "name": "Brand",      "score": 35, "weight": 0.10, "status": "Needs work",    "level": "warning" },
     { "key": "build",      "name": "Build",      "score": 18, "weight": 0.15, "status": "Stalled",       "level": "critical" },
-    { "key": "discipline", "name": "Discipline", "score": 21, "weight": 0.15, "status": "Broken",        "level": "critical" },
+    { "key": "discipline", "name": "Discipline", "score": 15, "weight": 0.15, "status": "Broken",        "level": "critical" },
     { "key": "spirit",     "name": "Spirit",     "score": 10, "weight": 0.10, "status": "Just starting", "level": "warning" },
     { "key": "knowledge",  "name": "Knowledge",  "score": 5,  "weight": 0.15, "status": "Not started",   "level": "critical" }
   ]
