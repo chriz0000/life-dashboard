@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Life Dashboard</title>
-<meta name="description" content="Christian's life dashboard" />
+<meta name="description" content="Christian's daily briefing" />
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json" />
@@ -19,6 +19,7 @@
 <style>
   :root {
     --bg: #FAF8F5;
+    --card: #FFFFFF;
     --ink: #2C2825;
     --ink-2: #8A8279;
     --ink-3: #B5AFA8;
@@ -29,10 +30,12 @@
     --critical: #C45C4A;
     --info: #5B8DB8;
     --neutral: #B5AFA8;
+    --shadow: 0 2px 12px rgba(120, 100, 80, 0.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #171512;
+      --card: #201D19;
       --ink: #EDEAE5;
       --ink-2: #9B948B;
       --ink-3: #6E675F;
@@ -43,6 +46,7 @@
       --critical: #D97965;
       --info: #7FA9CC;
       --neutral: #6E675F;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
     }
   }
 
@@ -53,14 +57,13 @@
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     color: var(--ink);
     font-size: 15px;
-    line-height: 1.45;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    overflow-x: hidden;
   }
 
-  body { overflow-x: hidden; }
-  .app { max-width: 640px; margin: 0 auto; padding: 24px 20px 48px; }
+  .app { max-width: 600px; margin: 0 auto; padding: 24px 20px 120px; }
 
   section { padding: 20px 0; border-top: 1px solid var(--hairline); }
   section:first-of-type { border-top: none; padding-top: 0; }
@@ -68,95 +71,55 @@
   .label {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.08em; color: var(--ink-2); margin-bottom: 12px;
-    display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
   }
-  .label .flag { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--ink-3); }
 
-  /* status color hook: each level sets --c */
   .lv-good { --c: var(--good); }
   .lv-warning { --c: var(--warning); }
   .lv-critical { --c: var(--critical); }
   .lv-info { --c: var(--info); }
   .lv-neutral { --c: var(--neutral); }
-
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--neutral)); flex-shrink: 0; }
 
   /* ---------- header ---------- */
-  .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
   .date { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); }
-  .greeting { font-size: 21px; font-weight: 650; letter-spacing: -0.01em; margin-top: 2px; }
-  .hero { text-align: right; }
-  .hero-value { font-size: 48px; font-weight: 650; letter-spacing: -0.02em; line-height: 1; white-space: nowrap; }
-  .hero-value small { font-size: 15px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
-  .hero-label { font-size: 12px; color: var(--ink-2); margin-top: 2px; }
+  .greeting { font-size: 22px; font-weight: 650; letter-spacing: -0.01em; margin-top: 2px; }
+  .stale-note { font-size: 12px; color: var(--warning); margin-top: 6px; }
 
-  /* ---------- focus ---------- */
-  .focus-item {
-    display: flex; align-items: flex-start; gap: 10px; padding: 8px 0;
+  /* ---------- briefing ---------- */
+  .briefing p {
+    font-size: 15.5px; line-height: 1.65; margin-bottom: 14px;
+  }
+  .briefing p:last-child { margin-bottom: 0; }
+
+  /* ---------- today checklist ---------- */
+  .today-item {
+    display: flex; align-items: flex-start; gap: 10px; padding: 9px 0;
     cursor: pointer; user-select: none; -webkit-user-select: none;
   }
-  .focus-check {
-    width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--hairline);
+  .today-check {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--hairline);
     flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; color: #fff;
   }
-  .focus-item .dot { margin-top: 7px; }
-  .focus-text { font-size: 14px; }
-  .focus-item.done { opacity: 0.4; }
-  .focus-item.done .focus-text { text-decoration: line-through; }
-  .focus-item.done .focus-check { background: var(--good); border-color: var(--good); }
+  .today-item .dot { margin-top: 8px; }
+  .today-text { font-size: 14.5px; }
+  .today-item.done { opacity: 0.4; }
+  .today-item.done .today-text { text-decoration: line-through; }
+  .today-item.done .today-check { background: var(--good); border-color: var(--good); }
 
-  /* ---------- stat tiles ---------- */
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 8px; }
-  .tile { background: var(--well); border-radius: 10px; padding: 10px 12px; }
+  /* ---------- numbers ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; }
+  .tile { background: var(--well); border-radius: 10px; padding: 10px 12px; min-width: 0; }
   .tile-label { font-size: 11px; color: var(--ink-2); }
-  .tile-value { font-size: 19px; font-weight: 650; margin-top: 2px; letter-spacing: -0.01em; }
-  .tile-sub { font-size: 11px; color: var(--ink-2); margin-top: 1px; display: flex; align-items: center; gap: 5px; }
+  .tile-value { font-size: 19px; font-weight: 650; margin-top: 2px; letter-spacing: -0.01em; white-space: nowrap; }
+  .tile-note { font-size: 11px; color: var(--ink-2); margin-top: 1px; display: flex; align-items: center; gap: 5px; }
+  .tile-note .dot { width: 6px; height: 6px; }
 
-  /* ---------- training ---------- */
-  .train-line { font-size: 14px; margin-bottom: 4px; }
-  .train-line b { font-weight: 650; }
-  .train-sub { font-size: 12px; color: var(--ink-2); margin-bottom: 12px; }
-  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-  .week-cell {
-    border-radius: 8px; padding: 7px 2px; text-align: center; cursor: pointer;
-    background: var(--well); user-select: none; -webkit-user-select: none; min-width: 0;
+  /* ---------- radar ---------- */
+  .radar-item {
+    display: flex; gap: 10px; padding: 7px 0;
+    font-size: 13px; color: var(--ink-2); line-height: 1.5;
   }
-  .week-cell .d { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
-  .week-cell .w { font-size: 11px; font-weight: 500; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .week-cell.today { box-shadow: inset 0 0 0 1.5px var(--info); }
-  .week-cell.today .d { color: var(--info); }
-  .week-cell.selected:not(.today) { box-shadow: inset 0 0 0 1.5px var(--hairline); }
-  .week-detail { font-size: 12.5px; color: var(--ink-2); margin-top: 10px; }
-  .week-detail b { color: var(--ink); font-weight: 600; }
-
-  /* ---------- money ---------- */
-  .rev { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; }
-  .rev-label { font-size: 14px; }
-  .rev-sub { font-size: 12px; color: var(--ink-2); }
-  .rev-value { font-size: 19px; font-weight: 650; }
-  .bill {
-    display: flex; align-items: center; gap: 10px; padding: 9px 0;
-    border-top: 1px solid var(--hairline); cursor: pointer; user-select: none; -webkit-user-select: none;
-  }
-  .bill-name { font-size: 14px; flex: 1; min-width: 0; }
-  .bill-due { font-size: 12px; color: var(--ink-2); }
-  .bill-amount { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; min-width: 56px; }
-  .pill {
-    font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px;
-    background: color-mix(in srgb, var(--c) 14%, transparent);
-    color: var(--ink); display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
-  }
-  .pill .dot { width: 6px; height: 6px; }
-  .bill.paid .bill-name, .bill.paid .bill-amount, .bill.paid .bill-due { text-decoration: line-through; color: var(--ink-3); }
-
-  /* ---------- pillars ---------- */
-  .pillar { padding: 8px 0; }
-  .pillar-top { display: flex; align-items: baseline; gap: 8px; }
-  .pillar-name { font-size: 14px; font-weight: 600; }
-  .pillar-status { font-size: 12px; color: var(--ink-2); flex: 1; display: inline-flex; align-items: center; gap: 6px; }
-  .pillar-score { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .meter { height: 4px; border-radius: 2px; margin-top: 6px; background: color-mix(in srgb, var(--c) 16%, transparent); overflow: hidden; }
-  .meter-fill { height: 100%; border-radius: 2px; background: var(--c); width: 0%; transition: width 0.8s cubic-bezier(.4,0,.2,1); }
+  .radar-item::before { content: "—"; color: var(--ink-3); flex-shrink: 0; }
 
   /* ---------- footer ---------- */
   .footer { padding-top: 20px; border-top: 1px solid var(--hairline); text-align: center; }
@@ -167,18 +130,51 @@
     background: color-mix(in srgb, var(--critical) 10%, transparent); margin-bottom: 16px; display: none;
   }
   .error.show { display: block; }
+
+  /* ---------- reply bar ---------- */
+  .reply-bar {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--bg) 75%, transparent);
+    display: flex; justify-content: center; z-index: 100;
+  }
+  .reply-inner {
+    display: flex; align-items: center; gap: 8px; width: 100%; max-width: 568px;
+    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    border: 1px solid var(--hairline); padding: 8px;
+  }
+  .reply-input {
+    flex: 1; border: none; outline: none; background: transparent;
+    font-size: 15px; color: var(--ink); font-family: inherit; min-width: 0; padding: 6px 8px;
+  }
+  .reply-input::placeholder { color: var(--ink-3); }
+  .reply-send {
+    width: 36px; height: 36px; border-radius: 50%; border: none; flex-shrink: 0;
+    background: var(--info); color: #fff; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s ease;
+  }
+  .reply-send:active { transform: scale(0.9); }
 </style>
 </head>
 <body>
 <div class="app">
   <div class="error" id="error"></div>
-  <section><div class="header" id="header"></div></section>
-  <section><div class="label">Focus today</div><div id="focus"></div></section>
-  <section><div class="label">Recovery<span class="flag" id="whoopFlag"></span></div><div id="whoop"></div></section>
-  <section><div class="label">Training</div><div id="training"></div></section>
-  <section><div class="label">Money</div><div id="money"></div></section>
-  <section><div class="label">Pillars</div><div id="pillars"></div></section>
+  <section id="header"></section>
+  <section><div class="briefing" id="briefing"></div></section>
+  <section><div class="label">Today</div><div id="today"></div></section>
+  <section><div class="label">The numbers</div><div class="tiles" id="numbers"></div></section>
+  <section><div class="label">On my radar</div><div id="radar"></div></section>
   <footer class="footer" id="footer"></footer>
+</div>
+
+<div class="reply-bar">
+  <div class="reply-inner">
+    <input class="reply-input" id="replyInput" type="text" placeholder="Reply to your briefing..." enterkeyhint="send" />
+    <button class="reply-send" id="replySend" title="Send">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
 </div>
 
 <script>
@@ -186,13 +182,14 @@
 
 const $ = (id) => document.getElementById(id);
 const TZ = "Australia/Brisbane";
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const CHECK = '<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+
+let BRIEFING = null;  // latest loaded briefing, used to build the reply context
 
 function brisbaneNow() {
   return new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
 }
-function todayKey() {
+function todayISO() {
   const d = brisbaneNow();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
@@ -206,223 +203,131 @@ function esc(s) {
   return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
 
-/* ---------- header ---------- */
-function renderHeader(data) {
+function renderHeader(b) {
   const now = brisbaneNow();
   const hour = now.getHours();
   const greeting = hour >= 17 || hour < 5 ? "Good evening" : hour >= 12 ? "Good afternoon" : "Good morning";
   const dateStr = now.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" });
-  const score = Math.round(data.pillars.reduce((sum, p) => sum + p.score * p.weight, 0));
+
+  const isStale = b.date !== todayISO();
+  const staleStr = isStale
+    ? new Date(`${b.date}T12:00:00+10:00`).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: TZ })
+    : null;
 
   $("header").innerHTML = `
-    <div>
-      <div class="date">${dateStr}</div>
-      <div class="greeting">${greeting}, ${esc(data.user.name)}</div>
-    </div>
-    <div class="hero">
-      <div class="hero-value">${score}<small> / 100</small></div>
-      <div class="hero-label">Life score</div>
-    </div>
+    <div class="date">${dateStr}</div>
+    <div class="greeting">${greeting}, Christian</div>
+    ${isStale ? `<div class="stale-note">This briefing was written ${staleStr} — a fresh one lands on the next update cycle.</div>` : ""}
   `;
 }
 
-/* ---------- focus (checked state kept per day) ---------- */
-function renderFocus(data) {
-  const key = `ld:focus:${todayKey()}`;
+function renderBriefing(b) {
+  $("briefing").innerHTML = b.message.map((p) => `<p>${esc(p)}</p>`).join("");
+}
+
+function renderToday(b) {
+  const key = `pa:done:${b.date}`;
   const done = store(key) || [];
-  $("focus").innerHTML = data.focusToday.map((f, i) => `
-    <div class="focus-item lv-${f.level} ${done[i] ? "done" : ""}" data-i="${i}">
-      <span class="focus-check">${done[i] ? CHECK : ""}</span>
+  $("today").innerHTML = b.today.map((t, i) => `
+    <div class="today-item lv-${t.level} ${done[i] ? "done" : ""}" data-i="${i}">
+      <span class="today-check">${done[i] ? CHECK : ""}</span>
       <span class="dot"></span>
-      <span class="focus-text">${esc(f.text)}</span>
+      <span class="today-text">${esc(t.text)}</span>
     </div>
   `).join("");
 
-  $("focus").querySelectorAll(".focus-item").forEach((item) => {
+  $("today").querySelectorAll(".today-item").forEach((item) => {
     item.addEventListener("click", () => {
       const i = +item.dataset.i;
       const done = store(key) || [];
       done[i] = !done[i];
       store(key, done);
       item.classList.toggle("done", done[i]);
-      item.querySelector(".focus-check").innerHTML = done[i] ? CHECK : "";
+      item.querySelector(".today-check").innerHTML = done[i] ? CHECK : "";
     });
   });
 }
 
-/* ---------- whoop (live from whoop-data.json) ---------- */
-function renderWhoop(whoop) {
-  if (!whoop || !whoop.recovery) {
-    $("whoop").innerHTML = `<div class="tile-sub">No WHOOP data — run whoop_sync.py</div>`;
-    $("whoopFlag").textContent = "";
-    return;
-  }
-  const rec = Math.round(whoop.recovery.recovery_score);
-  const band = rec >= 67 ? ["Recovered", "good"] : rec >= 34 ? ["Moderate", "warning"] : ["Low", "critical"];
+function renderNumbers(b, whoop) {
+  const tiles = [...b.numbers];
 
-  const synced = new Date(whoop.synced_at);
-  const ageH = (Date.now() - synced) / 3600000;
-  const syncedStr = synced.toLocaleDateString("en-AU", { day: "numeric", month: "short", timeZone: TZ });
-  $("whoopFlag").textContent = ageH > 36 ? `Stale — synced ${syncedStr}` : `Synced ${syncedStr}`;
-
-  const tiles = [
-    { label: "Recovery", value: `${rec}%`, sub: band[0], level: band[1] },
-    { label: "Sleep", value: `${Math.round(whoop.sleep.sleep_score)}%` },
-    { label: "Strain", value: whoop.strain.strain_score.toFixed(1), sub: "of 21" },
-    { label: "HRV", value: `${Math.round(whoop.recovery.hrv_ms)}`, sub: "ms" },
-    { label: "Resting HR", value: `${Math.round(whoop.recovery.resting_heart_rate)}`, sub: "bpm" },
-  ];
-  $("whoop").innerHTML = `<div class="tiles">${tiles.map((t) => `
-    <div class="tile">
-      <div class="tile-label">${t.label}</div>
-      <div class="tile-value">${t.value}</div>
-      ${t.sub ? `<div class="tile-sub ${t.level ? `lv-${t.level}` : ""}">${t.level ? '<span class="dot"></span>' : ""}${t.sub}</div>` : ""}
-    </div>
-  `).join("")}</div>`;
-}
-
-/* ---------- training (countdown + week computed from real calendar) ---------- */
-function renderTraining(data) {
-  const m = data.marathon;
-  const now = brisbaneNow();
-  const race = new Date(`${m.raceDate}T00:00:00+10:00`);
-  const daysOut = Math.ceil((race - now) / 86400000);
-  const raceStr = race.toLocaleDateString("en-AU", { day: "numeric", month: "short", timeZone: TZ });
-
-  let line, sub;
-  if (daysOut < 0) {
-    line = `<b>${esc(m.name)}</b> — raced ${raceStr}`;
-    sub = "Race day has passed — set the next goal in data.json.";
-  } else {
-    const week = Math.min(m.blockWeeks, Math.max(1, m.blockWeeks - Math.ceil(daysOut / 7) + 1));
-    line = `<b>${esc(m.name)}</b> — ${daysOut === 0 ? "race day" : `${daysOut} day${daysOut === 1 ? "" : "s"} to go`} · ${raceStr}`;
-    sub = `Week ${week} of ${m.blockWeeks} · ${esc(m.goal)}`;
+  // If WHOOP has synced within ~36h, surface recovery as a live tile.
+  if (whoop && whoop.synced_at && (Date.now() - new Date(whoop.synced_at)) / 3600000 <= 36 && whoop.recovery) {
+    const rec = Math.round(whoop.recovery.recovery_score);
+    const level = rec >= 67 ? "good" : rec >= 34 ? "warning" : "critical";
+    tiles.unshift({ label: "Recovery", value: `${rec}%`, note: "WHOOP · today", level });
   }
 
-  const todayAbbr = DAYS[now.getDay()];
-  const todayIdx = data.week.findIndex((w) => w.day === todayAbbr);
-
-  $("training").innerHTML = `
-    <div class="train-line">${line}</div>
-    <div class="train-sub">${sub}</div>
-    <div class="week" id="weekStrip">${data.week.map((w, i) => `
-      <div class="week-cell ${i === todayIdx ? "today selected" : ""}" data-i="${i}">
-        <div class="d">${w.day}</div>
-        <div class="w">${esc(w.workout)}</div>
-      </div>
-    `).join("")}</div>
-    <div class="week-detail" id="weekDetail"></div>
-  `;
-
-  const detail = $("weekDetail");
-  const show = (i) => { detail.innerHTML = `<b>${data.week[i].day}</b> — ${esc(data.week[i].detail)}`; };
-  show(todayIdx >= 0 ? todayIdx : 0);
-
-  $("weekStrip").querySelectorAll(".week-cell").forEach((cell) => {
-    cell.addEventListener("click", () => {
-      $("weekStrip").querySelectorAll(".week-cell").forEach((c) => c.classList.remove("selected"));
-      cell.classList.add("selected");
-      show(+cell.dataset.i);
-    });
-  });
-}
-
-/* ---------- money (tap a bill to mark paid; kept per day) ---------- */
-function renderMoney(data) {
-  const key = `ld:paid:${todayKey()}`;
-  const paid = store(key) || {};
-  const rev = data.money.revenue;
-
-  const pillFor = (b) =>
-    b.status === "overdue" ? `<span class="pill lv-critical"><span class="dot"></span>Overdue</span>`
-    : b.status === "due-today" ? `<span class="pill lv-warning"><span class="dot"></span>Due today</span>`
-    : `<span class="pill lv-neutral"><span class="dot"></span>Upcoming</span>`;
-
-  $("money").innerHTML = `
-    <div class="rev">
-      <div>
-        <div class="rev-label">${esc(rev.label)}</div>
-        <div class="rev-sub">${esc(rev.sub)}</div>
-      </div>
-      <div class="rev-value">${esc(rev.value)}</div>
-    </div>
-    ${data.money.bills.map((b, i) => `
-      <div class="bill ${paid[b.name] ? "paid" : ""}" data-name="${esc(b.name)}">
-        <div class="bill-name">${esc(b.name)}<span class="bill-due"> · ${esc(b.due)}</span></div>
-        ${paid[b.name] ? `<span class="pill lv-good">${CHECK}Paid</span>` : pillFor(b)}
-        <div class="bill-amount">${esc(b.amount)}</div>
-      </div>
-    `).join("")}
-  `;
-
-  $("money").querySelectorAll(".bill").forEach((row, i) => {
-    row.addEventListener("click", () => {
-      const paid = store(key) || {};
-      const name = data.money.bills[i].name;
-      paid[name] = !paid[name];
-      store(key, paid);
-      row.classList.toggle("paid", !!paid[name]);
-      row.querySelector(".pill").outerHTML = paid[name]
-        ? `<span class="pill lv-good">${CHECK}Paid</span>`
-        : pillFor(data.money.bills[i]);
-    });
-  });
-}
-
-/* ---------- pillars ---------- */
-function renderPillars(data) {
-  $("pillars").innerHTML = data.pillars.map((p) => `
-    <div class="pillar lv-${p.level}">
-      <div class="pillar-top">
-        <span class="pillar-name">${esc(p.name)}</span>
-        <span class="pillar-status"><span class="dot"></span>${esc(p.status)}</span>
-        <span class="pillar-score">${p.score}</span>
-      </div>
-      <div class="meter"><div class="meter-fill" data-pct="${p.score}"></div></div>
+  $("numbers").innerHTML = tiles.map((t) => `
+    <div class="tile lv-${t.level || "neutral"}">
+      <div class="tile-label">${esc(t.label)}</div>
+      <div class="tile-value">${esc(t.value)}</div>
+      ${t.note ? `<div class="tile-note"><span class="dot"></span>${esc(t.note)}</div>` : ""}
     </div>
   `).join("");
-
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    $("pillars").querySelectorAll(".meter-fill").forEach((el) => {
-      el.style.width = `${el.dataset.pct}%`;
-    });
-  }));
 }
 
-/* ---------- footer ---------- */
-function renderFooter(data) {
-  const updated = new Date(data.meta.updatedAt);
-  const str = updated.toLocaleString("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: TZ });
-  $("footer").innerHTML = `<div>Data updated ${str}</div><div>${esc(data.meta.sources)}</div>`;
+function renderRadar(b) {
+  $("radar").innerHTML = b.radar.map((r) => `<div class="radar-item">${esc(r)}</div>`).join("");
 }
 
-/* =========================================================
-   LOAD + AUTO-REFRESH
-   data.json and whoop-data.json are fetched fresh (no cache)
-   on load, whenever the app regains focus, and every 5 min —
-   so a redeploy shows up without reinstalling or hard-reloading.
-   ========================================================= */
+function renderFooter(b) {
+  const written = new Date(b.writtenAt);
+  const str = written.toLocaleString("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: TZ });
+  $("footer").innerHTML = `<div>Briefing written ${str}</div><div>Updates automatically — no refresh needed</div>`;
+}
+
+/* ---------- reply: opens Claude with today's full context ---------- */
+function buildContext() {
+  if (!BRIEFING) return "";
+  const b = BRIEFING;
+  const done = store(`pa:done:${b.date}`) || [];
+  const todayLines = b.today.map((t, i) => `${done[i] ? "[done] " : ""}${t.text}`).join("; ");
+  const numberLines = b.numbers.map((n) => `${n.label}: ${n.value}${n.note ? ` (${n.note})` : ""}`).join("; ");
+  return [
+    `You are my personal assistant. Today is ${b.date}. Here is my dashboard briefing you wrote me earlier:`,
+    b.message.join(" "),
+    `Today's list: ${todayLines}.`,
+    `Numbers: ${numberLines}.`,
+    `On the radar: ${b.radar.join("; ")}.`,
+    `My reply:`,
+  ].join("\n");
+}
+
+function setupReply() {
+  const input = $("replyInput");
+  const send = () => {
+    const msg = input.value.trim();
+    if (!msg) return;
+    window.open(`https://claude.ai/new?q=${encodeURIComponent(`${buildContext()} ${msg}`)}`, "_blank");
+    input.value = "";
+  };
+  $("replySend").addEventListener("click", send);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+}
+
+/* ---------- load + auto-refresh ---------- */
 let rendered = false;
 
 async function refresh() {
-  let data, whoop;
+  let briefing, whoop;
   try {
-    [data, whoop] = await Promise.all([
-      fetch("data.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
+    [briefing, whoop] = await Promise.all([
+      fetch("briefing.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
       fetch("whoop-data.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
     ]);
   } catch (e) {
-    if (!rendered) $("error").classList.add("show"), $("error").textContent = `Couldn't load dashboard data (${e.message}). Retrying automatically.`;
+    if (!rendered) { $("error").classList.add("show"); $("error").textContent = `Couldn't load the briefing (${e.message}). Retrying automatically.`; }
     return;
   }
   $("error").classList.remove("show");
-  renderHeader(data);
-  renderFocus(data);
-  renderWhoop(whoop);
-  renderTraining(data);
-  renderMoney(data);
-  renderPillars(data);
-  renderFooter(data);
+  BRIEFING = briefing;
+  renderHeader(briefing);
+  renderBriefing(briefing);
+  renderToday(briefing);
+  renderNumbers(briefing, whoop);
+  renderRadar(briefing);
+  renderFooter(briefing);
   rendered = true;
 }
 
@@ -432,8 +337,10 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") refresh();
 });
 
-// network-first service worker: the installed home-screen app always
-// fetches the live page instead of a stale cached copy
+setupReply();
+
+// network-first service worker keeps the installed home-screen app
+// loading the live page instead of a stale cached copy
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }

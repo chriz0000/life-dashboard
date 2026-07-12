@@ -4,11 +4,30 @@ Run through this every time the dashboard refreshes (the automated cycle runs
 every ~5 hours). Goal: every number on the dashboard should be traceable to a
 live source, not stale prose.
 
-**All dashboard data now lives in `data.json` — a refresh cycle should only
-edit `data.json` (and `whoop-data.json` via `whoop_sync.py`), never
-`index.html`.** The page fetches both JSON files with no caching on every
-load, whenever the app regains focus, and every 5 minutes, so a pushed
-`data.json` shows up on the installed app without any reinstall or hard reload.
+**The dashboard is a PA-style daily briefing. Each refresh cycle produces two
+files — never touch `index.html`:**
+
+1. **`data.json`** — the machine-readable state (bills, revenue, pillar scores).
+   Update it from the sources below exactly as before.
+2. **`briefing.json`** — the editorial layer the page actually displays. After
+   updating `data.json`, WRITE THE BRIEFING like a personal assistant talking
+   to Christian:
+   - `date` (YYYY-MM-DD, Brisbane) and `writtenAt` (ISO, +10:00)
+   - `message`: 3–4 short paragraphs in second person. Match the time of day
+     it's written (a 9 PM briefing reads differently from a 7 AM one). Lead
+     with a win if there is one, then the hardest thing, each with the ONE
+     concrete next action. Ask a question when input is needed (next race,
+     ambiguous bills). Never carry over yesterday's wording.
+   - `today`: 4–6 checkable actions, most impactful first
+     (levels: critical / warning / good / neutral)
+   - `numbers`: 3–5 stat tiles — only numbers that matter *today*
+   - `radar`: 2–4 quiet items being tracked, each with what would resolve it
+
+The page fetches `briefing.json` + `whoop-data.json` with no caching on every
+load, on focus, and every 5 minutes — pushed updates appear without reinstall.
+If `briefing.json`'s `date` is not today, the page flags the briefing as old
+automatically. If WHOOP synced within 36h, a Recovery tile is injected
+automatically — don't duplicate it in `numbers`.
 
 ## 1. Verify connections are live
 

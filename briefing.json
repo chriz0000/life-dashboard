@@ -1,0 +1,28 @@
+{
+  "date": "2026-07-12",
+  "writtenAt": "2026-07-12T21:15:00+10:00",
+  "message": [
+    "Evening Christian. Sunday's nearly done — here's where things stand and what's still worth doing tonight.",
+    "The win first: the market on 4 July brought in $268.50 through Square. There's also an easy $87 sitting on the table — Naomi Cameron's Shopify order (#1003) never completed because the payment link expired. A two-minute message to her tonight could recover it.",
+    "The hard one: $506 is overdue across bills and subscriptions, and the CBA credit card is the expensive problem — about $1,402 near its limit at 20.99%. First thing tomorrow, clear the oldest (Internet, $80) and put whatever's left against that card. Your task streak has been flat since mid-June — even ticking off tonight's small items in Todoist starts the restart.",
+    "Today was a content day — if nothing's gone out yet, one post before bed still counts. And the marathon is behind you now; tell me the next race or goal when you reply and I'll rebuild the training plan around it."
+  ],
+  "today": [
+    { "level": "critical", "text": "Message Naomi Cameron — resend payment link for Shopify order #1003 ($87)" },
+    { "level": "warning",  "text": "Post something — Sunday is a content day and there's still tonight" },
+    { "level": "good",     "text": "Genesis 1 — start the reading plan before bed" },
+    { "level": "neutral",  "text": "10 minutes of Czech or Māori" },
+    { "level": "critical", "text": "Tomorrow first thing: pay Internet ($80) — overdue since 14 Jun, oldest on the list" }
+  ],
+  "numbers": [
+    { "label": "Overdue",       "value": "$506",    "note": "12 items",          "level": "critical" },
+    { "label": "Revenue (Jul)", "value": "$268.50", "note": "Square · 4 Jul",    "level": "good" },
+    { "label": "Task streak",   "value": "0",       "note": "5 tasks restarts",  "level": "critical" },
+    { "label": "Recoverable",   "value": "$87",     "note": "expired order",     "level": "warning" }
+  ],
+  "radar": [
+    "WHOOP is stale (last sync 18 Jun) — when you're ready, I have the phone-only re-auth steps queued; recovery numbers return the moment it's done",
+    "Next running goal is open — reply with a race or target and I'll build the block",
+    "The Todoist bills project still has duplicate entries (two CBA credit cards, two Zips) — needs your call on which are real"
+  ]
+}
