@@ -1,28 +1,30 @@
 {
-  "date": "2026-07-12",
-  "writtenAt": "2026-07-12T21:15:00+10:00",
+  "date": "2026-07-28",
+  "writtenAt": "2026-07-28T12:20:00+10:00",
   "message": [
-    "Evening Christian. Sunday's nearly done — here's where things stand and what's still worth doing tonight.",
-    "The win first: the market on 4 July brought in $268.50 through Square. There's also an easy $87 sitting on the table — Naomi Cameron's Shopify order (#1003) never completed because the payment link expired. A two-minute message to her tonight could recover it.",
-    "The hard one: $506 is overdue across bills and subscriptions, and the CBA credit card is the expensive problem — about $1,402 near its limit at 20.99%. First thing tomorrow, clear the oldest (Internet, $80) and put whatever's left against that card. Your task streak has been flat since mid-June — even ticking off tonight's small items in Todoist starts the restart.",
-    "Today was a content day — if nothing's gone out yet, one post before bed still counts. And the marathon is behind you now; tell me the next race or goal when you reply and I'll rebuild the training plan around it."
+    "Afternoon Christian. It's been 16 days since I last checked in, so let's catch up properly — there's real movement, both good and worth watching.",
+    "Start with the best part: Naomi Cameron came back. That $87 order I flagged as expired on the 12th is still sitting unpaid, but she placed a new order on the 13th for $136 and it's paid and fulfilled. That's a customer worth a thank-you message, and the old $87 is still recoverable if you resend the link.",
+    "The habit system you built on the 12th worked — properly. 46 tasks done the week of the 13th, 27 the week after, karma up 306 points. But the last three days have been quiet and today reset the streak to zero. Nothing's broken, it's just the first wobble — worth a look at what changed this week.",
+    "On money: the overdue pile shrank a lot — Internet, the CBA personal loan, ChatGPT, and Fitness Passports are all cleared since last time. What's left is $136 overdue (led by the CBA credit card, still your priority debt at 20.99%) and $60 due today. And Square's connector needs reauthorizing on your end — I can only see revenue through the 4th, so the July figure is likely short.",
+    "One thing I can't move forward without you: it's been 23 days since the marathon and there's still no next goal. Whenever you've picked one, tell me and I'll rebuild the training block."
   ],
   "today": [
-    { "level": "critical", "text": "Message Naomi Cameron — resend payment link for Shopify order #1003 ($87)" },
-    { "level": "warning",  "text": "Post something — Sunday is a content day and there's still tonight" },
-    { "level": "good",     "text": "Genesis 1 — start the reading plan before bed" },
-    { "level": "neutral",  "text": "10 minutes of Czech or Māori" },
-    { "level": "critical", "text": "Tomorrow first thing: pay Internet ($80) — overdue since 14 Jun, oldest on the list" }
+    { "level": "critical", "text": "CBA credit card $50 — overdue since 25 Jul, the priority debt" },
+    { "level": "warning",  "text": "Rev Plan $10 and Zip $50 — both due today" },
+    { "level": "good",     "text": "Thank Naomi Cameron for order #1004 ($136) — and resend the link for the expired #1003 ($87)" },
+    { "level": "warning",  "text": "Reauthorize Square in claude.ai connector settings — July revenue is incomplete without it" },
+    { "level": "neutral",  "text": "Whatever broke the habit streak the last 3 days — worth 5 minutes of honesty about it" }
   ],
   "numbers": [
-    { "label": "Overdue",       "value": "$506",    "note": "12 items",          "level": "critical" },
-    { "label": "Revenue (Jul)", "value": "$268.50", "note": "Square · 4 Jul",    "level": "good" },
-    { "label": "Task streak",   "value": "0",       "note": "5 tasks restarts",  "level": "critical" },
-    { "label": "Recoverable",   "value": "$87",     "note": "expired order",     "level": "warning" }
+    { "label": "Outstanding", "value": "$196",    "note": "$136 overdue · $60 today", "level": "warning" },
+    { "label": "Revenue (Jul, partial)", "value": "$404.50", "note": "Square + Shopify", "level": "good" },
+    { "label": "Karma (2wk)", "value": "+306",    "note": "10,487 → 10,793",         "level": "good" },
+    { "label": "Habit streak", "value": "0",      "note": "reset today",             "level": "warning" }
   ],
   "radar": [
-    "WHOOP is stale (last sync 18 Jun) — when you're ready, I have the phone-only re-auth steps queued; recovery numbers return the moment it's done",
-    "Next running goal is open — reply with a race or target and I'll build the block",
-    "The Todoist bills project still has duplicate entries (two CBA credit cards, two Zips) — needs your call on which are real"
+    "WHOOP hasn't synced since 18 Jun (over 5 weeks now) — still needs the phone-only re-auth whenever you're ready",
+    "Next running goal still open — 23 days since Gold Coast, reply with a target and I'll build the block",
+    "Square connector needs reauthorizing — until then July revenue understates the real number",
+    "The Naomi Cameron $87 order (#1003) has been expired since early July — small but easy to recover"
   ]
 }
