@@ -112,11 +112,14 @@ export default async function handler(req) {
     });
   }
 
+  // No API key set. That's a supported mode, not an error: the page hands the
+  // question to Claude with today's context attached, which runs on the user's
+  // subscription instead of billing tokens.
   if (!process.env.ANTHROPIC_API_KEY) {
-    return new Response(
-      JSON.stringify({ error: "Chat isn't connected yet — ANTHROPIC_API_KEY isn't set in Vercel." }),
-      { status: 500, headers: { "content-type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ handoff: true }), {
+      status: 200,
+      headers: { "content-type": "application/json", "cache-control": "no-store" },
+    });
   }
 
   let body;

@@ -67,7 +67,7 @@
 
   .app {
     max-width: 620px; margin: 0 auto;
-    padding: calc(20px + env(safe-area-inset-top)) 18px 132px;
+    padding: calc(20px + env(safe-area-inset-top)) 18px calc(104px + env(safe-area-inset-bottom));
   }
 
   section { padding: 18px 0; border-top: 1px solid var(--hairline); }
@@ -131,13 +131,25 @@
   }
   .error.show { display: block; }
 
-  /* ---------- composer (shared by briefing + chat) ---------- */
+  /* ---------- ask button (briefing) ---------- */
+  .fab {
+    position: fixed; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom));
+    z-index: 60; height: 52px; padding: 0 20px; border-radius: 26px; border: none;
+    background: var(--bubble-me); color: #fff; cursor: pointer;
+    display: flex; align-items: center; gap: 9px;
+    font-size: 15px; font-weight: 650; font-family: inherit;
+    box-shadow: var(--shadow);
+    transition: transform 0.14s ease, opacity 0.2s ease;
+  }
+  .fab:active { transform: scale(0.94); }
+
+  /* ---------- composer (lives inside the chat panel) ---------- */
   .composer {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
-    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-    background: linear-gradient(to top, var(--bg) 72%, transparent);
+    flex-shrink: 0;
+    padding: 8px 14px calc(10px + env(safe-area-inset-bottom));
+    background: var(--bg);
     display: flex; justify-content: center;
-    transition: transform 0.18s ease;
+    border-top: 1px solid var(--hairline);
   }
   .composer-inner {
     display: flex; align-items: flex-end; gap: 8px; width: 100%; max-width: 592px;
@@ -162,7 +174,8 @@
 
   /* ---------- chat panel ---------- */
   .chat {
-    position: fixed; inset: 0; z-index: 50; background: var(--bg);
+    position: fixed; top: 0; left: 0; right: 0; height: 100%;
+    z-index: 50; background: var(--bg);
     display: flex; flex-direction: column;
     transform: translateY(100%); transition: transform 0.28s cubic-bezier(.32,.72,0,1);
     visibility: hidden;
@@ -184,8 +197,12 @@
   .chat-scroll {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    padding: 16px 16px 96px;
+    padding: 16px 16px 14px;
     display: flex; flex-direction: column; gap: 12px;
+  }
+  .handoff-note {
+    align-self: flex-start; font-size: 13px; color: var(--ink-3);
+    line-height: 1.5; padding: 4px 0;
   }
   .msg { max-width: 86%; font-size: 15.5px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; }
   .msg.me {
@@ -303,16 +320,20 @@
     </button>
   </div>
   <div class="chat-scroll" id="chatScroll"></div>
-</div>
-
-<div class="composer" id="composer">
-  <div class="composer-inner">
-    <textarea class="composer-input" id="input" rows="1" placeholder="Ask your assistant…" enterkeyhint="send" autocapitalize="sentences"></textarea>
-    <button class="send" id="send" aria-label="Send">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-    </button>
+  <div class="composer" id="composer">
+    <div class="composer-inner">
+      <textarea class="composer-input" id="input" rows="1" placeholder="Ask your assistant…" enterkeyhint="send" autocapitalize="sentences"></textarea>
+      <button class="send" id="send" aria-label="Send">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </div>
   </div>
 </div>
+
+<button class="fab" id="fab" aria-label="Ask your assistant">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-8.5 8.5 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5 8.5 8.5 0 0112.5 3 8.5 8.5 0 0121 11.5z"/></svg>
+  Ask
+</button>
 
 <script>
 "use strict";
@@ -529,11 +550,33 @@ function renderChat() {
   scroll.innerHTML = history.map((m) =>
     m.role === "user"
       ? `<div class="msg me">${esc(m.content)}</div>`
+      : m.note
+      ? `<div class="handoff-note">${esc(m.content)}</div>`
       : m.error
       ? `<div class="msg err">${esc(m.content)}</div>`
       : `<div class="msg pa">${fmt(m.content)}</div>`
   ).join("");
   scrollDown();
+}
+
+/* ---------- handoff: no API key, so hand the question to Claude
+   with today's context attached. Costs nothing, uses your subscription. ---------- */
+function handoffContext(question) {
+  const b = BRIEFING;
+  const day = PLAN ? dayNumber() : null;
+  const out = ["You're my personal assistant. This came from my life dashboard — keep the reply short and direct, like the briefing does."];
+  if (day && day >= 1 && day <= 150) out.push(`Today is Day ${day} of my 150-day content build (marathon runner → sprinter, filmed time trial on 2 Jan).`);
+  if (b) {
+    out.push(`Today's briefing said:\n${b.message.join("\n")}`.slice(0, 2600));
+    out.push(`Today's list: ${b.today.map((t) => t.text).join(" · ")}`);
+    out.push(`Numbers: ${b.numbers.map((n) => `${n.label} ${n.value}`).join(" · ")}`);
+  }
+  out.push(`My question: ${question}`);
+  return out.join("\n\n");
+}
+
+function openHandoff(question) {
+  window.open(`https://claude.ai/new?q=${encodeURIComponent(handoffContext(question))}`, "_blank");
 }
 
 function scrollDown() {
@@ -557,13 +600,23 @@ async function send() {
   const text = input.value.trim();
   if (!text || sending) return;
 
-  sending = true;
-  $("send").disabled = true;
   input.value = "";
   input.style.height = "auto";
   openChat();
 
   history.push({ role: "user", content: text });
+
+  // Handoff mode: already established there's no API key on the server.
+  if (store("pa:handoff")) {
+    history.push({ role: "assistant", note: true, content: "Opened in Claude with today's briefing attached." });
+    store(chatKey(), history);
+    renderChat();
+    openHandoff(text);
+    return;
+  }
+
+  sending = true;
+  $("send").disabled = true;
   store(chatKey(), history);
   renderChat();
 
@@ -609,6 +662,23 @@ async function send() {
         return send();
       }
       return finish("Chat is locked — a passcode is needed.", true);
+    }
+
+    // No API key configured on the server — switch to handoff permanently.
+    const ctype = res.headers.get("content-type") || "";
+    if (res.ok && ctype.includes("application/json")) {
+      const j = await res.json().catch(() => null);
+      if (j && j.handoff) {
+        store("pa:handoff", true);
+        typing.remove();
+        history.push({ role: "assistant", note: true, content: "No API key set, so I'll hand these to Claude instead — same conversation, on your subscription, no per-message cost. Opening it now." });
+        store(chatKey(), history);
+        renderChat();
+        openHandoff(text);
+        sending = false;
+        $("send").disabled = false;
+        return;
+      }
     }
 
     if (!res.ok || !res.body) {
@@ -666,8 +736,10 @@ function setupChat() {
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
   });
-  input.addEventListener("focus", () => { if (!$("chat").classList.contains("open")) openChat(); });
-
+  $("fab").addEventListener("click", () => {
+    openChat();
+    setTimeout(() => input.focus(), 300);
+  });
   $("send").addEventListener("click", send);
   $("chatClose").addEventListener("click", closeChat);
   $("planClose").addEventListener("click", closePlan);
@@ -679,16 +751,19 @@ function setupChat() {
 
   history = store(chatKey()) || [];
 
-  // Keep the composer above the on-screen keyboard on iOS.
+  // Shrink the chat panel to the visible area so the keyboard never covers
+  // the composer or the last message on iOS.
   if (window.visualViewport) {
     const vv = window.visualViewport;
     const fit = () => {
-      const gap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      $("composer").style.transform = `translateY(-${gap}px)`;
-      if ($("chat").classList.contains("open")) scrollDown();
+      const chat = $("chat");
+      chat.style.height = `${vv.height}px`;
+      chat.style.top = `${vv.offsetTop}px`;
+      if (chat.classList.contains("open")) scrollDown();
     };
     vv.addEventListener("resize", fit);
     vv.addEventListener("scroll", fit);
+    fit();
   }
 }
 
