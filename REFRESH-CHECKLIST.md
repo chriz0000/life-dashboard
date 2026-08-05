@@ -29,6 +29,27 @@ If `briefing.json`'s `date` is not today, the page flags the briefing as old
 automatically. If WHOOP synced within 36h, a Recovery tile is injected
 automatically — don't duplicate it in `numbers`.
 
+## 0. The chat (`api/chat.js`)
+
+The dashboard has a live chat that talks to Claude directly — no app switching.
+It's a Vercel Edge function that streams replies, and it builds its system
+prompt by fetching `briefing.json`, `data.json` and `whoop-data.json` from the
+deployment at request time. **That means a refreshed briefing updates what the
+chat knows, automatically — there is nothing extra to do here.**
+
+Two environment variables in the Vercel project:
+
+- `ANTHROPIC_API_KEY` — **required**, or the chat replies with a setup message
+- `CHAT_PASSCODE` — optional but recommended; the site is public, so without it
+  anyone who finds the URL can spend the API credit. The page prompts once and
+  remembers it.
+
+Model is `claude-opus-5` at `effort: low` (fast replies for phone use), with
+server-side refusal fallback enabled. Conversations are stored per-day in the
+browser only — they are never written back to `data.json` or `briefing.json`,
+so anything Christian tells the chat must be carried into the next briefing by
+hand.
+
 ## 1. Verify connections are live
 
 Before trusting any data, confirm each source actually responds:

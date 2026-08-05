@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
 <title>Life Dashboard</title>
 <meta name="description" content="Christian's daily briefing" />
 
@@ -30,7 +30,8 @@
     --critical: #C45C4A;
     --info: #5B8DB8;
     --neutral: #B5AFA8;
-    --shadow: 0 2px 12px rgba(120, 100, 80, 0.10);
+    --bubble-me: #5B8DB8;
+    --shadow: 0 2px 16px rgba(120, 100, 80, 0.12);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -40,36 +41,40 @@
       --ink-2: #9B948B;
       --ink-3: #6E675F;
       --hairline: rgba(255, 255, 255, 0.10);
-      --well: rgba(255, 255, 255, 0.04);
+      --well: rgba(255, 255, 255, 0.05);
       --good: #79B08C;
       --warning: #D9A05F;
       --critical: #D97965;
       --info: #7FA9CC;
       --neutral: #6E675F;
-      --shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      --bubble-me: #3D6B94;
+      --shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
     }
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-  html, body { background: var(--bg); }
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { background: var(--bg); overscroll-behavior-y: none; }
   body {
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     color: var(--ink);
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    padding-top: env(safe-area-inset-top);
     overflow-x: hidden;
   }
 
-  .app { max-width: 600px; margin: 0 auto; padding: 24px 20px 120px; }
+  .app {
+    max-width: 620px; margin: 0 auto;
+    padding: calc(20px + env(safe-area-inset-top)) 18px 132px;
+  }
 
-  section { padding: 20px 0; border-top: 1px solid var(--hairline); }
+  section { padding: 18px 0; border-top: 1px solid var(--hairline); }
   section:first-of-type { border-top: none; padding-top: 0; }
 
   .label {
-    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    font-size: 11px; font-weight: 650; text-transform: uppercase;
     letter-spacing: 0.08em; color: var(--ink-2); margin-bottom: 12px;
   }
 
@@ -81,84 +86,128 @@
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--neutral)); flex-shrink: 0; }
 
   /* ---------- header ---------- */
-  .date { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); }
-  .greeting { font-size: 22px; font-weight: 650; letter-spacing: -0.01em; margin-top: 2px; }
-  .stale-note { font-size: 12px; color: var(--warning); margin-top: 6px; }
+  .date { font-size: 12px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); }
+  .greeting { font-size: 23px; font-weight: 650; letter-spacing: -0.015em; margin-top: 2px; }
+  .stale-note { font-size: 13px; color: var(--warning); margin-top: 8px; }
 
   /* ---------- briefing ---------- */
-  .briefing p {
-    font-size: 15.5px; line-height: 1.65; margin-bottom: 14px;
-  }
+  .briefing p { font-size: 16px; line-height: 1.62; margin-bottom: 15px; }
   .briefing p:last-child { margin-bottom: 0; }
 
-  /* ---------- today checklist ---------- */
+  /* ---------- today ---------- */
   .today-item {
-    display: flex; align-items: flex-start; gap: 10px; padding: 9px 0;
+    display: flex; align-items: flex-start; gap: 11px;
+    padding: 11px 0; min-height: 44px;
     cursor: pointer; user-select: none; -webkit-user-select: none;
   }
   .today-check {
-    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--hairline);
+    width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--hairline);
     flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; color: #fff;
   }
-  .today-item .dot { margin-top: 8px; }
-  .today-text { font-size: 14.5px; }
+  .today-item .dot { margin-top: 9px; }
+  .today-text { font-size: 15px; }
   .today-item.done { opacity: 0.4; }
   .today-item.done .today-text { text-decoration: line-through; }
   .today-item.done .today-check { background: var(--good); border-color: var(--good); }
 
   /* ---------- numbers ---------- */
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; }
-  .tile { background: var(--well); border-radius: 10px; padding: 10px 12px; min-width: 0; }
-  .tile-label { font-size: 11px; color: var(--ink-2); }
-  .tile-value { font-size: 19px; font-weight: 650; margin-top: 2px; letter-spacing: -0.01em; white-space: nowrap; }
-  .tile-note { font-size: 11px; color: var(--ink-2); margin-top: 1px; display: flex; align-items: center; gap: 5px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 8px; }
+  .tile { background: var(--well); border-radius: 12px; padding: 11px 13px; min-width: 0; }
+  .tile-label { font-size: 11.5px; color: var(--ink-2); }
+  .tile-value { font-size: 20px; font-weight: 650; margin-top: 2px; letter-spacing: -0.015em; white-space: nowrap; }
+  .tile-note { font-size: 11.5px; color: var(--ink-2); margin-top: 1px; display: flex; align-items: center; gap: 5px; }
   .tile-note .dot { width: 6px; height: 6px; }
 
   /* ---------- radar ---------- */
-  .radar-item {
-    display: flex; gap: 10px; padding: 7px 0;
-    font-size: 13px; color: var(--ink-2); line-height: 1.5;
-  }
+  .radar-item { display: flex; gap: 10px; padding: 8px 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
   .radar-item::before { content: "—"; color: var(--ink-3); flex-shrink: 0; }
 
-  /* ---------- footer ---------- */
-  .footer { padding-top: 20px; border-top: 1px solid var(--hairline); text-align: center; }
+  .footer { padding-top: 18px; border-top: 1px solid var(--hairline); text-align: center; }
   .footer div { font-size: 12px; color: var(--ink-3); }
 
   .error {
-    font-size: 13px; color: var(--critical); padding: 12px; border-radius: 10px;
+    font-size: 13.5px; color: var(--critical); padding: 12px; border-radius: 10px;
     background: color-mix(in srgb, var(--critical) 10%, transparent); margin-bottom: 16px; display: none;
   }
   .error.show { display: block; }
 
-  /* ---------- reply bar ---------- */
-  .reply-bar {
-    position: fixed; left: 0; right: 0; bottom: 0;
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-    background: linear-gradient(to top, var(--bg) 75%, transparent);
-    display: flex; justify-content: center; z-index: 100;
+  /* ---------- composer (shared by briefing + chat) ---------- */
+  .composer {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--bg) 72%, transparent);
+    display: flex; justify-content: center;
+    transition: transform 0.18s ease;
   }
-  .reply-inner {
-    display: flex; align-items: center; gap: 8px; width: 100%; max-width: 568px;
-    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
-    border: 1px solid var(--hairline); padding: 8px;
+  .composer-inner {
+    display: flex; align-items: flex-end; gap: 8px; width: 100%; max-width: 592px;
+    background: var(--card); border: 1px solid var(--hairline);
+    border-radius: 22px; box-shadow: var(--shadow); padding: 6px 6px 6px 8px;
   }
-  .reply-input {
-    flex: 1; border: none; outline: none; background: transparent;
-    font-size: 15px; color: var(--ink); font-family: inherit; min-width: 0; padding: 6px 8px;
+  .composer-input {
+    flex: 1; border: none; outline: none; background: transparent; resize: none;
+    font-size: 16px; /* 16px stops iOS zooming on focus */
+    line-height: 1.4; font-family: inherit; color: var(--ink);
+    padding: 9px 6px; max-height: 120px; min-width: 0;
   }
-  .reply-input::placeholder { color: var(--ink-3); }
-  .reply-send {
+  .composer-input::placeholder { color: var(--ink-3); }
+  .send {
     width: 36px; height: 36px; border-radius: 50%; border: none; flex-shrink: 0;
-    background: var(--info); color: #fff; cursor: pointer;
+    background: var(--bubble-me); color: #fff; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: transform 0.15s ease;
+    transition: transform 0.12s ease, opacity 0.15s ease;
   }
-  .reply-send:active { transform: scale(0.9); }
+  .send:active { transform: scale(0.9); }
+  .send:disabled { opacity: 0.35; }
+
+  /* ---------- chat panel ---------- */
+  .chat {
+    position: fixed; inset: 0; z-index: 50; background: var(--bg);
+    display: flex; flex-direction: column;
+    transform: translateY(100%); transition: transform 0.28s cubic-bezier(.32,.72,0,1);
+    visibility: hidden;
+  }
+  .chat.open { transform: translateY(0); visibility: visible; }
+  .chat-head {
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+    padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+    border-bottom: 1px solid var(--hairline); background: var(--bg);
+  }
+  .chat-title { font-size: 15px; font-weight: 650; flex: 1; }
+  .chat-sub { font-size: 12px; color: var(--ink-2); font-weight: 400; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--well);
+    color: var(--ink-2); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+  }
+  .icon-btn:active { transform: scale(0.92); }
+  .chat-scroll {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 16px 16px 96px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .msg { max-width: 86%; font-size: 15.5px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; }
+  .msg.me {
+    align-self: flex-end; background: var(--bubble-me); color: #fff;
+    padding: 10px 14px; border-radius: 18px 18px 4px 18px;
+  }
+  .msg.pa { align-self: flex-start; max-width: 100%; }
+  .msg.pa strong { font-weight: 650; }
+  .msg.err { align-self: flex-start; color: var(--critical); font-size: 14px; }
+  .typing { display: flex; gap: 4px; align-self: flex-start; padding: 6px 0; }
+  .typing span {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3);
+    animation: blink 1.3s infinite both;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.18s; }
+  .typing span:nth-child(3) { animation-delay: 0.36s; }
+  @keyframes blink { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+  .chat-empty { color: var(--ink-3); font-size: 14px; text-align: center; padding: 32px 12px; line-height: 1.6; }
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="app">
   <div class="error" id="error"></div>
   <section id="header"></section>
   <section><div class="briefing" id="briefing"></div></section>
@@ -168,11 +217,27 @@
   <footer class="footer" id="footer"></footer>
 </div>
 
-<div class="reply-bar">
-  <div class="reply-inner">
-    <input class="reply-input" id="replyInput" type="text" placeholder="Reply to your briefing..." enterkeyhint="send" />
-    <button class="reply-send" id="replySend" title="Send">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+<div class="chat" id="chat">
+  <div class="chat-head">
+    <div>
+      <div class="chat-title">Your assistant</div>
+      <div class="chat-sub" id="chatSub">Knows today's briefing</div>
+    </div>
+    <button class="icon-btn" id="chatClear" title="Clear conversation" aria-label="Clear conversation">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+    </button>
+    <button class="icon-btn" id="chatClose" title="Back to briefing" aria-label="Back to briefing">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+  <div class="chat-scroll" id="chatScroll"></div>
+</div>
+
+<div class="composer" id="composer">
+  <div class="composer-inner">
+    <textarea class="composer-input" id="input" rows="1" placeholder="Ask your assistant…" enterkeyhint="send" autocapitalize="sentences"></textarea>
+    <button class="send" id="send" aria-label="Send">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
     </button>
   </div>
 </div>
@@ -182,13 +247,11 @@
 
 const $ = (id) => document.getElementById(id);
 const TZ = "Australia/Brisbane";
-const CHECK = '<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+const CHECK = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 
-let BRIEFING = null;  // latest loaded briefing, used to build the reply context
+let BRIEFING = null;
 
-function brisbaneNow() {
-  return new Date(new Date().toLocaleString("en-US", { timeZone: TZ }));
-}
+function brisbaneNow() { return new Date(new Date().toLocaleString("en-US", { timeZone: TZ })); }
 function todayISO() {
   const d = brisbaneNow();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -202,13 +265,17 @@ function store(key, value) {
 function esc(s) {
   return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
+// escape first, then allow **bold** only — no raw HTML ever reaches the page
+function fmt(s) { return esc(s).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>"); }
 
+/* =========================================================
+   BRIEFING
+   ========================================================= */
 function renderHeader(b) {
   const now = brisbaneNow();
   const hour = now.getHours();
   const greeting = hour >= 17 || hour < 5 ? "Good evening" : hour >= 12 ? "Good afternoon" : "Good morning";
   const dateStr = now.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" });
-
   const isStale = b.date !== todayISO();
   const staleStr = isStale
     ? new Date(`${b.date}T12:00:00+10:00`).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: TZ })
@@ -217,12 +284,12 @@ function renderHeader(b) {
   $("header").innerHTML = `
     <div class="date">${dateStr}</div>
     <div class="greeting">${greeting}, Christian</div>
-    ${isStale ? `<div class="stale-note">This briefing was written ${staleStr} — a fresh one lands on the next update cycle.</div>` : ""}
+    ${isStale ? `<div class="stale-note">This briefing was written ${staleStr} — ask me below for anything newer.</div>` : ""}
   `;
 }
 
 function renderBriefing(b) {
-  $("briefing").innerHTML = b.message.map((p) => `<p>${esc(p)}</p>`).join("");
+  $("briefing").innerHTML = b.message.map((p) => `<p>${fmt(p)}</p>`).join("");
 }
 
 function renderToday(b) {
@@ -239,25 +306,24 @@ function renderToday(b) {
   $("today").querySelectorAll(".today-item").forEach((item) => {
     item.addEventListener("click", () => {
       const i = +item.dataset.i;
-      const done = store(key) || [];
-      done[i] = !done[i];
-      store(key, done);
-      item.classList.toggle("done", done[i]);
-      item.querySelector(".today-check").innerHTML = done[i] ? CHECK : "";
+      const d = store(key) || [];
+      d[i] = !d[i];
+      store(key, d);
+      item.classList.toggle("done", d[i]);
+      item.querySelector(".today-check").innerHTML = d[i] ? CHECK : "";
     });
   });
 }
 
 function renderNumbers(b, whoop) {
   const tiles = [...b.numbers];
-
-  // If WHOOP has synced within ~36h, surface recovery as a live tile.
   if (whoop && whoop.synced_at && (Date.now() - new Date(whoop.synced_at)) / 3600000 <= 36 && whoop.recovery) {
     const rec = Math.round(whoop.recovery.recovery_score);
-    const level = rec >= 67 ? "good" : rec >= 34 ? "warning" : "critical";
-    tiles.unshift({ label: "Recovery", value: `${rec}%`, note: "WHOOP · today", level });
+    tiles.unshift({
+      label: "Recovery", value: `${rec}%`, note: "WHOOP · today",
+      level: rec >= 67 ? "good" : rec >= 34 ? "warning" : "critical",
+    });
   }
-
   $("numbers").innerHTML = tiles.map((t) => `
     <div class="tile lv-${t.level || "neutral"}">
       <div class="tile-label">${esc(t.label)}</div>
@@ -272,41 +338,193 @@ function renderRadar(b) {
 }
 
 function renderFooter(b) {
-  const written = new Date(b.writtenAt);
-  const str = written.toLocaleString("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: TZ });
+  const str = new Date(b.writtenAt).toLocaleString("en-AU", {
+    day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: TZ,
+  });
   $("footer").innerHTML = `<div>Briefing written ${str}</div><div>Updates automatically — no refresh needed</div>`;
 }
 
-/* ---------- reply: opens Claude with today's full context ---------- */
-function buildContext() {
-  if (!BRIEFING) return "";
-  const b = BRIEFING;
-  const done = store(`pa:done:${b.date}`) || [];
-  const todayLines = b.today.map((t, i) => `${done[i] ? "[done] " : ""}${t.text}`).join("; ");
-  const numberLines = b.numbers.map((n) => `${n.label}: ${n.value}${n.note ? ` (${n.note})` : ""}`).join("; ");
-  return [
-    `You are my personal assistant. Today is ${b.date}. Here is my dashboard briefing you wrote me earlier:`,
-    b.message.join(" "),
-    `Today's list: ${todayLines}.`,
-    `Numbers: ${numberLines}.`,
-    `On the radar: ${b.radar.join("; ")}.`,
-    `My reply:`,
-  ].join("\n");
+/* =========================================================
+   CHAT — talks to /api/chat, which talks to Claude
+   ========================================================= */
+const chatKey = () => `pa:chat:${todayISO()}`;
+let history = [];
+let sending = false;
+
+function renderChat() {
+  const scroll = $("chatScroll");
+  if (!history.length) {
+    scroll.innerHTML = `<div class="chat-empty">Ask me anything about today.<br />I have your briefing, your bills, and your numbers in front of me.</div>`;
+    return;
+  }
+  scroll.innerHTML = history.map((m) =>
+    m.role === "user"
+      ? `<div class="msg me">${esc(m.content)}</div>`
+      : m.error
+      ? `<div class="msg err">${esc(m.content)}</div>`
+      : `<div class="msg pa">${fmt(m.content)}</div>`
+  ).join("");
+  scrollDown();
 }
 
-function setupReply() {
-  const input = $("replyInput");
-  const send = () => {
-    const msg = input.value.trim();
-    if (!msg) return;
-    window.open(`https://claude.ai/new?q=${encodeURIComponent(`${buildContext()} ${msg}`)}`, "_blank");
-    input.value = "";
+function scrollDown() {
+  const s = $("chatScroll");
+  requestAnimationFrame(() => { s.scrollTop = s.scrollHeight; });
+}
+
+function openChat() {
+  $("chat").classList.add("open");
+  renderChat();
+}
+function closeChat() {
+  $("chat").classList.remove("open");
+  $("input").blur();
+}
+
+function passcode() { return store("pa:passcode") || ""; }
+
+async function send() {
+  const input = $("input");
+  const text = input.value.trim();
+  if (!text || sending) return;
+
+  sending = true;
+  $("send").disabled = true;
+  input.value = "";
+  input.style.height = "auto";
+  openChat();
+
+  history.push({ role: "user", content: text });
+  store(chatKey(), history);
+  renderChat();
+
+  const scroll = $("chatScroll");
+  const typing = document.createElement("div");
+  typing.className = "typing";
+  typing.innerHTML = "<span></span><span></span><span></span>";
+  scroll.appendChild(typing);
+  scrollDown();
+
+  let bubble = null;
+  let acc = "";
+
+  const finish = (content, isError) => {
+    typing.remove();
+    if (content) {
+      history.push({ role: "assistant", content, ...(isError ? { error: true } : {}) });
+      store(chatKey(), history);
+    }
+    renderChat();
+    sending = false;
+    $("send").disabled = false;
   };
-  $("replySend").addEventListener("click", send);
-  input.addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-dashboard-passcode": passcode() },
+      body: JSON.stringify({ messages: history.filter((m) => !m.error) }),
+    });
+
+    if (res.status === 401) {
+      typing.remove();
+      const code = prompt("Passcode for this dashboard:");
+      if (code) {
+        store("pa:passcode", code);
+        history.pop();
+        store(chatKey(), history);
+        input.value = text;
+        sending = false;
+        $("send").disabled = false;
+        renderChat();
+        return send();
+      }
+      return finish("Chat is locked — a passcode is needed.", true);
+    }
+
+    if (!res.ok || !res.body) {
+      let msg = `Couldn't reach the assistant (${res.status}).`;
+      try { const j = await res.json(); if (j.error) msg = j.error; } catch {}
+      return finish(msg, true);
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = "";
+
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split("\n");
+      buf = lines.pop();
+
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        let evt;
+        try { evt = JSON.parse(line); } catch { continue; }
+
+        if (evt.error) return finish(evt.error, true);
+
+        if (evt.t) {
+          if (!bubble) {
+            typing.remove();
+            bubble = document.createElement("div");
+            bubble.className = "msg pa";
+            scroll.appendChild(bubble);
+          }
+          acc += evt.t;
+          bubble.innerHTML = fmt(acc);
+          scrollDown();
+        }
+      }
+    }
+
+    if (bubble) bubble.remove();
+    finish(acc.trim() || "No reply came back — try again.", !acc.trim());
+  } catch (err) {
+    finish(`Connection dropped: ${err.message}`, true);
+  }
 }
 
-/* ---------- load + auto-refresh ---------- */
+function setupChat() {
+  const input = $("input");
+
+  input.addEventListener("input", () => {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 120) + "px";
+  });
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  input.addEventListener("focus", () => { if (!$("chat").classList.contains("open")) openChat(); });
+
+  $("send").addEventListener("click", send);
+  $("chatClose").addEventListener("click", closeChat);
+  $("chatClear").addEventListener("click", () => {
+    history = [];
+    store(chatKey(), history);
+    renderChat();
+  });
+
+  history = store(chatKey()) || [];
+
+  // Keep the composer above the on-screen keyboard on iOS.
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    const fit = () => {
+      const gap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      $("composer").style.transform = `translateY(-${gap}px)`;
+      if ($("chat").classList.contains("open")) scrollDown();
+    };
+    vv.addEventListener("resize", fit);
+    vv.addEventListener("scroll", fit);
+  }
+}
+
+/* =========================================================
+   LOAD + AUTO-REFRESH
+   ========================================================= */
 let rendered = false;
 
 async function refresh() {
@@ -328,6 +546,7 @@ async function refresh() {
   renderNumbers(briefing, whoop);
   renderRadar(briefing);
   renderFooter(briefing);
+  $("chatSub").textContent = briefing.date === todayISO() ? "Knows today's briefing" : "Knows your last briefing";
   rendered = true;
 }
 
@@ -337,13 +556,9 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") refresh();
 });
 
-setupReply();
+setupChat();
 
-// network-first service worker keeps the installed home-screen app
-// loading the live page instead of a stale cached copy
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
-}
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 </script>
 </body>
 </html>

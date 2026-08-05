@@ -1,0 +1,9 @@
+{
+  "name": "life-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Christian's life dashboard — PA-style daily briefing with a direct chat line",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0"
+  }
+}

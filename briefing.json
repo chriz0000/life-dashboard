@@ -1,30 +1,30 @@
 {
-  "date": "2026-07-28",
-  "writtenAt": "2026-07-28T12:20:00+10:00",
+  "date": "2026-08-05",
+  "writtenAt": "2026-08-05T11:20:00+10:00",
   "message": [
-    "Afternoon Christian. It's been 16 days since I last checked in, so let's catch up properly — there's real movement, both good and worth watching.",
-    "Start with the best part: Naomi Cameron came back. That $87 order I flagged as expired on the 12th is still sitting unpaid, but she placed a new order on the 13th for $136 and it's paid and fulfilled. That's a customer worth a thank-you message, and the old $87 is still recoverable if you resend the link.",
-    "The habit system you built on the 12th worked — properly. 46 tasks done the week of the 13th, 27 the week after, karma up 306 points. But the last three days have been quiet and today reset the streak to zero. Nothing's broken, it's just the first wobble — worth a look at what changed this week.",
-    "On money: the overdue pile shrank a lot — Internet, the CBA personal loan, ChatGPT, and Fitness Passports are all cleared since last time. What's left is $136 overdue (led by the CBA credit card, still your priority debt at 20.99%) and $60 due today. And Square's connector needs reauthorizing on your end — I can only see revenue through the 4th, so the July figure is likely short.",
-    "One thing I can't move forward without you: it's been 23 days since the marathon and there's still no next goal. Whenever you've picked one, tell me and I'll rebuild the training block."
+    "Morning Christian. First thing: I owe you a correction, and it's a good one. I'd been telling you July brought in $404. Square's connector was only letting me see up to the 4th. Now that it's working properly, the real number is **$1,803.50** — $1,667.50 across the markets plus Naomi's $136 online. That's your second-best month of 2026 behind May, and you've been looking at a dashboard that showed less than a quarter of it.",
+    "What actually happened: you ran four market weekends — the 3rd-4th, 11th-12th, 17th-18th and 25th-26th — and every one of them landed. August has started slower. One market day on Sunday the 2nd, three sales, $120. Worth watching whether that's just a quiet weekend or the run cooling off.",
+    "The bills are the other real win. Back on the 12th of July you had $506 overdue and I was leading every briefing with it. Your Bills & Debts list is now clear — nothing overdue at all. What's left is subscriptions: six of them land today, $115.95 total, and ChatGPT's $30 has been sitting since yesterday.",
+    "The soft spot is the habit run. You built it on the 12th and it worked — 46 tasks that first week, 27 the next. Then 8 last week, and nothing since Saturday. Three are sitting there for today: diet, water, no screens. That's the whole ask.",
+    "One more thing — you can talk to me directly here now. The chat at the bottom reaches me with all of this in front of me. Ask me anything about the numbers, or just tell me what you've decided about the next race and I'll build the block around it."
   ],
   "today": [
-    { "level": "critical", "text": "CBA credit card $50 — overdue since 25 Jul, the priority debt" },
-    { "level": "warning",  "text": "Rev Plan $10 and Zip $50 — both due today" },
-    { "level": "good",     "text": "Thank Naomi Cameron for order #1004 ($136) — and resend the link for the expired #1003 ($87)" },
-    { "level": "warning",  "text": "Reauthorize Square in claude.ai connector settings — July revenue is incomplete without it" },
-    { "level": "neutral",  "text": "Whatever broke the habit streak the last 3 days — worth 5 minutes of honesty about it" }
+    { "level": "critical", "text": "ChatGPT Plus $30 — overdue since yesterday" },
+    { "level": "warning",  "text": "5 more subscriptions due today — Netflix, Apple Music, Apple One, Prime, Revolut ($85.95)" },
+    { "level": "good",     "text": "Today's three habits: diet, 4L water, no screens — this is what restarts the streak" },
+    { "level": "warning",  "text": "Pick the next race — it's been 31 days since Gold Coast and the training block is empty" },
+    { "level": "neutral",  "text": "Run whoop_sync.py on the desktop — 7 weeks without recovery data" }
   ],
   "numbers": [
-    { "label": "Outstanding", "value": "$196",    "note": "$136 overdue · $60 today", "level": "warning" },
-    { "label": "Revenue (Jul, partial)", "value": "$404.50", "note": "Square + Shopify", "level": "good" },
-    { "label": "Karma (2wk)", "value": "+306",    "note": "10,487 → 10,793",         "level": "good" },
-    { "label": "Habit streak", "value": "0",      "note": "reset today",             "level": "warning" }
+    { "label": "July revenue", "value": "$1,803.50", "note": "I'd shown you $404",  "level": "good" },
+    { "label": "Due today",    "value": "$115.95",   "note": "6 subscriptions",     "level": "warning" },
+    { "label": "August so far","value": "$120",      "note": "1 market day",        "level": "neutral" },
+    { "label": "Task streak",  "value": "0",         "note": "quiet since Saturday","level": "critical" }
   ],
   "radar": [
-    "WHOOP hasn't synced since 18 Jun (over 5 weeks now) — still needs the phone-only re-auth whenever you're ready",
-    "Next running goal still open — 23 days since Gold Coast, reply with a target and I'll build the block",
-    "Square connector needs reauthorizing — until then July revenue understates the real number",
-    "The Naomi Cameron $87 order (#1003) has been expired since early July — small but easy to recover"
+    "August's first weekend took $120 against a July weekend average nearer $420 — one data point, but I'm watching it",
+    "Shopify has been quiet since Naomi's order on 13 July — the store isn't pulling on its own",
+    "WHOOP hasn't synced since 18 June; it needs whoop_sync.py run somewhere that holds your tokens, which is still only your desktop",
+    "Next running goal is still open — tell me the race and I'll rebuild the training block around it"
   ]
 }
