@@ -1,30 +1,31 @@
 {
-  "date": "2026-08-05",
-  "writtenAt": "2026-08-05T11:20:00+10:00",
+  "date": "2026-08-06",
+  "writtenAt": "2026-08-06T08:20:00+10:00",
   "message": [
-    "Morning Christian. First thing: I owe you a correction, and it's a good one. I'd been telling you July brought in $404. Square's connector was only letting me see up to the 4th. Now that it's working properly, the real number is **$1,803.50** — $1,667.50 across the markets plus Naomi's $136 online. That's your second-best month of 2026 behind May, and you've been looking at a dashboard that showed less than a quarter of it.",
-    "What actually happened: you ran four market weekends — the 3rd-4th, 11th-12th, 17th-18th and 25th-26th — and every one of them landed. August has started slower. One market day on Sunday the 2nd, three sales, $120. Worth watching whether that's just a quiet weekend or the run cooling off.",
-    "The bills are the other real win. Back on the 12th of July you had $506 overdue and I was leading every briefing with it. Your Bills & Debts list is now clear — nothing overdue at all. What's left is subscriptions: six of them land today, $115.95 total, and ChatGPT's $30 has been sitting since yesterday.",
-    "The soft spot is the habit run. You built it on the 12th and it worked — 46 tasks that first week, 27 the next. Then 8 last week, and nothing since Saturday. Three are sitting there for today: diet, water, no screens. That's the whole ask.",
-    "One more thing — you can talk to me directly here now. The chat at the bottom reaches me with all of this in front of me. Ask me anything about the numbers, or just tell me what you've decided about the next race and I'll build the block around it."
+    "Morning Christian. Today is Day 1 of 150. The plan is built and it's sitting in this dashboard — tap **Content plan** just under the greeting and it's all there: the spine, the pillars, the idea bank, the weekly rhythm, what to measure and when to kill a format.",
+    "The short version: you're not starting a fitness channel, you're starting a documented experiment. The spine is you going from marathon runner to sprinter in 150 days, with a filmed time trial at the end on 2 January. That's the story people come back for. Around it sit three repeatable series — ancient warrior diets, elite fitness standards, and myth tests — that give you the daily volume without inventing something new every morning.",
+    "Why that spine and not something else: four weeks ago you ran a marathon. Every adaptation in your legs right now is the wrong one for sprinting. That's not a weakness in the premise, it **is** the premise — and nobody else can make that video, because it's true about you.",
+    "One hard warning before you get excited. Sprinting off an endurance base is the fastest way to tear a hamstring in the sport. If that happens in week three, there is no channel — the arc dies with your leg. I've put a four-week ramp in today's list and the plan: nothing maximal until 3 September. Please don't skip it to get a good Day 1 clip.",
+    "Today's list in Todoist is setup, not posting. Five things, and the baseline films are the one you can't redo — you only get one Day 1. From tomorrow I'll write you a specific checklist each morning instead of generic reminders."
   ],
   "today": [
-    { "level": "critical", "text": "ChatGPT Plus $30 — overdue since yesterday" },
-    { "level": "warning",  "text": "5 more subscriptions due today — Netflix, Apple Music, Apple One, Prime, Revolut ($85.95)" },
-    { "level": "good",     "text": "Today's three habits: diet, 4L water, no screens — this is what restarts the streak" },
-    { "level": "warning",  "text": "Pick the next race — it's been 31 days since Gold Coast and the training block is empty" },
-    { "level": "neutral",  "text": "Run whoop_sync.py on the desktop — 7 weeks without recovery data" }
+    { "level": "critical", "text": "Film the Day 1 baseline tests — 100m timed, jumps, bodyweight, piece to camera. Unrepeatable footage." },
+    { "level": "critical", "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 3 Sept" },
+    { "level": "warning",  "text": "Claim the YouTube + Instagram handles (same name, don't lock 'sprint' into it)" },
+    { "level": "warning",  "text": "Write the Ep 1 hook — first 15 seconds only, five versions, read them out loud" },
+    { "level": "warning",  "text": "6 subscriptions went overdue yesterday — $115.95, ChatGPT's $30 since the 4th" },
+    { "level": "good",     "text": "Read the plan (tap Content plan above) and tell me in the chat what's wrong with it" }
   ],
   "numbers": [
-    { "label": "July revenue", "value": "$1,803.50", "note": "I'd shown you $404",  "level": "good" },
-    { "label": "Due today",    "value": "$115.95",   "note": "6 subscriptions",     "level": "warning" },
-    { "label": "August so far","value": "$120",      "note": "1 market day",        "level": "neutral" },
-    { "label": "Task streak",  "value": "0",         "note": "quiet since Saturday","level": "critical" }
+    { "label": "The build",    "value": "Day 1",     "note": "of 150 · ends 2 Jan",  "level": "info" },
+    { "label": "Overdue",      "value": "$115.95",   "note": "6 subscriptions",      "level": "critical" },
+    { "label": "July revenue", "value": "$1,803.50", "note": "second-best of 2026",  "level": "good" },
+    { "label": "Posts needed", "value": "300",       "note": "2/day + 22 long form", "level": "warning" }
   ],
   "radar": [
-    "August's first weekend took $120 against a July weekend average nearer $420 — one data point, but I'm watching it",
-    "Shopify has been quiet since Naomi's order on 13 July — the store isn't pulling on its own",
-    "WHOOP hasn't synced since 18 June; it needs whoop_sync.py run somewhere that holds your tokens, which is still only your desktop",
-    "Next running goal is still open — tell me the race and I'll rebuild the training block around it"
+    "Volume is the thing that kills channels like this — 2 reels a day means batching, not filming daily. Two shoot days a week, and never post footage you shot today",
+    "The old open question about your next race is now closed: the sprint target replaced it, and the training block is being rebuilt around it",
+    "Pre-workout affiliate isn't live yet — start showing it unbranded in training footage now so it reads as continuity later, and don't sign a competing supplement deal in the meantime",
+    "WHOOP still hasn't synced since 18 June; recovery data would genuinely matter once sprint training loads start climbing"
   ]
 }

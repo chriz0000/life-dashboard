@@ -1,0 +1,165 @@
+{
+  "title": "Content Plan",
+  "subtitle": "150 days · marathoner → sprinter",
+  "startDate": "2026-08-06",
+  "endDate": "2027-01-02",
+  "updatedAt": "2026-08-05T22:30:00+10:00",
+
+  "premise": [
+    "The brand isn't 'fitness influencer'. It's **test subject**. You put your own body through things — historical diets, elite standards, a transformation with a deadline — and you publish the numbers whether they flatter you or not.",
+    "That framing is what lets one channel hold a Viking diet video, a Navy SEAL fitness test and a sprint transformation without feeling scattered. Everything is the same question: what can a body actually do, and how do we know?",
+    "It also gives you the one thing most fitness accounts never get — a reason to keep watching. Not tips. A story with an ending."
+  ],
+
+  "spine": {
+    "name": "The Quest — marathoner to sprinter",
+    "why": "You ran Gold Coast in July. Every adaptation in your body right now is the wrong one for sprinting: slow-twitch dominant, low power output, trained for economy instead of force. That conflict IS the hook — you're not starting from zero, you're starting from the wrong place. Nobody else can make that video, because it's true about you and not about them.",
+    "target": "Sub-12.0s over 100m, filmed, timed, public.",
+    "targetNote": "Set the exact number AFTER Day 1 baseline — a target you miss publicly is a better story than one you sandbagged, but the claim has to be real. Roughly: sub-13s is fit, sub-12s is genuinely top few percent of adult men, sub-11s is club-athlete territory. Verify before you say '1%' on camera; a number you can defend beats a number that gets you ratio'd.",
+    "phases": [
+      { "days": "1–30", "name": "Baseline & rebuild", "focus": "Film every test on Day 1. Then 4 weeks of tendon and hamstring prep BEFORE any max-effort sprinting. This phase is not optional.", "story": "The marathon body is the problem" },
+      { "days": "31–60", "name": "Power", "focus": "Heavy lower body, plyometrics, hill sprints. Bodyweight will go up — that's content, not failure.", "story": "Getting heavier to get faster" },
+      { "days": "61–100", "name": "Speed", "focus": "Max velocity work, flying 30s, sprint mechanics. First real time drops land here.", "story": "The first time it actually feels fast" },
+      { "days": "101–135", "name": "Sharpen", "focus": "Block starts, acceleration, race modelling. Times get stubborn — that's the mid-story slump you film honestly.", "story": "The wall" },
+      { "days": "136–150", "name": "Peak & trial", "focus": "Taper, then the filmed public time trial. Invite people. Stakes on camera.", "story": "The payoff" }
+    ],
+    "risk": "Sprinting off an endurance base is the single highest hamstring-tear risk in athletics. If you tear one in week three, the entire 150-day arc dies with it and there's no channel. Four weeks of progressive acceleration work before anything maximal. This is the one place where being impatient costs you everything."
+  },
+
+  "pillars": [
+    { "name": "The Quest", "share": "40%", "what": "The sprint transformation. Weekly long-form episode + daily diary shorts pulled from the same footage.", "why": "Narrative spine. Builds the returning audience and the watch hours." },
+    { "name": "Ancient Protocols", "share": "25%", "what": "24 hours (sometimes 7 days) eating and training as a historical warrior culture.", "why": "Highest virality per hour of effort you own. Weird, searchable, argument-provoking, cheap to film." },
+    { "name": "The Standard", "share": "20%", "what": "Putting yourself through elite, military and historical fitness tests. Pass or fail, on camera.", "why": "Built-in stakes and a built-in ending. People watch to see if you make it." },
+    { "name": "Debunk", "share": "10%", "what": "Myth checks where you're the guinea pig, not the lecturer.", "why": "Comment bait and credibility. Cheapest thing you can film." },
+    { "name": "Real Life", "share": "5%", "what": "Brisbane, the markets, NRICH, the actual grind behind the training.", "why": "Mostly stories. This is the trust layer — it's what turns viewers into people who care whether you hit sub-12." }
+  ],
+
+  "virality": {
+    "hook": [
+      "First 1.5 seconds decide everything. Number + stake + conflict: 'I ran a marathon 4 weeks ago. Today I'm trying to break 12 seconds.'",
+      "Cold open on the most visually strange moment. Never open on your face talking.",
+      "On-screen text mirrors the spoken hook — most people watch muted.",
+      "Never 'hey guys', never 'in this video', never an intro."
+    ],
+    "retention": [
+      "State the open loop in the first 3 seconds and don't resolve it until the end.",
+      "Cut every 1.5–2.5 seconds. If nothing changed on screen for 3 seconds, you lost them.",
+      "Keep a number visible — a timer, the scale, the plate count. It gives people a reason to stay for the reveal.",
+      "Film the failures. Failure outperforms success almost every time, and it's the thing that makes the wins believable."
+    ],
+    "shares": [
+      "Argument bait: 'Roman soldiers ate better than you do' — people share to disagree.",
+      "Identity bait: 'if you've ever run a marathon you'll know why this is so hard'.",
+      "Steal-ability: one thing they could actually do tomorrow.",
+      "Let the comments choose the next diet. Ownership converts watchers into a following."
+    ],
+    "series": [
+      "Number every post — 'Day 41 of 150'. It advertises that there's a story and that they've missed some.",
+      "End every episode teasing the next one specifically, not vaguely.",
+      "Same title format per series so the algorithm and the audience both learn to recognise it."
+    ]
+  },
+
+  "rhythm": {
+    "note": "2 reels a day is 300 posts over 150 days. You cannot film that live — the whole system is batching and buffer. Rule: never post footage you shot today. Bank never drops below 14 posts.",
+    "days": [
+      { "day": "Mon", "what": "Plan the week, script the long form, pick Thursday's 12 shorts" },
+      { "day": "Tue", "what": "SHOOT 1 — long-form A-roll + the training session in it (one shoot should yield 6–10 shorts as by-product)" },
+      { "day": "Wed", "what": "Edit long form. Mark every moment that could stand alone as a short." },
+      { "day": "Thu", "what": "SHOOT 2 — batch 8–12 shorts. This day is what keeps the buffer alive." },
+      { "day": "Fri", "what": "Edit + schedule the next 7 days of reels" },
+      { "day": "Sat", "what": "Publish long form (9am). Market day — film real-life content while you're there." },
+      { "day": "Sun", "what": "Market. Evening: review the numbers, pick next week." }
+    ]
+  },
+
+  "ideaBank": {
+    "Ancient Protocols": [
+      "24h as a Roman legionary — ~70% grain, posca, cheese. 'Rome conquered the world on porridge.'",
+      "24h as a Spartan — black broth (pork, blood, vinegar). Famously the worst food in the ancient world.",
+      "24h as a Viking — skyr, dried cod, ale, no vegetables at all",
+      "24h as a Mongol horse archer — mare's milk, dried meat, and yes, the blood",
+      "24h as a gladiator — barley and ash. They were deliberately fat. Nobody knows this.",
+      "24h as a samurai — rice, miso, fish, no meat. They were also 5'3\".",
+      "24h as an Aztec eagle warrior — chia, amaranth, spirulina. Accidentally a modern superfood stack.",
+      "24h as an ancient Olympian — Milo of Croton reportedly ate 9kg of meat a day",
+      "24h as a Victorian strongman — raw eggs, milk, steak, no vegetables",
+      "24h as a Zulu impi warrior — amasi and maize, then run 50km",
+      "7 days on the Roman diet — the long-form version once the 24h one hits",
+      "I ate 6,000 calories like an Olympic swimmer"
+    ],
+    "The Standard": [
+      "The Roman legionary march — 30km in 5 hours carrying 20kg",
+      "Navy SEAL PST — can a marathon runner pass?",
+      "SAS selection fitness benchmark",
+      "The NFL combine — every test, as a distance runner",
+      "The Cooper test — 12 minutes, elite standard",
+      "Australian Army physical assessment",
+      "Ancient Olympic pentathlon — all five events in one day",
+      "The Spartan agoge tests",
+      "Firefighter physical ability test in full kit",
+      "1896 Olympic gold medal standards — could you have medalled?"
+    ],
+    "Debunk": [
+      "Creatine for 30 days — measured, not vibes",
+      "Fasted cardio vs fed — same session, two weeks apart",
+      "Cold plunge after lifting (it may be blunting your gains)",
+      "Does stretching before sprinting make you slower?",
+      "8 hours sleep vs 6 for a week — sprint times as the measure",
+      "Carb loading for a 100m race, which makes no sense, tested anyway",
+      "Does the pre-workout actually do anything? (blind test)"
+    ],
+    "The Quest — recurring short formats": [
+      "Time reveal — 'Day N, here's the clock' (highest retention format you have)",
+      "Marathon body vs sprint body — the physical change, monthly",
+      "The session that broke me",
+      "What I ate today to gain X kg of muscle",
+      "Answering the comment that said I'd never do it"
+    ]
+  },
+
+  "metrics": {
+    "watch": [
+      "3-second retention — want 70%+ on shorts. Below 60% means the hook failed, not the video.",
+      "Shares per view — the single best predictor of a post breaking out",
+      "Average view duration on long form — the number that builds the monetisation path"
+    ],
+    "rules": [
+      "Any format that hits 3× your baseline views: make 3 more within 7 days. Ride it hard.",
+      "Any format that underperforms 3 times in a row: drop it, don't 'fix' it.",
+      "Never judge a post before 72 hours — shorts routinely spike late.",
+      "Post consistency beats post quality at this stage. A 7/10 posted daily beats a 9/10 posted weekly."
+    ]
+  },
+
+  "money": {
+    "note": "Optimise for virality now — but build so the money works later without a jarring pivot.",
+    "points": [
+      "YouTube Partner Program, shorts route: 1,000 subs + 10 million shorts views in 90 days. At 2 reels/day that's the realistic path.",
+      "Long-form route: 1,000 subs + 4,000 watch hours in 12 months. The weekly episode is what builds this — shorts alone won't.",
+      "Pre-workout affiliate isn't live yet: don't mention a brand and don't sign any competing supplement deal in the meantime.",
+      "Do start showing pre-workout in training footage now, unbranded. When the deal lands it reads as continuity instead of a sellout moment.",
+      "Ad revenue follows watch time, not views. That's the argument for never dropping the weekly long form even when shorts are carrying the growth."
+    ]
+  },
+
+  "launch": {
+    "note": "First 14 days. Get these filmed and banked before Day 1 if you can.",
+    "longForm": [
+      "Ep 1 — 'I ran a marathon. I have 150 days to become a top 1% sprinter.' Every baseline test on camera, the plan, the stakes, the date.",
+      "Ep 2 — '24 hours eating like a Roman legionary' (the format that will probably outperform everything else you make)"
+    ],
+    "shorts": [
+      "My 100m baseline time (the reveal — post this first, it sets the whole arc)",
+      "Why my marathon body is the problem",
+      "The 5 tests I have to beat in 150 days",
+      "What a sprinter eats vs what a marathoner eats",
+      "Day 1 vs Day 150 — the promise",
+      "I asked a sprint coach if this is possible",
+      "The Roman army ate 70% grain and conquered the world",
+      "Spartan black broth — the worst meal in history",
+      "Everything I got wrong about sprinting in week one",
+      "The hamstring rule that decides whether this whole thing works"
+    ]
+  }
+}

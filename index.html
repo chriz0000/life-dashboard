@@ -204,6 +204,65 @@
   .typing span:nth-child(3) { animation-delay: 0.36s; }
   @keyframes blink { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
   .chat-empty { color: var(--ink-3); font-size: 14px; text-align: center; padding: 32px 12px; line-height: 1.6; }
+
+  /* ---------- plan chip + panel ---------- */
+  .plan-chip {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 12px;
+    background: var(--well); border: 1px solid var(--hairline); border-radius: 999px;
+    padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--ink);
+    cursor: pointer; min-height: 40px; user-select: none; -webkit-user-select: none;
+  }
+  .plan-chip:active { transform: scale(0.97); }
+  .plan-chip .day { color: var(--info); }
+  .plan-chip svg { color: var(--ink-3); }
+
+  .plan {
+    position: fixed; inset: 0; z-index: 55; background: var(--bg);
+    display: flex; flex-direction: column;
+    transform: translateY(100%); transition: transform 0.28s cubic-bezier(.32,.72,0,1);
+    visibility: hidden;
+  }
+  .plan.open { transform: translateY(0); visibility: visible; }
+  .plan-scroll {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+    padding: 16px 18px calc(28px + env(safe-area-inset-bottom));
+  }
+  .plan-lede { font-size: 15.5px; line-height: 1.6; margin-bottom: 14px; }
+  .plan-lede:last-of-type { margin-bottom: 22px; }
+  .plan-lede strong { font-weight: 650; }
+
+  .plan details {
+    border-top: 1px solid var(--hairline); padding: 2px 0;
+  }
+  .plan details[open] { padding-bottom: 14px; }
+  .plan summary {
+    list-style: none; cursor: pointer; padding: 15px 0;
+    font-size: 15px; font-weight: 650; display: flex; align-items: center; gap: 10px;
+    min-height: 44px;
+  }
+  .plan summary::-webkit-details-marker { display: none; }
+  .plan summary::after {
+    content: ""; margin-left: auto; width: 8px; height: 8px; flex-shrink: 0;
+    border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3);
+    transform: rotate(45deg); transition: transform 0.2s ease;
+  }
+  .plan details[open] summary::after { transform: rotate(-135deg); }
+  .plan summary .tag { font-size: 11.5px; font-weight: 600; color: var(--ink-3); }
+
+  .plan-body { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+  .plan-body p { margin-bottom: 12px; }
+  .plan-body p:last-child { margin-bottom: 0; }
+  .plan-body strong { color: var(--ink); font-weight: 650; }
+  .plan-row { display: flex; gap: 12px; padding: 9px 0; border-top: 1px solid var(--hairline); }
+  .plan-row:first-child { border-top: none; }
+  .plan-row .k { flex-shrink: 0; width: 62px; font-weight: 650; color: var(--ink); font-size: 13.5px; }
+  .plan-list li { margin: 0 0 9px 18px; }
+  .plan-list li:last-child { margin-bottom: 0; }
+  .plan-warn {
+    background: color-mix(in srgb, var(--critical) 10%, transparent);
+    border-radius: 10px; padding: 12px 14px; color: var(--ink); font-size: 14px; line-height: 1.55;
+  }
+  .plan-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -215,6 +274,19 @@
   <section><div class="label">The numbers</div><div class="tiles" id="numbers"></div></section>
   <section><div class="label">On my radar</div><div id="radar"></div></section>
   <footer class="footer" id="footer"></footer>
+</div>
+
+<div class="plan" id="plan">
+  <div class="chat-head">
+    <div>
+      <div class="chat-title">Content Plan</div>
+      <div class="chat-sub" id="planSub"></div>
+    </div>
+    <button class="icon-btn" id="planClose" title="Back to briefing" aria-label="Back to briefing">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+  <div class="plan-scroll" id="planScroll"></div>
 </div>
 
 <div class="chat" id="chat">
@@ -285,8 +357,105 @@ function renderHeader(b) {
     <div class="date">${dateStr}</div>
     <div class="greeting">${greeting}, Christian</div>
     ${isStale ? `<div class="stale-note">This briefing was written ${staleStr} — ask me below for anything newer.</div>` : ""}
+    <div class="plan-chip" id="planChip" role="button" tabindex="0">
+      <span id="planChipText">Content plan</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  `;
+  $("planChip").addEventListener("click", openPlan);
+  if (PLAN) updatePlanChip();
+}
+
+/* =========================================================
+   PLAN — the 150-day content plan, its own screen
+   ========================================================= */
+let PLAN = null;
+
+function dayNumber() {
+  if (!PLAN) return null;
+  const start = new Date(`${PLAN.startDate}T00:00:00+10:00`);
+  const n = Math.floor((brisbaneNow() - start) / 86400000) + 1;
+  return n;
+}
+
+function updatePlanChip() {
+  const chip = $("planChipText");
+  if (!chip || !PLAN) return;
+  const n = dayNumber();
+  chip.innerHTML = n < 1
+    ? `Content plan <span class="day">· starts ${new Date(`${PLAN.startDate}T12:00:00+10:00`).toLocaleDateString("en-AU", { day: "numeric", month: "short", timeZone: TZ })}</span>`
+    : n > 150
+    ? `Content plan <span class="day">· complete</span>`
+    : `Content plan <span class="day">· Day ${n} of 150</span>`;
+}
+
+function block(title, tag, inner) {
+  return `<details><summary>${esc(title)}${tag ? `<span class="tag">${esc(tag)}</span>` : ""}</summary><div class="plan-body">${inner}</div></details>`;
+}
+const ul = (items) => `<ul class="plan-list">${items.map((i) => `<li>${fmt(i)}</li>`).join("")}</ul>`;
+
+function renderPlan() {
+  if (!PLAN) return;
+  const p = PLAN;
+  $("planSub").textContent = `${p.subtitle} · ${p.startDate} → ${p.endDate}`;
+
+  const phases = p.spine.phases.map((ph) =>
+    `<div class="plan-row"><div class="k">${esc(ph.days)}</div><div><strong>${esc(ph.name)}</strong> — ${esc(ph.focus)}<div class="plan-sub">Story: ${esc(ph.story)}</div></div></div>`
+  ).join("");
+
+  const pillars = p.pillars.map((pl) =>
+    `<div class="plan-row"><div class="k">${esc(pl.share)}</div><div><strong>${esc(pl.name)}</strong> — ${esc(pl.what)}<div class="plan-sub">${esc(pl.why)}</div></div></div>`
+  ).join("");
+
+  const rhythm = p.rhythm.days.map((d) =>
+    `<div class="plan-row"><div class="k">${esc(d.day)}</div><div>${esc(d.what)}</div></div>`
+  ).join("");
+
+  const banks = Object.entries(p.ideaBank).map(([name, items]) =>
+    block(name, `${items.length} ideas`, ul(items))
+  ).join("");
+
+  $("planScroll").innerHTML = `
+    ${p.premise.map((t) => `<p class="plan-lede">${fmt(t)}</p>`).join("")}
+
+    ${block("The spine — " + p.spine.name, "40% of output", `
+      <p>${fmt(p.spine.why)}</p>
+      <p><strong>Target:</strong> ${esc(p.spine.target)}</p>
+      <p>${esc(p.spine.targetNote)}</p>
+      ${phases}
+      <p style="margin-top:14px"><span class="plan-warn">${esc(p.spine.risk)}</span></p>
+    `)}
+
+    ${block("Content pillars", "5", pillars)}
+
+    ${block("Making things spread", "the mechanics", `
+      <p><strong>The hook</strong></p>${ul(p.virality.hook)}
+      <p style="margin-top:14px"><strong>Holding them</strong></p>${ul(p.virality.retention)}
+      <p style="margin-top:14px"><strong>Getting shared</strong></p>${ul(p.virality.shares)}
+      <p style="margin-top:14px"><strong>Series mechanics</strong></p>${ul(p.virality.series)}
+    `)}
+
+    ${block("Weekly rhythm", "2 shoot days", `<p>${esc(p.rhythm.note)}</p>${rhythm}`)}
+
+    ${block("Idea bank", `${Object.values(p.ideaBank).reduce((a, b) => a + b.length, 0)} ideas`, banks)}
+
+    ${block("What to measure", "and when to quit a format", `
+      <p><strong>Watch these three</strong></p>${ul(p.metrics.watch)}
+      <p style="margin-top:14px"><strong>Rules</strong></p>${ul(p.metrics.rules)}
+    `)}
+
+    ${block("The money", "later, but build for it now", `<p>${esc(p.money.note)}</p>${ul(p.money.points)}`)}
+
+    ${block("First 14 days", "get these banked", `
+      <p>${esc(p.launch.note)}</p>
+      <p style="margin-top:12px"><strong>Long form</strong></p>${ul(p.launch.longForm)}
+      <p style="margin-top:14px"><strong>Shorts</strong></p>${ul(p.launch.shorts)}
+    `)}
   `;
 }
+
+function openPlan() { $("plan").classList.add("open"); }
+function closePlan() { $("plan").classList.remove("open"); }
 
 function renderBriefing(b) {
   $("briefing").innerHTML = b.message.map((p) => `<p>${fmt(p)}</p>`).join("");
@@ -501,6 +670,7 @@ function setupChat() {
 
   $("send").addEventListener("click", send);
   $("chatClose").addEventListener("click", closeChat);
+  $("planClose").addEventListener("click", closePlan);
   $("chatClear").addEventListener("click", () => {
     history = [];
     store(chatKey(), history);
@@ -528,11 +698,12 @@ function setupChat() {
 let rendered = false;
 
 async function refresh() {
-  let briefing, whoop;
+  let briefing, whoop, plan;
   try {
-    [briefing, whoop] = await Promise.all([
+    [briefing, whoop, plan] = await Promise.all([
       fetch("briefing.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
       fetch("whoop-data.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      fetch("plan.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
     ]);
   } catch (e) {
     if (!rendered) { $("error").classList.add("show"); $("error").textContent = `Couldn't load the briefing (${e.message}). Retrying automatically.`; }
@@ -540,6 +711,7 @@ async function refresh() {
   }
   $("error").classList.remove("show");
   BRIEFING = briefing;
+  if (plan) { PLAN = plan; renderPlan(); }
   renderHeader(briefing);
   renderBriefing(briefing);
   renderToday(briefing);

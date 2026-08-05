@@ -33,15 +33,16 @@ async function loadContext(origin) {
       return null;
     }
   };
-  const [briefing, data, whoop] = await Promise.all([
+  const [briefing, data, whoop, plan] = await Promise.all([
     grab("briefing.json"),
     grab("data.json"),
     grab("whoop-data.json"),
+    grab("plan.json"),
   ]);
-  return { briefing, data, whoop };
+  return { briefing, data, whoop, plan };
 }
 
-function buildSystem({ briefing, data, whoop }) {
+function buildSystem({ briefing, data, whoop, plan }) {
   const now = new Date().toLocaleString("en-AU", {
     timeZone: "Australia/Brisbane",
     weekday: "long",
@@ -71,6 +72,17 @@ function buildSystem({ briefing, data, whoop }) {
         `Money: ${JSON.stringify(data.money)}\n` +
         `Pillar scores: ${data.pillars?.map((p) => `${p.name} ${p.score}/100 (${p.status})`).join(", ")}\n` +
         `Training plan: ${JSON.stringify(data.marathon)}`
+    );
+  }
+
+  if (plan) {
+    const start = new Date(`${plan.startDate}T00:00:00+10:00`);
+    const day = Math.floor((Date.now() - start) / 86400000) + 1;
+    parts.push(
+      `\n--- THE CONTENT PLAN (day ${day} of 150) ---\n` +
+        `This is the 5-month build he has given almost all his time to. When he asks what to film, what to post, ` +
+        `or what's next, answer from this — it is the plan, not a suggestion.\n` +
+        JSON.stringify(plan)
     );
   }
 
