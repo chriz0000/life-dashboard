@@ -1,31 +1,31 @@
 {
-  "date": "2026-08-06",
-  "writtenAt": "2026-08-06T08:20:00+10:00",
+  "date": "2026-08-07",
+  "writtenAt": "2026-08-07T07:35:00+10:00",
   "message": [
-    "Morning Christian. Today is Day 1 of 150. The plan is built and it's sitting in this dashboard — tap **Content plan** just under the greeting and it's all there: the spine, the pillars, the idea bank, the weekly rhythm, what to measure and when to kill a format.",
-    "The short version: you're not starting a fitness channel, you're starting a documented experiment. The spine is you going from marathon runner to sprinter in 150 days, with a filmed time trial at the end on 2 January. That's the story people come back for. Around it sit three repeatable series — ancient warrior diets, elite fitness standards, and myth tests — that give you the daily volume without inventing something new every morning.",
-    "Why that spine and not something else: four weeks ago you ran a marathon. Every adaptation in your legs right now is the wrong one for sprinting. That's not a weakness in the premise, it **is** the premise — and nobody else can make that video, because it's true about you.",
-    "One hard warning before you get excited. Sprinting off an endurance base is the fastest way to tear a hamstring in the sport. If that happens in week three, there is no channel — the arc dies with your leg. I've put a four-week ramp in today's list and the plan: nothing maximal until 3 September. Please don't skip it to get a good Day 1 clip.",
-    "Today's list in Todoist is setup, not posting. Five things, and the baseline films are the one you can't redo — you only get one Day 1. From tomorrow I'll write you a specific checklist each morning instead of generic reminders."
+    "Morning Christian. Two things: the automatic 6am update failed this morning, and Day 1 didn't happen. I'm writing this one by hand.",
+    "The routine fired on schedule at 6:06 — the timing was never the problem. It just had no way to reach Todoist or the dashboard repo when it woke up, so it did nothing and told you nothing. That's a permissions gap on my end, not something you did. The fix is a two-minute job in the claude.ai Routines settings and I've written out exactly what to change.",
+    "On Day 1: you claimed the handles, which is the one that unblocks everything else — good. The other four are still open, so I've moved them to today rather than letting them pile up as overdue. The baseline films are the one that actually matters. Everything in the 150-day arc is measured against numbers you haven't recorded yet, and until they exist there's no before to point back at. It's a Friday, the weather's yours to check, and it's genuinely a two-hour job.",
+    "Money moved the wrong way while this was going on. The six subscriptions are still sitting there at $115.95, ChatGPT's $30 is three days over now, and an Afterpay payment came due yesterday on a ~$334 balance. Your Bills list was completely clear a week ago — worth not letting that slide back.",
+    "One honest note on the plan: today is Friday, which in the weekly rhythm is edit-and-schedule day. That assumes a shoot happened. It didn't, so ignore the rhythm this week — Day 1 first, and the cycle starts properly from Monday."
   ],
   "today": [
-    { "level": "critical", "text": "Film the Day 1 baseline tests — 100m timed, jumps, bodyweight, piece to camera. Unrepeatable footage." },
+    { "level": "critical", "text": "Film the Day 1 baseline tests — 100m timed, jumps, bodyweight, piece to camera. Two hours, unrepeatable." },
     { "level": "critical", "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 3 Sept" },
-    { "level": "warning",  "text": "Claim the YouTube + Instagram handles (same name, don't lock 'sprint' into it)" },
-    { "level": "warning",  "text": "Write the Ep 1 hook — first 15 seconds only, five versions, read them out loud" },
-    { "level": "warning",  "text": "6 subscriptions went overdue yesterday — $115.95, ChatGPT's $30 since the 4th" },
-    { "level": "good",     "text": "Read the plan (tap Content plan above) and tell me in the chat what's wrong with it" }
+    { "level": "warning",  "text": "Fix the morning routine in claude.ai → Routines (add the Todoist connector + the life-dashboard repo)" },
+    { "level": "warning",  "text": "$115.95 of subscriptions overdue, plus Afterpay from yesterday" },
+    { "level": "neutral",  "text": "Write the Ep 1 hook — first 15 seconds only, five versions, read out loud" },
+    { "level": "good",     "text": "Read the plan (tap Content plan above) and tell me what's wrong with it" }
   ],
   "numbers": [
-    { "label": "The build",    "value": "Day 1",     "note": "of 150 · ends 2 Jan",  "level": "info" },
-    { "label": "Overdue",      "value": "$115.95",   "note": "6 subscriptions",      "level": "critical" },
-    { "label": "July revenue", "value": "$1,803.50", "note": "second-best of 2026",  "level": "good" },
-    { "label": "Posts needed", "value": "300",       "note": "2/day + 22 long form", "level": "warning" }
+    { "label": "The build",   "value": "Day 2",    "note": "of 150 · Day 1 not filmed", "level": "warning" },
+    { "label": "Overdue",     "value": "$115.95",  "note": "+ Afterpay ~$334",          "level": "critical" },
+    { "label": "Setup done",  "value": "1 of 5",   "note": "handles claimed",           "level": "warning" },
+    { "label": "Auto-update", "value": "Failed",   "note": "fired, couldn't write",     "level": "critical" }
   ],
   "radar": [
-    "Volume is the thing that kills channels like this — 2 reels a day means batching, not filming daily. Two shoot days a week, and never post footage you shot today",
-    "The old open question about your next race is now closed: the sprint target replaced it, and the training block is being rebuilt around it",
-    "Pre-workout affiliate isn't live yet — start showing it unbranded in training footage now so it reads as continuity later, and don't sign a competing supplement deal in the meantime",
-    "WHOOP still hasn't synced since 18 June; recovery data would genuinely matter once sprint training loads start climbing"
+    "The 6am routine can fire but can't act — it has no Todoist connector and no repo access, so both its jobs silently no-op. Until that's fixed, message me in the morning and I'll write the day by hand in about a minute",
+    "Day 1 slipping is recoverable, but the baseline films are the one thing that gets harder the longer you leave it — a 'Day 1' recorded on Day 6 is a different video",
+    "Bills were fully clear on 28 July and have started sliding again; the subscriptions are the recurring leak",
+    "WHOOP still hasn't synced since 18 June — it'll matter more once sprint loads start climbing in September"
   ]
 }
