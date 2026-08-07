@@ -1,31 +1,31 @@
 {
-  "date": "2026-08-07",
-  "writtenAt": "2026-08-07T07:35:00+10:00",
+  "date": "2026-08-08",
+  "writtenAt": "2026-08-08T09:50:00+10:00",
   "message": [
-    "Morning Christian. Two things: the automatic 6am update failed this morning, and Day 1 didn't happen. I'm writing this one by hand.",
-    "The routine fired on schedule at 6:06 — the timing was never the problem. It just had no way to reach Todoist or the dashboard repo when it woke up, so it did nothing and told you nothing. That's a permissions gap on my end, not something you did. The fix is a two-minute job in the claude.ai Routines settings and I've written out exactly what to change.",
-    "On Day 1: you claimed the handles, which is the one that unblocks everything else — good. The other four are still open, so I've moved them to today rather than letting them pile up as overdue. The baseline films are the one that actually matters. Everything in the 150-day arc is measured against numbers you haven't recorded yet, and until they exist there's no before to point back at. It's a Friday, the weather's yours to check, and it's genuinely a two-hour job.",
-    "Money moved the wrong way while this was going on. The six subscriptions are still sitting there at $115.95, ChatGPT's $30 is three days over now, and an Afterpay payment came due yesterday on a ~$334 balance. Your Bills list was completely clear a week ago — worth not letting that slide back.",
-    "One honest note on the plan: today is Friday, which in the weekly rhythm is edit-and-schedule day. That assumes a shoot happened. It didn't, so ignore the rhythm this week — Day 1 first, and the cycle starts properly from Monday."
+    "Morning Christian. The 6am job failed a third time, so I've stopped trying to fix it where it was and rebuilt it somewhere you own — a scheduled job inside your own repo. It needs one thing from you and then it runs itself, with a log you can actually read when something breaks. Steps are in the chat.",
+    "But the automation isn't the real story this morning. It's Day 3 and the baseline still isn't filmed. Three days ago that was a two-hour job; it still is. The difference is the arc is now called '150 days' while the first three have no footage in them, and every number in the story is measured against a starting point that doesn't exist yet.",
+    "I'm not going to keep restating it after today. Either the baseline gets filmed this weekend and the arc starts properly, or the honest move is to shift the start date and stop pretending Day 1 was Thursday. Both are fine. Drifting is the one that isn't — tell me which and I'll adjust the plan.",
+    "It's Saturday, which is a market day for you. Last weekend took $120 against a July weekend average nearer $420. Worth watching whether that was a one-off, and worth filming while you're there either way — market footage is the Real Life pillar and it costs nothing extra to capture.",
+    "Money looks unchanged from yesterday: the six subscriptions at $115.95 and the Afterpay balance. I couldn't re-verify against Todoist this morning — the connector wanted re-approval and I wasn't going to spend your morning on it."
   ],
   "today": [
-    { "level": "critical", "text": "Film the Day 1 baseline tests — 100m timed, jumps, bodyweight, piece to camera. Two hours, unrepeatable." },
-    { "level": "critical", "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 3 Sept" },
-    { "level": "warning",  "text": "Fix the morning routine in claude.ai → Routines (add the Todoist connector + the life-dashboard repo)" },
-    { "level": "warning",  "text": "$115.95 of subscriptions overdue, plus Afterpay from yesterday" },
-    { "level": "neutral",  "text": "Write the Ep 1 hook — first 15 seconds only, five versions, read out loud" },
-    { "level": "good",     "text": "Read the plan (tap Content plan above) and tell me what's wrong with it" }
+    { "level": "critical", "text": "Film the Day 1 baseline tests — two hours, and the arc doesn't start until it's done" },
+    { "level": "critical", "text": "Add the TODOIST_TOKEN secret to the repo so the 6am job works (steps in the chat)" },
+    { "level": "warning",  "text": "Market day — film while you're there, it's free Real Life footage" },
+    { "level": "warning",  "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 3 Sept" },
+    { "level": "neutral",  "text": "Decide: film the baseline this weekend, or move the start date and I'll rebuild the plan" },
+    { "level": "neutral",  "text": "$115.95 subscriptions + Afterpay still sitting (as of yesterday)" }
   ],
   "numbers": [
-    { "label": "The build",   "value": "Day 2",    "note": "of 150 · Day 1 not filmed", "level": "warning" },
-    { "label": "Overdue",     "value": "$115.95",  "note": "+ Afterpay ~$334",          "level": "critical" },
-    { "label": "Setup done",  "value": "1 of 5",   "note": "handles claimed",           "level": "warning" },
-    { "label": "Auto-update", "value": "Failed",   "note": "fired, couldn't write",     "level": "critical" }
+    { "label": "The build",     "value": "Day 3",   "note": "no footage yet",         "level": "critical" },
+    { "label": "Setup done",    "value": "1 of 5",  "note": "unchanged since Wed",    "level": "warning" },
+    { "label": "Due / overdue", "value": "$115.95", "note": "+ Afterpay · yesterday", "level": "warning" },
+    { "label": "Auto-update",   "value": "Rebuilt", "note": "needs 1 secret",         "level": "info" }
   ],
   "radar": [
-    "The 6am routine can fire but can't act — it has no Todoist connector and no repo access, so both its jobs silently no-op. Until that's fixed, message me in the morning and I'll write the day by hand in about a minute",
-    "Day 1 slipping is recoverable, but the baseline films are the one thing that gets harder the longer you leave it — a 'Day 1' recorded on Day 6 is a different video",
-    "Bills were fully clear on 28 July and have started sliding again; the subscriptions are the recurring leak",
-    "WHOOP still hasn't synced since 18 June — it'll matter more once sprint loads start climbing in September"
+    "The morning job now runs as a GitHub Action in your own repo instead of a scheduled Claude session — it has real logs, you can trigger it by hand to test, and it can't fail silently the way the last three did",
+    "It deliberately won't write the briefing prose — a script can't judge what matters. It refreshes your list, the day count and the money, and says plainly when it couldn't reach something",
+    "Three days without footage is recoverable; three weeks isn't. The start date is adjustable — the drift is the part that costs you",
+    "WHOOP still hasn't synced since 18 June"
   ]
 }
