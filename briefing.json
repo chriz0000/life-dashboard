@@ -1,26 +1,56 @@
 {
-  "date": "2026-08-08",
-  "writtenAt": "2026-08-08T09:50:00+10:00",
+  "date": "2026-08-09",
+  "writtenAt": "2026-08-09T06:02:00+10:00",
   "message": [
-    "Morning Christian. The 6am job failed a third time, so I've stopped trying to fix it where it was and rebuilt it somewhere you own — a scheduled job inside your own repo. It needs one thing from you and then it runs itself, with a log you can actually read when something breaks. Steps are in the chat.",
-    "But the automation isn't the real story this morning. It's Day 3 and the baseline still isn't filmed. Three days ago that was a two-hour job; it still is. The difference is the arc is now called '150 days' while the first three have no footage in them, and every number in the story is measured against a starting point that doesn't exist yet.",
-    "I'm not going to keep restating it after today. Either the baseline gets filmed this weekend and the arc starts properly, or the honest move is to shift the start date and stop pretending Day 1 was Thursday. Both are fine. Drifting is the one that isn't — tell me which and I'll adjust the plan.",
-    "It's Saturday, which is a market day for you. Last weekend took $120 against a July weekend average nearer $420. Worth watching whether that was a one-off, and worth filming while you're there either way — market footage is the Real Life pillar and it costs nothing extra to capture.",
-    "Money looks unchanged from yesterday: the six subscriptions at $115.95 and the Afterpay balance. I couldn't re-verify against Todoist this morning — the connector wanted re-approval and I wasn't going to spend your morning on it."
+    "Day 4 of 150. This is the automatic refresh — the written briefing comes when you message me.",
+    "Sun in the rhythm: Market. Evening: review the numbers, pick next week.",
+    "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
   ],
   "today": [
-    { "level": "critical", "text": "Film the Day 1 baseline tests — two hours, and the arc doesn't start until it's done" },
-    { "level": "critical", "text": "Add the TODOIST_TOKEN secret to the repo so the 6am job works (steps in the chat)" },
-    { "level": "warning",  "text": "Market day — film while you're there, it's free Real Life footage" },
-    { "level": "warning",  "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 3 Sept" },
-    { "level": "neutral",  "text": "Decide: film the baseline this weekend, or move the start date and I'll rebuild the plan" },
-    { "level": "neutral",  "text": "$115.95 subscriptions + Afterpay still sitting (as of yesterday)" }
+    {
+      "level": "critical",
+      "text": "Film the Day 1 baseline tests — two hours, and the arc doesn't start until it's done"
+    },
+    {
+      "level": "critical",
+      "text": "Add the TODOIST_TOKEN secret to the repo so the 6am job works (steps in the chat)"
+    },
+    {
+      "level": "warning",
+      "text": "Market day — film while you're there, it's free Real Life footage"
+    },
+    {
+      "level": "warning",
+      "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 3 Sept"
+    },
+    {
+      "level": "neutral",
+      "text": "Decide: film the baseline this weekend, or move the start date and I'll rebuild the plan"
+    },
+    {
+      "level": "neutral",
+      "text": "$115.95 subscriptions + Afterpay still sitting (as of yesterday)"
+    }
   ],
   "numbers": [
-    { "label": "The build",     "value": "Day 3",   "note": "no footage yet",         "level": "critical" },
-    { "label": "Setup done",    "value": "1 of 5",  "note": "unchanged since Wed",    "level": "warning" },
-    { "label": "Due / overdue", "value": "$115.95", "note": "+ Afterpay · yesterday", "level": "warning" },
-    { "label": "Auto-update",   "value": "Rebuilt", "note": "needs 1 secret",         "level": "info" }
+    {
+      "label": "The build",
+      "value": "Day 4",
+      "note": "of 150",
+      "level": "info"
+    },
+    {
+      "label": "Open today",
+      "value": "—",
+      "note": "Todoist unreachable",
+      "level": "warning"
+    },
+    {
+      "label": "Due / overdue",
+      "value": "—",
+      "note": "not checked",
+      "level": "warning"
+    }
   ],
   "radar": [
     "The morning job now runs as a GitHub Action in your own repo instead of a scheduled Claude session — it has real logs, you can trigger it by hand to test, and it can't fail silently the way the last three did",
