@@ -1,9 +1,9 @@
 {
-  "date": "2026-08-15",
-  "writtenAt": "2026-08-15T06:15:00+10:00",
+  "date": "2026-08-16",
+  "writtenAt": "2026-08-16T05:56:00+10:00",
   "message": [
-    "Day 10 of 150. This is the automatic refresh — the written briefing comes when you message me.",
-    "Sat in the rhythm: Publish long form (9am). Market day — film real-life content while you're there.",
+    "Day 11 of 150. This is the automatic refresh — the written briefing comes when you message me.",
+    "Sun in the rhythm: Market. Evening: review the numbers, pick next week.",
     "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
   ],
   "today": [
@@ -35,7 +35,7 @@
   "numbers": [
     {
       "label": "The build",
-      "value": "Day 10",
+      "value": "Day 11",
       "note": "of 150",
       "level": "info"
     },
