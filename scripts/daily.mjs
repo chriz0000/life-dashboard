@@ -17,8 +17,13 @@
  * gets the written one when he messages.
  *
  * Env:
- *   TODOIST_TOKEN  required for the Todoist half; without it the script still
- *                  updates the day counter and exits 0.
+ *   TODOIST_TOKEN  required for the Todoist half. Without it the script still
+ *                  writes an honest briefing (everything Todoist-derived is
+ *                  reported as "not checked") and then exits 1, so the run goes
+ *                  RED. It used to exit 0, which meant a missing secret looked
+ *                  identical to a healthy run -- 29 days of green no-ops.
+ *   ALLOW_NO_TODOIST  set to "1" to keep the old exit-0 behaviour for local
+ *                  runs where you genuinely don't have the token to hand.
  *   DRY_RUN        set to "1" to log everything and write nothing.
  */
 
@@ -27,6 +32,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 const TZ = "Australia/Brisbane";
 const DRY = process.env.DRY_RUN === "1";
 const TOKEN = process.env.TODOIST_TOKEN;
+const ALLOW_NO_TODOIST = process.env.ALLOW_NO_TODOIST === "1";
 
 const PROJECTS = {
   daily: "6h56xJPfVRX5MRMg",
@@ -125,7 +131,11 @@ let overdueCount = 0;
 let rolled = 0;
 
 if (!TOKEN) {
-  log("No TODOIST_TOKEN set — skipping the Todoist half, updating the day counter only.");
+  console.error(
+    "TODOIST_TOKEN is not set — the Todoist half is being skipped and the day " +
+    "counter is all that will update. Add the secret to the repo " +
+    "(gh secret set TODOIST_TOKEN) or set ALLOW_NO_TODOIST=1 for a local run."
+  );
 } else {
   log("Reading Todoist…");
   const daily = await openTasks(PROJECTS.daily);
@@ -194,3 +204,14 @@ if (DRY) {
   log("briefing.json written");
 }
 log("Done.");
+
+/* A missing connector must not look like a healthy run. The briefing above is
+   written and committed either way, so the dashboard still tells the truth --
+   but the job itself goes red so the failure is actually noticed. */
+if (!TOKEN && !ALLOW_NO_TODOIST) {
+  console.error(
+    "\nRun marked FAILED: briefing.json was written, but it contains no live " +
+    "Todoist data. Fix TODOIST_TOKEN and re-run."
+  );
+  process.exit(1);
+}

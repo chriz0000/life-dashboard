@@ -35,8 +35,12 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
         run: node scripts/daily.mjs
 
+      # always(): when a connector is missing the refresh step now exits 1 so the
+      # run goes red, but the briefing it wrote is still honest ("not checked")
+      # and should reach the dashboard. Without always() the red run would also
+      # silently stop publishing, which is the worse failure.
       - name: Commit and push
-        if: ${{ !inputs.dry_run }}
+        if: ${{ always() && !inputs.dry_run }}
         run: |
           if git diff --quiet -- briefing.json; then
             echo "No change to briefing.json — nothing to push."
