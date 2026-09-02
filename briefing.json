@@ -1,68 +1,64 @@
 {
   "date": "2026-09-03",
-  "writtenAt": "2026-09-03T08:50:00+10:00",
+  "writtenAt": "2026-09-03T09:05:00+10:00",
   "message": [
-    "Good morning. Two things came back to life overnight: Todoist is reachable again, and WHOOP synced at 8:31 for the first time since June — recovery 67%, sleep 76%. Everything below is live data, not yesterday's guesses.",
-    "Here's what the live list actually says: the four SETUP tasks are still open, 27 days overdue. The dashboard has been counting 'Day 29 of 150' while Day 1 — the baseline footage — has never been filmed. That's the hardest thing today, and the one action is simple: put the phone on a tripod at a track and film the tests. Two hours.",
-    "It's Thursday, so the rhythm says SHOOT 2 — I've written today's checklist into 💀 Daily: batch 8–12 shorts, post two reels, count the bank. Recovery at 67% is decent; today was also the end of the 'nothing maximal until 3 Sept' window, but the ramp never went on the calendar, so treat sprinting as still gated.",
-    "Two bills went overdue while Todoist was dark — Fitness Passports $69 (28 Aug) and Car Insurance $58 (1 Sep), both tagged Karin. And a decision I need from you: keep 6 Aug as the start date and accept the gap, or reset Day 1 to this weekend and I rebuild the plan?"
+    "Good morning. The clock has been reset: today is Day 1 of 150. The old numbering was fiction — it counted 29 days while the baseline sat unfilmed. That's gone. The arc now runs 3 September to 30 January, and it starts with what you do in the next few hours.",
+    "Day 1 has exactly one job: film the baseline. 100m timed twice, standing long jump, vertical, bodyweight on camera, and the straight-to-camera piece saying the target and the date out loud. This footage is unrepeatable — you only get one Day 1, and this time it's today. Recovery is 67%, sleep 76% — your body is ready to be tested.",
+    "Everything downstream is already re-anchored: the plan, the dashboard, and your Todoist list all say Day 1 now. The hamstring rule restarts with the clock — four weeks of ramp work, nothing maximal until 1 October. The two overdue bills (Fitness Passports $69, Car Insurance $58) are the only leftovers from before; clear them today so Day 1 starts clean.",
+    "One thing before you film: read the plan and tell me in the chat if the sub-12 target still stands. The number you say to camera today is the one you'll be chasing until 30 January — make sure it's the one you mean."
   ],
   "today": [
     {
       "level": "critical",
-      "text": "Film the Day 1 baseline tests — 27 days overdue and the footage is unrepeatable; nothing else in the arc starts until this exists"
-    },
-    {
-      "level": "critical",
-      "text": "SHOOT 2 — batch 8–12 shorts (Thursday's buffer day, checklist is in 💀 Daily)"
+      "text": "Film the Day 1 baseline tests — 100m ×2, long jump, vertical, bodyweight, and the stakes piece to camera"
     },
     {
       "level": "warning",
-      "text": "Two bills overdue: Fitness Passports $69 (28 Aug) and Car Insurance $58 (1 Sep) — pay or hand to Karin today"
+      "text": "Write the Ep 1 hook — five versions out loud, keep the one that doesn't sound written"
     },
     {
       "level": "warning",
-      "text": "Put the 4-week hamstring ramp on the calendar — the 3 Sept gate date arrived but the ramp never happened, so it restarts from today"
+      "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 1 Oct"
+    },
+    {
+      "level": "warning",
+      "text": "Clear the two overdue bills — Fitness Passports $69, Car Insurance $58 — pay or hand to Karin"
     },
     {
       "level": "neutral",
-      "text": "Post today's 2 reels from the bank, numbered 'Day 29 of 150'"
-    },
-    {
-      "level": "neutral",
-      "text": "Decide: keep the 6 Aug start date, or reset Day 1 to this weekend and I rebuild the plan"
+      "text": "Read the content plan and confirm the sub-12 target before you say it on camera"
     }
   ],
   "numbers": [
     {
       "label": "The build",
-      "value": "Day 29",
-      "note": "of 150 — Day 1 still unfilmed",
-      "level": "warning"
+      "value": "Day 1",
+      "note": "of 150 · trial 30 Jan",
+      "level": "info"
     },
     {
       "label": "Open today",
-      "value": "9",
-      "note": "6 of them overdue",
-      "level": "warning"
-    },
-    {
-      "label": "Done this week",
-      "value": "2",
-      "note": "daily goal is 5; 0 today so far",
-      "level": "warning"
+      "value": "6",
+      "note": "all Day 1",
+      "level": "neutral"
     },
     {
       "label": "Bills overdue",
       "value": "$127",
-      "note": "Fitness Passports + Car Insurance",
+      "note": "the only pre-reset leftovers",
       "level": "warning"
+    },
+    {
+      "label": "Karma",
+      "value": "10,880",
+      "note": "trending up · streak 0",
+      "level": "good"
     }
   ],
   "radar": [
-    "WHOOP is syncing again as of 8:31 this morning — first sync since 18 June. It only stays live while whoop_sync.py runs on the desktop, so if the Recovery tile goes stale again, that's the machine, not you",
-    "The four SETUP tasks have sat overdue since 7 Aug. Either the baseline gets filmed or the start date moves — your call in the chat resolves this",
-    "Karma is 10,880 and trending up, but the daily streak is at 0 — five completions today restarts it",
-    "The 💰 Bills project still has the duplicate entries (two Internets, two CBAs, two Zips) — needs a human pass before the Money section can trust it"
+    "The reset is real, not cosmetic — plan dates, the dashboard day count, and the Todoist checklist all restarted from 3 Sep. If any screen still says Day 29, tell me",
+    "The hamstring gate is the one place impatience ends the whole thing — ramp work only until 1 Oct, then the power phase opens",
+    "WHOOP is syncing again as of this morning — it stays live only while whoop_sync.py runs on the desktop",
+    "The 💰 Bills project still has duplicate entries (two Internets, two CBAs, two Zips) — needs a human pass before the money numbers can be trusted"
   ]
 }

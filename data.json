@@ -1,54 +1,50 @@
 {
   "meta": {
-    "updatedAt": "2026-08-05T11:20:00+10:00",
+    "updatedAt": "2026-09-03T09:05:00+10:00",
     "sources": "Todoist · Square · Shopify · Gmail · Notion · WHOOP"
   },
   "user": { "name": "Christian" },
 
   "focusToday": [
-    { "level": "good",     "text": "July closed at $1,803.50 (Square $1,667.50 + Shopify $136) — second-best month of 2026, and four times what the dashboard had been showing" },
-    { "level": "critical", "text": "ChatGPT Plus $30 overdue since 4 Aug; 5 more subscriptions due today ($85.95)" },
-    { "level": "good",     "text": "Bills & Debts project is clear — nothing overdue, down from $506 on 12 Jul" },
-    { "level": "critical", "text": "Habit completions falling: 46 → 27 → 8 per week, nothing since 1 Aug; streak at 0" },
-    { "level": "warning",  "text": "No training block — 31 days since Gold Coast Marathon, next goal still unset" },
-    { "level": "warning",  "text": "WHOOP last synced 18 Jun (7 weeks) — needs whoop_sync.py on desktop" }
+    { "level": "info",     "text": "The 150-day build restarted today — Day 1 of 150, filmed time trial 30 Jan 2027. The old Day-29 numbering was scrapped because the baseline was never filmed" },
+    { "level": "critical", "text": "Day 1 job: film the baseline tests — 100m ×2, long jump, vertical, bodyweight, stakes piece to camera. Unrepeatable footage" },
+    { "level": "good",     "text": "WHOOP is syncing again after 11 weeks dark — recovery 67%, sleep 76% this morning" },
+    { "level": "warning",  "text": "Two bills overdue: Fitness Passports $69 (28 Aug) and Car Insurance $58 (1 Sep), both tagged Karin" },
+    { "level": "warning",  "text": "Hamstring gate restarts with the clock — ramp work only, nothing maximal until 1 Oct" },
+    { "level": "warning",  "text": "Todoist week so far: 2 completions against a daily goal of 5 — streak at 0, karma 10,880 trending up" }
   ],
 
   "marathon": {
-    "name": "Gold Coast Marathon",
-    "raceDate": "2026-07-05",
-    "goal": "Sub-4:00 · avg 5:41/km · Z2",
-    "blockWeeks": 6
+    "name": "100m time trial",
+    "raceDate": "2027-01-30",
+    "goal": "Sub-12.0s · filmed · public",
+    "blockWeeks": 21
   },
 
   "week": [
-    { "day": "Mon", "workout": "Rest", "km": 0,  "detail": "Rest — full rest day, mobility work and stretching only." },
-    { "day": "Tue", "workout": "8k",   "km": 8,  "detail": "Tempo — 8km @ tempo pace (~5:00/km), Zone 3–4 effort." },
-    { "day": "Wed", "workout": "6k",   "km": 6,  "detail": "Easy — 6km @ easy pace (~6:30/km), Zone 2, conversational." },
-    { "day": "Thu", "workout": "10k",  "km": 10, "detail": "Intervals — 10km total, 6 × 800m @ 4:30/km with 400m jog recovery." },
-    { "day": "Fri", "workout": "Rest", "km": 0,  "detail": "Rest — full rest day, mobility work and stretching only." },
-    { "day": "Sat", "workout": "5k",   "km": 5,  "detail": "Easy — 5km @ 8:00/km, recovery focus, heart rate in Zone 2." },
-    { "day": "Sun", "workout": "22k",  "km": 22, "detail": "Long run — 22km @ 5:50/km, fuel every 45 mins, practice race-day nutrition." }
+    { "day": "Mon", "workout": "Ramp",  "km": 0, "detail": "Hamstring ramp — Nordic curls, A-skips, build-ups at 70–80%. Nothing maximal until 1 Oct." },
+    { "day": "Tue", "workout": "Easy",  "km": 5, "detail": "Easy Z2 run — keep the aerobic base ticking while the tendons adapt." },
+    { "day": "Wed", "workout": "Ramp",  "km": 0, "detail": "Hamstring ramp — Nordic curls, A-skips, build-ups at 70–80%." },
+    { "day": "Thu", "workout": "Ramp",  "km": 0, "detail": "Hamstring ramp + gym lower body, moderate load." },
+    { "day": "Fri", "workout": "Rest",  "km": 0, "detail": "Rest — mobility and stretching only." },
+    { "day": "Sat", "workout": "Easy",  "km": 5, "detail": "Easy Z2 run — conversational pace." },
+    { "day": "Sun", "workout": "Rest",  "km": 0, "detail": "Rest — market day. Review the week's footage in the evening." }
   ],
 
   "money": {
-    "revenue": { "label": "Revenue (Aug so far)", "value": "$120", "sub": "Square, 1 market day · July closed at $1,803.50" },
+    "revenue": { "label": "Revenue (Sep so far)", "value": "—", "sub": "not pulled this refresh · July closed at $1,803.50" },
     "bills": [
-      { "name": "ChatGPT Plus",       "amount": "$30",    "due": "4 Aug",  "status": "overdue" },
-      { "name": "Netflix",            "amount": "$20.99", "due": "today",  "status": "due-today" },
-      { "name": "Apple Music",        "amount": "$19.99", "due": "today",  "status": "due-today" },
-      { "name": "Apple One / iCloud", "amount": "$22.99", "due": "today",  "status": "due-today" },
-      { "name": "Amazon Prime",       "amount": "$9.99",  "due": "today",  "status": "due-today" },
-      { "name": "Revolut Premium",    "amount": "$11.99", "due": "today",  "status": "due-today" }
+      { "name": "Fitness Passports", "amount": "$69", "due": "28 Aug", "status": "overdue" },
+      { "name": "Car Insurance",     "amount": "$58", "due": "1 Sep",  "status": "overdue" }
     ]
   },
 
   "pillars": [
-    { "key": "physical",   "name": "Physical",   "score": 50, "weight": 0.15, "status": "No active block", "level": "warning"  },
-    { "key": "capital",    "name": "Capital",    "score": 55, "weight": 0.20, "status": "Improving",       "level": "good"     },
-    { "key": "brand",      "name": "Brand",      "score": 35, "weight": 0.10, "status": "Needs work",      "level": "warning"  },
-    { "key": "build",      "name": "Build",      "score": 18, "weight": 0.15, "status": "Stalled",         "level": "critical" },
-    { "key": "discipline", "name": "Discipline", "score": 25, "weight": 0.15, "status": "Slipping",        "level": "critical" },
+    { "key": "physical",   "name": "Physical",   "score": 50, "weight": 0.15, "status": "Ramp week 1",     "level": "warning"  },
+    { "key": "capital",    "name": "Capital",    "score": 55, "weight": 0.20, "status": "Two bills overdue", "level": "warning" },
+    { "key": "brand",      "name": "Brand",      "score": 35, "weight": 0.10, "status": "Day 1 of 150",    "level": "warning"  },
+    { "key": "build",      "name": "Build",      "score": 18, "weight": 0.15, "status": "Restarted today", "level": "warning"  },
+    { "key": "discipline", "name": "Discipline", "score": 25, "weight": 0.15, "status": "Streak at 0",     "level": "critical" },
     { "key": "spirit",     "name": "Spirit",     "score": 10, "weight": 0.10, "status": "Just starting",   "level": "warning"  },
     { "key": "knowledge",  "name": "Knowledge",  "score": 5,  "weight": 0.15, "status": "Not started",     "level": "critical" }
   ]

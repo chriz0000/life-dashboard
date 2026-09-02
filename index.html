@@ -67,15 +67,15 @@
 
   .app {
     max-width: 620px; margin: 0 auto;
-    padding: calc(20px + env(safe-area-inset-top)) 18px calc(104px + env(safe-area-inset-bottom));
+    padding: calc(26px + env(safe-area-inset-top)) 20px calc(112px + env(safe-area-inset-bottom));
   }
 
-  section { padding: 18px 0; border-top: 1px solid var(--hairline); }
+  section { padding: 26px 0; border-top: 1px solid var(--hairline); }
   section:first-of-type { border-top: none; padding-top: 0; }
 
   .label {
-    font-size: 11px; font-weight: 650; text-transform: uppercase;
-    letter-spacing: 0.08em; color: var(--ink-2); margin-bottom: 12px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--ink-3); margin-bottom: 16px;
   }
 
   .lv-good { --c: var(--good); }
@@ -86,44 +86,60 @@
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--neutral)); flex-shrink: 0; }
 
   /* ---------- header ---------- */
-  .date { font-size: 12px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); }
-  .greeting { font-size: 23px; font-weight: 650; letter-spacing: -0.015em; margin-top: 2px; }
-  .stale-note { font-size: 13px; color: var(--warning); margin-top: 8px; }
+  .date { font-size: 12px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-2); }
+  .greeting { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; margin-top: 4px; }
+  .stale-note { font-size: 13px; color: var(--warning); margin-top: 10px; }
+  .build-line {
+    display: flex; align-items: center; gap: 12px; margin-top: 14px;
+    font-size: 13px; font-weight: 600; color: var(--ink-2); white-space: nowrap;
+  }
+  .build-line .progress {
+    flex: 1; height: 4px; border-radius: 2px; background: var(--well); overflow: hidden;
+  }
+  .build-line .progress i {
+    display: block; height: 100%; border-radius: 2px; background: var(--info);
+  }
 
   /* ---------- briefing ---------- */
-  .briefing p { font-size: 16px; line-height: 1.62; margin-bottom: 15px; }
+  .briefing p { font-size: 16.5px; line-height: 1.65; margin-bottom: 16px; }
   .briefing p:last-child { margin-bottom: 0; }
 
   /* ---------- today ---------- */
   .today-item {
-    display: flex; align-items: flex-start; gap: 11px;
-    padding: 11px 0; min-height: 44px;
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 13px 0; min-height: 44px;
     cursor: pointer; user-select: none; -webkit-user-select: none;
   }
+  .today-item + .today-item { border-top: 1px solid var(--hairline); }
   .today-check {
-    width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--hairline);
-    flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; color: #fff;
+    width: 21px; height: 21px; border-radius: 50%; border: 1.5px solid var(--ink-3);
+    flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; color: #fff;
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
-  .today-item .dot { margin-top: 9px; }
-  .today-text { font-size: 15px; }
+  .today-item .dot { margin-top: 8px; }
+  .today-text { font-size: 15.5px; line-height: 1.5; }
   .today-item.done { opacity: 0.4; }
   .today-item.done .today-text { text-decoration: line-through; }
   .today-item.done .today-check { background: var(--good); border-color: var(--good); }
 
   /* ---------- numbers ---------- */
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 8px; }
-  .tile { background: var(--well); border-radius: 12px; padding: 11px 13px; min-width: 0; }
-  .tile-label { font-size: 11.5px; color: var(--ink-2); }
-  .tile-value { font-size: 20px; font-weight: 650; margin-top: 2px; letter-spacing: -0.015em; white-space: nowrap; }
-  .tile-note { font-size: 11.5px; color: var(--ink-2); margin-top: 1px; display: flex; align-items: center; gap: 5px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 10px; }
+  .tile { background: var(--well); border-radius: 14px; padding: 14px 15px 13px; min-width: 0; }
+  .tile-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--ink-2);
+  }
+  .tile-value { font-size: 22px; font-weight: 700; margin-top: 4px; letter-spacing: -0.02em; white-space: nowrap; }
+  .tile-note { font-size: 12px; color: var(--ink-2); margin-top: 3px; display: flex; align-items: center; gap: 5px; }
   .tile-note .dot { width: 6px; height: 6px; }
 
   /* ---------- radar ---------- */
-  .radar-item { display: flex; gap: 10px; padding: 8px 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
-  .radar-item::before { content: "—"; color: var(--ink-3); flex-shrink: 0; }
+  .radar-item { display: flex; gap: 12px; padding: 10px 0; font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+  .radar-item + .radar-item { border-top: 1px solid var(--hairline); }
+  .radar-item::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; margin-top: 8px; }
 
-  .footer { padding-top: 18px; border-top: 1px solid var(--hairline); text-align: center; }
-  .footer div { font-size: 12px; color: var(--ink-3); }
+  .footer { padding: 24px 0 0; border-top: 1px solid var(--hairline); text-align: center; }
+  .footer div { font-size: 12px; color: var(--ink-3); line-height: 1.7; }
 
   .error {
     font-size: 13.5px; color: var(--critical); padding: 12px; border-radius: 10px;
@@ -224,7 +240,7 @@
 
   /* ---------- plan chip + panel ---------- */
   .plan-chip {
-    display: inline-flex; align-items: center; gap: 8px; margin-top: 12px;
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
     background: var(--well); border: 1px solid var(--hairline); border-radius: 999px;
     padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--ink);
     cursor: pointer; min-height: 40px; user-select: none; -webkit-user-select: none;
@@ -374,10 +390,16 @@ function renderHeader(b) {
     ? new Date(`${b.date}T12:00:00+10:00`).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: TZ })
     : null;
 
+  const n = PLAN ? dayNumber() : null;
+  const total = PLAN ? totalDays() : null;
+  const inArc = n !== null && n >= 1 && n <= total;
+  const pct = inArc ? Math.max(1, (n / total) * 100).toFixed(1) : 0;
+
   $("header").innerHTML = `
     <div class="date">${dateStr}</div>
     <div class="greeting">${greeting}, Christian</div>
     ${isStale ? `<div class="stale-note">This briefing was written ${staleStr} — ask me below for anything newer.</div>` : ""}
+    ${inArc ? `<div class="build-line"><span>Day ${n} of ${total}</span><div class="progress"><i style="width:${pct}%"></i></div></div>` : ""}
     <div class="plan-chip" id="planChip" role="button" tabindex="0">
       <span id="planChipText">Content plan</span>
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
@@ -399,15 +421,28 @@ function dayNumber() {
   return n;
 }
 
+function totalDays() {
+  if (!PLAN) return null;
+  const start = new Date(`${PLAN.startDate}T00:00:00+10:00`);
+  const end = new Date(`${PLAN.endDate}T00:00:00+10:00`);
+  return Math.round((end - start) / 86400000) + 1;
+}
+
 function updatePlanChip() {
   const chip = $("planChipText");
   if (!chip || !PLAN) return;
   const n = dayNumber();
+  const total = totalDays();
+  // The header's progress line already shows "Day N of M" — the chip names the phase instead.
+  const phase = (PLAN.spine.phases || []).find((ph) => {
+    const m = String(ph.days).match(/(\d+)\D+(\d+)/);
+    return m && n >= +m[1] && n <= +m[2];
+  });
   chip.innerHTML = n < 1
     ? `Content plan <span class="day">· starts ${new Date(`${PLAN.startDate}T12:00:00+10:00`).toLocaleDateString("en-AU", { day: "numeric", month: "short", timeZone: TZ })}</span>`
-    : n > 150
+    : n > total
     ? `Content plan <span class="day">· complete</span>`
-    : `Content plan <span class="day">· Day ${n} of 150</span>`;
+    : `Content plan <span class="day">· ${esc(phase ? phase.name : `Day ${n} of ${total}`)}</span>`;
 }
 
 function block(title, tag, inner) {
@@ -565,7 +600,10 @@ function handoffContext(question) {
   const b = BRIEFING;
   const day = PLAN ? dayNumber() : null;
   const out = ["You're my personal assistant. This came from my life dashboard — keep the reply short and direct, like the briefing does."];
-  if (day && day >= 1 && day <= 150) out.push(`Today is Day ${day} of my 150-day content build (marathon runner → sprinter, filmed time trial on 2 Jan).`);
+  if (day && day >= 1 && day <= totalDays()) {
+    const trial = new Date(`${PLAN.endDate}T12:00:00+10:00`).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric", timeZone: TZ });
+    out.push(`Today is Day ${day} of my ${totalDays()}-day content build (marathon runner → sprinter, filmed time trial on ${trial}).`);
+  }
   if (b) {
     out.push(`Today's briefing said:\n${b.message.join("\n")}`.slice(0, 2600));
     out.push(`Today's list: ${b.today.map((t) => t.text).join(" · ")}`);
