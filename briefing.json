@@ -1,61 +1,68 @@
 {
   "date": "2026-09-03",
-  "writtenAt": "2026-09-03T08:31:00+10:00",
+  "writtenAt": "2026-09-03T08:50:00+10:00",
   "message": [
-    "Day 29 of 150. This is the automatic refresh — the written briefing comes when you message me.",
-    "Thu in the rhythm: SHOOT 2 — batch 8–12 shorts. This day is what keeps the buffer alive.",
-    "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
+    "Good morning. Two things came back to life overnight: Todoist is reachable again, and WHOOP synced at 8:31 for the first time since June — recovery 67%, sleep 76%. Everything below is live data, not yesterday's guesses.",
+    "Here's what the live list actually says: the four SETUP tasks are still open, 27 days overdue. The dashboard has been counting 'Day 29 of 150' while Day 1 — the baseline footage — has never been filmed. That's the hardest thing today, and the one action is simple: put the phone on a tripod at a track and film the tests. Two hours.",
+    "It's Thursday, so the rhythm says SHOOT 2 — I've written today's checklist into 💀 Daily: batch 8–12 shorts, post two reels, count the bank. Recovery at 67% is decent; today was also the end of the 'nothing maximal until 3 Sept' window, but the ramp never went on the calendar, so treat sprinting as still gated.",
+    "Two bills went overdue while Todoist was dark — Fitness Passports $69 (28 Aug) and Car Insurance $58 (1 Sep), both tagged Karin. And a decision I need from you: keep 6 Aug as the start date and accept the gap, or reset Day 1 to this weekend and I rebuild the plan?"
   ],
   "today": [
     {
       "level": "critical",
-      "text": "Film the Day 1 baseline tests — two hours, and the arc doesn't start until it's done"
+      "text": "Film the Day 1 baseline tests — 27 days overdue and the footage is unrepeatable; nothing else in the arc starts until this exists"
     },
     {
       "level": "critical",
-      "text": "Add the TODOIST_TOKEN secret to the repo so the 6am job works (steps in the chat)"
+      "text": "SHOOT 2 — batch 8–12 shorts (Thursday's buffer day, checklist is in 💀 Daily)"
     },
     {
       "level": "warning",
-      "text": "Market day — film while you're there, it's free Real Life footage"
+      "text": "Two bills overdue: Fitness Passports $69 (28 Aug) and Car Insurance $58 (1 Sep) — pay or hand to Karin today"
     },
     {
       "level": "warning",
-      "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 3 Sept"
+      "text": "Put the 4-week hamstring ramp on the calendar — the 3 Sept gate date arrived but the ramp never happened, so it restarts from today"
     },
     {
       "level": "neutral",
-      "text": "Decide: film the baseline this weekend, or move the start date and I'll rebuild the plan"
+      "text": "Post today's 2 reels from the bank, numbered 'Day 29 of 150'"
     },
     {
       "level": "neutral",
-      "text": "$115.95 subscriptions + Afterpay still sitting (as of yesterday)"
+      "text": "Decide: keep the 6 Aug start date, or reset Day 1 to this weekend and I rebuild the plan"
     }
   ],
   "numbers": [
     {
       "label": "The build",
       "value": "Day 29",
-      "note": "of 150",
-      "level": "info"
-    },
-    {
-      "label": "Open today",
-      "value": "—",
-      "note": "Todoist unreachable",
+      "note": "of 150 — Day 1 still unfilmed",
       "level": "warning"
     },
     {
-      "label": "Due / overdue",
-      "value": "—",
-      "note": "not checked",
+      "label": "Open today",
+      "value": "9",
+      "note": "6 of them overdue",
+      "level": "warning"
+    },
+    {
+      "label": "Done this week",
+      "value": "2",
+      "note": "daily goal is 5; 0 today so far",
+      "level": "warning"
+    },
+    {
+      "label": "Bills overdue",
+      "value": "$127",
+      "note": "Fitness Passports + Car Insurance",
       "level": "warning"
     }
   ],
   "radar": [
-    "The morning job now runs as a GitHub Action in your own repo instead of a scheduled Claude session — it has real logs, you can trigger it by hand to test, and it can't fail silently the way the last three did",
-    "It deliberately won't write the briefing prose — a script can't judge what matters. It refreshes your list, the day count and the money, and says plainly when it couldn't reach something",
-    "Three days without footage is recoverable; three weeks isn't. The start date is adjustable — the drift is the part that costs you",
-    "WHOOP still hasn't synced since 18 June"
+    "WHOOP is syncing again as of 8:31 this morning — first sync since 18 June. It only stays live while whoop_sync.py runs on the desktop, so if the Recovery tile goes stale again, that's the machine, not you",
+    "The four SETUP tasks have sat overdue since 7 Aug. Either the baseline gets filmed or the start date moves — your call in the chat resolves this",
+    "Karma is 10,880 and trending up, but the daily streak is at 0 — five completions today restarts it",
+    "The 💰 Bills project still has the duplicate entries (two Internets, two CBAs, two Zips) — needs a human pass before the Money section can trust it"
   ]
 }
