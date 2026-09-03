@@ -1,11 +1,10 @@
 {
-  "date": "2026-09-03",
-  "writtenAt": "2026-09-03T09:05:00+10:00",
+  "date": "2026-09-04",
+  "writtenAt": "2026-09-04T07:53:00+10:00",
   "message": [
-    "Good morning. The clock has been reset: today is Day 1 of 150. The old numbering was fiction — it counted 29 days while the baseline sat unfilmed. That's gone. The arc now runs 3 September to 30 January, and it starts with what you do in the next few hours.",
-    "Day 1 has exactly one job: film the baseline. 100m timed twice, standing long jump, vertical, bodyweight on camera, and the straight-to-camera piece saying the target and the date out loud. This footage is unrepeatable — you only get one Day 1, and this time it's today. Recovery is 67%, sleep 76% — your body is ready to be tested.",
-    "Everything downstream is already re-anchored: the plan, the dashboard, and your Todoist list all say Day 1 now. The hamstring rule restarts with the clock — four weeks of ramp work, nothing maximal until 1 October. The two overdue bills (Fitness Passports $69, Car Insurance $58) are the only leftovers from before; clear them today so Day 1 starts clean.",
-    "One thing before you film: read the plan and tell me in the chat if the sub-12 target still stands. The number you say to camera today is the one you'll be chasing until 30 January — make sure it's the one you mean."
+    "Day 2 of 150. This is the automatic refresh — the written briefing comes when you message me.",
+    "Fri in the rhythm: Edit + schedule the next 7 days of reels.",
+    "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
   ],
   "today": [
     {
@@ -32,27 +31,21 @@
   "numbers": [
     {
       "label": "The build",
-      "value": "Day 1",
-      "note": "of 150 · trial 30 Jan",
+      "value": "Day 2",
+      "note": "of 150",
       "level": "info"
     },
     {
       "label": "Open today",
-      "value": "6",
-      "note": "all Day 1",
-      "level": "neutral"
-    },
-    {
-      "label": "Bills overdue",
-      "value": "$127",
-      "note": "the only pre-reset leftovers",
+      "value": "—",
+      "note": "Todoist unreachable",
       "level": "warning"
     },
     {
-      "label": "Karma",
-      "value": "10,880",
-      "note": "trending up · streak 0",
-      "level": "good"
+      "label": "Due / overdue",
+      "value": "—",
+      "note": "not checked",
+      "level": "warning"
     }
   ],
   "radar": [
