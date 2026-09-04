@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-04T04:31:38.913835+00:00",
+  "synced_at": "2026-09-04T10:31:46.052472+00:00",
   "recovery": {
     "date": "2026-09-03T21:03:34.475Z",
     "recovery_score": 55.0,
@@ -13,7 +13,7 @@
   },
   "strain": {
     "date": "2026-09-03T13:49:17.690Z",
-    "strain_score": 4.881551,
-    "average_heart_rate": 73
+    "strain_score": 5.7759643,
+    "average_heart_rate": 78
   }
 }
