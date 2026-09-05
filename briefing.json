@@ -1,57 +1,32 @@
 {
-  "date": "2026-09-05",
-  "writtenAt": "2026-09-05T07:50:00+10:00",
+  "date": "2026-09-06",
+  "writtenAt": "2026-09-06T00:05:00+10:00",
+  "handwritten": true,
   "message": [
-    "Day 3 of 150. This is the automatic refresh — the written briefing comes when you message me.",
-    "Sat in the rhythm: Publish long form (9am). Market day — film real-life content while you're there.",
-    "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
+    "Morning Christian. The plan's been rinsed. Two things a day now: **one video** and **one Czech lesson**. That's it — the whole calendar fits in one line.",
+    "The old version asked for two reels a day, a weekly long form, two shoot days and five pillars. That was a production company's schedule handed to one person who also runs markets on weekends. You didn't fall behind because you're lazy; you fell behind because it was unbuildable. One shoot day on Monday banks the week's seven videos, and the other six days you post one and do your lesson. If the bank runs low, Monday gets longer — the other days don't.",
+    "Czech starts today. Tap **Czech** under the greeting and Day 1 is sitting there: five words, one rule, three things to say out loud. Fifteen minutes. The course is frequency-first — you'll learn 'beer' long before 'library' — and it deliberately skips the case tables that make people quit Czech in month two. Two cases and one tense in thirty days, and you'll be able to hold a real exchange.",
+    "The first three days are pure sound system. Czech spelling is genuinely one-to-one with pronunciation, so a few days upfront means you can say any word you ever see, forever. Highest-return thing in the course, which is why it's front-loaded.",
+    "Still unfilmed: the baseline. It's Day 4 of the build. I've led with it every morning and I'm not going to keep doing that — but one video a day only starts properly once there's a Day 1 in the can, and today is a market day, which is the easiest filming you'll ever do."
   ],
   "today": [
-    {
-      "level": "critical",
-      "text": "Film the Day 1 baseline tests — 100m ×2, long jump, vertical, bodyweight, and the stakes piece to camera"
-    },
-    {
-      "level": "warning",
-      "text": "Write the Ep 1 hook — five versions out loud, keep the one that doesn't sound written"
-    },
-    {
-      "level": "warning",
-      "text": "Put the 4-week hamstring ramp on the calendar — nothing maximal until 1 Oct"
-    },
-    {
-      "level": "warning",
-      "text": "Clear the two overdue bills — Fitness Passports $69, Car Insurance $58 — pay or hand to Karin"
-    },
-    {
-      "level": "neutral",
-      "text": "Read the content plan and confirm the sub-12 target before you say it on camera"
-    }
+    { "level": "critical", "text": "Czech Day 1 — the stress rule and hello. 15 minutes, tap Czech above." },
+    { "level": "critical", "text": "One video. Baseline tests if you can — 100m ×2, jumps, bodyweight, piece to camera." },
+    { "level": "warning",  "text": "Market day — film thirty seconds while you're there, it costs you nothing" },
+    { "level": "warning",  "text": "Two bills overdue: Fitness Passports $69, Car Insurance $58" },
+    { "level": "neutral",  "text": "Add TODOIST_TOKEN to the repo secrets — the 5:50am job still can't see your tasks without it" },
+    { "level": "neutral",  "text": "10 minutes tonight: pick the week's seven video ideas from the idea bank" }
   ],
   "numbers": [
-    {
-      "label": "The build",
-      "value": "Day 3",
-      "note": "of 150",
-      "level": "info"
-    },
-    {
-      "label": "Open today",
-      "value": "—",
-      "note": "Todoist unreachable",
-      "level": "warning"
-    },
-    {
-      "label": "Due / overdue",
-      "value": "—",
-      "note": "not checked",
-      "level": "warning"
-    }
+    { "label": "The build",  "value": "Day 4", "note": "of 150",            "level": "info" },
+    { "label": "Czech",      "value": "Day 1", "note": "of 30 · block one", "level": "good" },
+    { "label": "Daily asks", "value": "2",     "note": "down from 3+",      "level": "good" },
+    { "label": "Overdue",    "value": "$127",  "note": "2 bills",           "level": "warning" }
   ],
   "radar": [
-    "The reset is real, not cosmetic — plan dates, the dashboard day count, and the Todoist checklist all restarted from 3 Sep. If any screen still says Day 29, tell me",
-    "The hamstring gate is the one place impatience ends the whole thing — ramp work only until 1 Oct, then the power phase opens",
-    "WHOOP is syncing again as of this morning — it stays live only while whoop_sync.py runs on the desktop",
-    "The 💰 Bills project still has duplicate entries (two Internets, two CBAs, two Zips) — needs a human pass before the money numbers can be trusted"
+    "One video a day is slower to monetisation than the old plan — dropping the weekly long form costs you the watch-hours route to YouTube partner. That's a real trade and the right one for now; add long form back only when a single video obviously deserves it",
+    "The Czech lesson is a fixture, not content. But if a day's lesson gives you something genuinely funny or hard, thirty seconds of it is a free second series — optional, and don't let it become a second job",
+    "TODOIST_TOKEN still isn't set in the repo secrets, so the morning job can only update the day counter, not your actual list",
+    "Nothing maximal until 1 Oct — the hamstring gate is the one thing that would end the whole arc"
   ]
 }

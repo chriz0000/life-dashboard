@@ -296,6 +296,41 @@
     border-radius: 10px; padding: 12px 14px; color: var(--ink); font-size: 14px; line-height: 1.55;
   }
   .plan-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .plan-daily {
+    background: var(--well); border-radius: 14px; padding: 4px 14px; margin-bottom: 22px;
+  }
+
+  /* ---------- czech lesson ---------- */
+  .cz-head { margin-bottom: 22px; }
+  .cz-day { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--info); }
+  .cz-title { font-size: 23px; font-weight: 700; letter-spacing: -0.02em; margin-top: 6px; }
+  .cz-why { font-size: 14.5px; color: var(--ink-2); line-height: 1.6; margin-top: 8px; }
+  .cz-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--ink-3); margin: 24px 0 12px;
+  }
+  .cz-words { display: flex; flex-direction: column; gap: 2px; }
+  .cz-word { background: var(--well); border-radius: 12px; padding: 12px 14px; }
+  .cz-cs { font-size: 19px; font-weight: 650; letter-spacing: -0.01em; }
+  .cz-say { font-size: 12.5px; font-weight: 500; color: var(--ink-3); margin-left: 10px; letter-spacing: 0; }
+  .cz-en { font-size: 14px; color: var(--ink-2); margin-top: 3px; }
+  .cz-grammar { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+  .cz-grammar p { margin-bottom: 12px; }
+  .cz-grammar strong { color: var(--ink); font-weight: 650; }
+  .cz-ex {
+    font-size: 15px; color: var(--ink); padding: 9px 13px; margin-top: 6px;
+    background: var(--well); border-radius: 10px; border-left: 2px solid var(--info);
+  }
+  .cz-drill li { margin-bottom: 10px; }
+  .cz-done {
+    width: 100%; margin-top: 26px; padding: 15px; border: none; border-radius: 14px;
+    background: var(--bubble-me); color: #fff; font-family: inherit;
+    font-size: 15.5px; font-weight: 650; cursor: pointer; transition: transform 0.12s ease;
+  }
+  .cz-done:active { transform: scale(0.98); }
+  .cz-done.is-done { background: var(--good); }
+  .cz-tick { font-size: 11px; font-weight: 700; color: var(--good); text-transform: uppercase; letter-spacing: 0.06em; }
 </style>
 </head>
 <body>
@@ -307,6 +342,19 @@
   <section><div class="label">The numbers</div><div class="tiles" id="numbers"></div></section>
   <section><div class="label">On my radar</div><div id="radar"></div></section>
   <footer class="footer" id="footer"></footer>
+</div>
+
+<div class="plan" id="czech">
+  <div class="chat-head">
+    <div>
+      <div class="chat-title">Czech</div>
+      <div class="chat-sub" id="czechSub"></div>
+    </div>
+    <button class="icon-btn" id="czechClose" title="Back to briefing" aria-label="Back to briefing">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+  <div class="plan-scroll" id="czechScroll"></div>
 </div>
 
 <div class="plan" id="plan">
@@ -400,13 +448,21 @@ function renderHeader(b) {
     <div class="greeting">${greeting}, Christian</div>
     ${isStale ? `<div class="stale-note">This briefing was written ${staleStr} — ask me below for anything newer.</div>` : ""}
     ${inArc ? `<div class="build-line"><span>Day ${n} of ${total}</span><div class="progress"><i style="width:${pct}%"></i></div></div>` : ""}
-    <div class="plan-chip" id="planChip" role="button" tabindex="0">
-      <span id="planChipText">Content plan</span>
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    <div class="chip-row">
+      <div class="plan-chip" id="planChip" role="button" tabindex="0">
+        <span id="planChipText">Content plan</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+      <div class="plan-chip" id="czechChip" role="button" tabindex="0">
+        <span id="czechChipText">Czech</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
     </div>
   `;
   $("planChip").addEventListener("click", openPlan);
+  $("czechChip").addEventListener("click", openCzech);
   if (PLAN) updatePlanChip();
+  if (CZECH) updateCzechChip();
 }
 
 /* =========================================================
@@ -414,10 +470,15 @@ function renderHeader(b) {
    ========================================================= */
 let PLAN = null;
 
+// Whole-day difference between two YYYY-MM-DD strings, free of any
+// timezone skew — both sides are parsed as plain UTC midnights.
+function daysFromISO(startISO) {
+  return Math.round((Date.parse(`${todayISO()}T00:00:00Z`) - Date.parse(`${startISO}T00:00:00Z`)) / 86400000);
+}
+
 function dayNumber() {
   if (!PLAN) return null;
-  const start = new Date(`${PLAN.startDate}T00:00:00+10:00`);
-  const n = Math.floor((brisbaneNow() - start) / 86400000) + 1;
+  const n = daysFromISO(PLAN.startDate) + 1;
   return n;
 }
 
@@ -456,11 +517,11 @@ function renderPlan() {
   $("planSub").textContent = `${p.subtitle} · ${p.startDate} → ${p.endDate}`;
 
   const phases = p.spine.phases.map((ph) =>
-    `<div class="plan-row"><div class="k">${esc(ph.days)}</div><div><strong>${esc(ph.name)}</strong> — ${esc(ph.focus)}<div class="plan-sub">Story: ${esc(ph.story)}</div></div></div>`
+    `<div class="plan-row"><div class="k">${esc(ph.days)}</div><div><strong>${esc(ph.name)}</strong> — ${esc(ph.focus)}${ph.story ? `<div class="plan-sub">Story: ${esc(ph.story)}</div>` : ""}</div></div>`
   ).join("");
 
-  const pillars = p.pillars.map((pl) =>
-    `<div class="plan-row"><div class="k">${esc(pl.share)}</div><div><strong>${esc(pl.name)}</strong> — ${esc(pl.what)}<div class="plan-sub">${esc(pl.why)}</div></div></div>`
+  const formats = (p.formats || []).map((f) =>
+    `<div class="plan-row"><div class="k">${esc(f.share)}</div><div><strong>${esc(f.name)}</strong> — ${esc(f.what)}<div class="plan-sub">${esc(f.why)}</div></div></div>`
   ).join("");
 
   const rhythm = p.rhythm.days.map((d) =>
@@ -471,10 +532,16 @@ function renderPlan() {
     block(name, `${items.length} ideas`, ul(items))
   ).join("");
 
+  const daily = (p.daily || []).map((d) =>
+    `<div class="plan-row"><div class="k">Daily</div><div><strong>${esc(d.what)}</strong><div class="plan-sub">${esc(d.detail)}</div></div></div>`
+  ).join("");
+
   $("planScroll").innerHTML = `
+    <div class="plan-daily">${daily}</div>
+
     ${p.premise.map((t) => `<p class="plan-lede">${fmt(t)}</p>`).join("")}
 
-    ${block("The spine — " + p.spine.name, "40% of output", `
+    ${block("The spine — " + p.spine.name, "50% of output", `
       <p>${fmt(p.spine.why)}</p>
       <p><strong>Target:</strong> ${esc(p.spine.target)}</p>
       <p>${esc(p.spine.targetNote)}</p>
@@ -482,18 +549,17 @@ function renderPlan() {
       <p style="margin-top:14px"><span class="plan-warn">${esc(p.spine.risk)}</span></p>
     `)}
 
-    ${block("Content pillars", "5", pillars)}
+    ${block("The three formats", `${(p.formats || []).length}`, formats)}
 
-    ${block("Making things spread", "the mechanics", `
-      <p><strong>The hook</strong></p>${ul(p.virality.hook)}
-      <p style="margin-top:14px"><strong>Holding them</strong></p>${ul(p.virality.retention)}
-      <p style="margin-top:14px"><strong>Getting shared</strong></p>${ul(p.virality.shares)}
-      <p style="margin-top:14px"><strong>Series mechanics</strong></p>${ul(p.virality.series)}
-    `)}
-
-    ${block("Weekly rhythm", "2 shoot days", `<p>${esc(p.rhythm.note)}</p>${rhythm}`)}
+    ${block("Weekly rhythm", "1 shoot day", `<p>${esc(p.rhythm.note)}</p>${rhythm}`)}
 
     ${block("Idea bank", `${Object.values(p.ideaBank).reduce((a, b) => a + b.length, 0)} ideas`, banks)}
+
+    ${block("Making things spread", "the mechanics", `
+      <p><strong>The hook</strong></p>${ul(p.rules.hook)}
+      <p style="margin-top:14px"><strong>Holding them</strong></p>${ul(p.rules.keep)}
+      <p style="margin-top:14px"><strong>Getting shared</strong></p>${ul(p.rules.share)}
+    `)}
 
     ${block("What to measure", "and when to quit a format", `
       <p><strong>Watch these three</strong></p>${ul(p.metrics.watch)}
@@ -502,13 +568,105 @@ function renderPlan() {
 
     ${block("The money", "later, but build for it now", `<p>${esc(p.money.note)}</p>${ul(p.money.points)}`)}
 
-    ${block("First 14 days", "get these banked", `
-      <p>${esc(p.launch.note)}</p>
-      <p style="margin-top:12px"><strong>Long form</strong></p>${ul(p.launch.longForm)}
-      <p style="margin-top:14px"><strong>Shorts</strong></p>${ul(p.launch.shorts)}
-    `)}
+    ${p.notes ? block("Notes", "", ul(p.notes)) : ""}
   `;
 }
+
+/* =========================================================
+   CZECH — one lesson a day, its own screen
+   ========================================================= */
+let CZECH = null;
+
+function czechDay() {
+  if (!CZECH) return null;
+  return daysFromISO(CZECH.startDate) + 1;
+}
+const czechKey = (d) => `cz:done:${d}`;
+function czechStreak() {
+  if (!CZECH) return 0;
+  let n = 0;
+  for (let d = czechDay(); d >= 1; d--) {
+    if (!store(czechKey(d))) break;
+    n++;
+  }
+  return n;
+}
+
+function updateCzechChip() {
+  const chip = $("czechChipText");
+  if (!chip || !CZECH) return;
+  const d = czechDay();
+  const streak = czechStreak();
+  chip.innerHTML = d < 1
+    ? `Czech <span class="day">· starts ${new Date(`${CZECH.startDate}T12:00:00+10:00`).toLocaleDateString("en-AU", { day: "numeric", month: "short", timeZone: TZ })}</span>`
+    : d > CZECH.blockDays
+    ? `Czech <span class="day">· block 1 done</span>`
+    : `Czech <span class="day">· Day ${d}${streak > 1 ? ` · ${streak} in a row` : ""}</span>`;
+}
+
+function lessonCard(l) {
+  const words = (l.words || []).filter((w) => w.c !== "—").map((w) =>
+    `<div class="cz-word"><div class="cz-cs">${esc(w.c)}${w.s ? `<span class="cz-say">${esc(w.s)}</span>` : ""}</div><div class="cz-en">${esc(w.e)}</div></div>`
+  ).join("");
+
+  return `
+    <div class="cz-head">
+      <div class="cz-day">Day ${l.day} · ${esc(l.phase)}</div>
+      <h2 class="cz-title">${esc(l.title)}</h2>
+      <p class="cz-why">${esc(l.why)}</p>
+    </div>
+    ${words ? `<div class="cz-section-label">Today's words</div><div class="cz-words">${words}</div>` : ""}
+    <div class="cz-section-label">${esc(l.grammar.p)}</div>
+    <div class="cz-grammar">
+      <p>${fmt(l.grammar.d)}</p>
+      ${(l.grammar.ex || []).map((e) => `<div class="cz-ex">${esc(e)}</div>`).join("")}
+    </div>
+    <div class="cz-section-label">Say it out loud</div>
+    <ul class="plan-list cz-drill">${(l.drill || []).map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
+  `;
+}
+
+function renderCzech() {
+  if (!CZECH) return;
+  const d = czechDay();
+  const total = CZECH.blockDays;
+  $("czechSub").textContent = `${CZECH.subtitle} · block 1 of the course`;
+
+  if (d < 1) {
+    $("czechScroll").innerHTML = `<p class="plan-lede">Starts ${CZECH.startDate}.</p>`;
+    return;
+  }
+
+  const lesson = CZECH.lessons.find((l) => l.day === Math.min(d, total));
+  const done = Boolean(store(czechKey(d)));
+  const past = d > total;
+
+  const sounds = CZECH.sounds.map((s) =>
+    `<div class="plan-row"><div class="k">${esc(s.c)}</div><div><strong>${esc(s.s)}</strong><div class="plan-sub">${esc(s.ex)}</div></div></div>`
+  ).join("");
+
+  const allLessons = CZECH.lessons.map((l) =>
+    `<div class="plan-row"><div class="k">${l.day}</div><div>${esc(l.title)}${store(czechKey(l.day)) ? ' <span class="cz-tick">done</span>' : ""}<div class="plan-sub">${esc(l.phase)}</div></div></div>`
+  ).join("");
+
+  $("czechScroll").innerHTML = `
+    ${past ? `<p class="plan-lede">Block 1 is finished — ${esc(CZECH.next)}</p>` : ""}
+    ${lessonCard(lesson)}
+    <button class="cz-done ${done ? "is-done" : ""}" id="czechDone">${done ? "Done today ✓" : "Mark today done"}</button>
+    ${block("The sound system", "reference", `<p>Czech spelling is one-to-one with sound — learn these once and you can pronounce any word you see.</p>${sounds}`)}
+    ${block("How this course works", "the method", ul(CZECH.method))}
+    ${block("All 30 lessons", `day ${Math.min(d, total)} of ${total}`, allLessons)}
+  `;
+
+  $("czechDone").addEventListener("click", () => {
+    store(czechKey(d), !store(czechKey(d)));
+    renderCzech();
+    updateCzechChip();
+  });
+}
+
+function openCzech() { $("czech").classList.add("open"); }
+function closeCzech() { $("czech").classList.remove("open"); }
 
 function openPlan() { $("plan").classList.add("open"); }
 function closePlan() { $("plan").classList.remove("open"); }
@@ -781,6 +939,7 @@ function setupChat() {
   $("send").addEventListener("click", send);
   $("chatClose").addEventListener("click", closeChat);
   $("planClose").addEventListener("click", closePlan);
+  $("czechClose").addEventListener("click", closeCzech);
   $("chatClear").addEventListener("click", () => {
     history = [];
     store(chatKey(), history);
@@ -811,12 +970,13 @@ function setupChat() {
 let rendered = false;
 
 async function refresh() {
-  let briefing, whoop, plan;
+  let briefing, whoop, plan, czech;
   try {
-    [briefing, whoop, plan] = await Promise.all([
+    [briefing, whoop, plan, czech] = await Promise.all([
       fetch("briefing.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }),
       fetch("whoop-data.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
       fetch("plan.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      fetch("czech.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
     ]);
   } catch (e) {
     if (!rendered) { $("error").classList.add("show"); $("error").textContent = `Couldn't load the briefing (${e.message}). Retrying automatically.`; }
@@ -825,6 +985,7 @@ async function refresh() {
   $("error").classList.remove("show");
   BRIEFING = briefing;
   if (plan) { PLAN = plan; renderPlan(); }
+  if (czech) { CZECH = czech; renderCzech(); }
   renderHeader(briefing);
   renderBriefing(briefing);
   renderToday(briefing);

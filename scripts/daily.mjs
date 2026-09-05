@@ -170,9 +170,14 @@ const checked = Boolean(TOKEN);
 const behind = checked && todayItems.some((t) => /baseline|Day 1/i.test(t.text));
 const rhythmText = (rhythm ? rhythm.what : "no fixed slot today").replace(/\.$/, "");
 
+// A hand-written briefing for today outranks the template. The script still
+// refreshes the numbers underneath it, but it won't overwrite the prose.
+const handwritten = briefing.handwritten === true && briefing.date === today;
+if (handwritten) log("Today's briefing is hand-written — refreshing numbers only, leaving the text alone.");
+
 briefing.date = today;
-briefing.writtenAt = brisbaneNowISO();
-briefing.message = [
+if (!handwritten) briefing.writtenAt = brisbaneNowISO();
+if (!handwritten) briefing.message = [
   `Day ${day} of 150. This is the automatic refresh — the written briefing comes when you message me.`,
   behind
     ? `Day 1 still isn't filmed. Everything in the arc is measured against a baseline that doesn't exist yet, and it gets weaker the longer it waits.`
@@ -184,8 +189,9 @@ briefing.message = [
     : `Nothing overdue — bills and subscriptions are clear.`,
 ];
 
-// Only overwrite the list when Todoist actually answered.
-if (checked && todayItems.length) briefing.today = todayItems;
+// Only overwrite the list when Todoist actually answered — and never over a
+// hand-written briefing, whose list was chosen deliberately.
+if (checked && todayItems.length && !handwritten) briefing.today = todayItems;
 
 briefing.numbers = [
   { label: "The build", value: `Day ${day}`, note: "of 150", level: behind ? "warning" : "info" },

@@ -33,16 +33,17 @@ async function loadContext(origin) {
       return null;
     }
   };
-  const [briefing, data, whoop, plan] = await Promise.all([
+  const [briefing, data, whoop, plan, czech] = await Promise.all([
     grab("briefing.json"),
     grab("data.json"),
     grab("whoop-data.json"),
     grab("plan.json"),
+    grab("czech.json"),
   ]);
-  return { briefing, data, whoop, plan };
+  return { briefing, data, whoop, plan, czech };
 }
 
-function buildSystem({ briefing, data, whoop, plan }) {
+function buildSystem({ briefing, data, whoop, plan, czech }) {
   const now = new Date().toLocaleString("en-AU", {
     timeZone: "Australia/Brisbane",
     weekday: "long",
@@ -80,9 +81,23 @@ function buildSystem({ briefing, data, whoop, plan }) {
     const day = Math.floor((Date.now() - start) / 86400000) + 1;
     parts.push(
       `\n--- THE CONTENT PLAN (day ${day} of 150) ---\n` +
-        `This is the 5-month build he has given almost all his time to. When he asks what to film, what to post, ` +
+        `This is the build he has given almost all his time to. It is now deliberately simple: one video a day, one Czech lesson a day. When he asks what to film, what to post, ` +
         `or what's next, answer from this — it is the plan, not a suggestion.\n` +
         JSON.stringify(plan)
+    );
+  }
+
+  if (czech) {
+    const start = new Date(`${czech.startDate}T00:00:00+10:00`);
+    const d = Math.floor((Date.now() - start) / 86400000) + 1;
+    const lesson = czech.lessons.find((l) => l.day === d);
+    parts.push(
+      `\n--- CZECH, DAY ${d} OF ${czech.blockDays} ---\n` +
+        `He does one lesson a day in the dashboard. If he asks about Czech, quiz him, ` +
+        `correct him, or explain something, work from the course — don't invent a different syllabus. ` +
+        `Only use vocabulary and grammar he has already met (day ${d} and earlier) unless he asks to go ahead.\n` +
+        (lesson ? `Today's lesson: ${JSON.stringify(lesson)}\n` : "") +
+        `Whole course: ${JSON.stringify(czech.lessons.map((l) => ({ day: l.day, title: l.title, words: l.words.map((w) => w.c) })))}`
     );
   }
 

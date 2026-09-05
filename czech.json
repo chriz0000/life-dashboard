@@ -1,0 +1,403 @@
+{
+  "title": "Czech — Block 1",
+  "subtitle": "30 days to a working foundation",
+  "startDate": "2026-09-06",
+  "blockDays": 30,
+  "updatedAt": "2026-09-05T23:40:00+10:00",
+
+  "method": [
+    "**Frequency first.** The 100 commonest Czech words are about half of everything anyone says to you. The first 1,000 get you to roughly 80%. You learn them in that order, not in textbook order — which is why 'beer' arrives before 'library'.",
+    "**Chunks before grammar.** You'll learn *Dám si kávu* as one block on day 11 and only later find out it's the accusative case. Grammar here explains patterns you've already used. It never comes first — that's the thing that makes people quit Czech in month two.",
+    "**Out loud, every time.** Czech spelling is genuinely one-to-one with sound, so reading aloud IS pronunciation practice — no guessing, no exceptions to memorise. Silent study builds a vocabulary you can recognise but can't speak.",
+    "**Spaced repetition, built in.** Each lesson brings back day-1-ago, day-3-ago and day-7-ago words. That schedule is doing most of the actual work; the new words are the easy part.",
+    "**What we deliberately skip.** Czech has 7 cases × 3 genders × singular/plural. That's the wall everyone hits. For 30 days you get two cases and one tense, and you'll be able to hold a real exchange. The full tables can wait until you need them."
+  ],
+
+  "sounds": [
+    { "c": "Stress", "s": "ALWAYS the first syllable", "ex": "DO-brý den · NA shledanou — never moves, no exceptions" },
+    { "c": "á é í ó ú ů ý", "s": "same vowel, held twice as long", "ex": "This is length, NOT stress. dráha ≠ draha" },
+    { "c": "c", "s": "ts", "ex": "co (what) = 'tso'" },
+    { "c": "č", "s": "ch as in chair", "ex": "čau = 'chow'" },
+    { "c": "š", "s": "sh", "ex": "šest (six) = 'shest'" },
+    { "c": "ž", "s": "s in measure", "ex": "žena (woman) = 'ZHE-na'" },
+    { "c": "ch", "s": "one letter — Scottish loch", "ex": "chleba (bread) = 'KHLE-ba'" },
+    { "c": "j", "s": "y", "ex": "jak (how) = 'yak'" },
+    { "c": "ř", "s": "r and ž at the same time", "ex": "Dvořák. Nobody gets it in week one. 'rzh' is close enough to be understood." },
+    { "c": "ě", "s": "ye — softens the letter before it", "ex": "dě/tě/ně = 'dye/tye/nye' · mě = 'mnye'" },
+    { "c": "Final consonants", "s": "devoice", "ex": "led (ice) sounds like 'let' · muž sounds like 'mush'" }
+  ],
+
+  "lessons": [
+    {
+      "day": 1, "phase": "Sounds & survival", "title": "The stress rule and hello",
+      "why": "One rule fixes your accent more than anything else you'll learn: the stress never moves. Get that today and every word after is easier.",
+      "words": [
+        { "c": "ahoj", "e": "hi / bye (informal)", "s": "AH-hoy" },
+        { "c": "dobrý den", "e": "good day (formal hello)", "s": "DO-bree den" },
+        { "c": "na shledanou", "e": "goodbye (formal)", "s": "NA skhle-da-noh" },
+        { "c": "ano / jo", "e": "yes / yeah", "s": "A-no / yo" },
+        { "c": "ne", "e": "no", "s": "neh" }
+      ],
+      "grammar": { "p": "Stress is always on syllable one", "d": "Whatever the word, however long, the beat lands on the first syllable. Long vowel marks (á, í) mean hold it longer — they do NOT mean stress it. English speakers get this wrong constantly and it's the single biggest giveaway.", "ex": ["DO-brý den, not do-BRÝ den", "NA shledanou, not na shle-DA-nou"] },
+      "drill": ["Say dobrý den ten times, hammering the DO", "Say ahoj to yourself walking around today", "Say na shledanou — 'skhle' is one blur, don't hunt for the h"]
+    },
+    {
+      "day": 2, "phase": "Sounds & survival", "title": "The háček letters",
+      "why": "č š ž appear in a huge share of common words. An hour with them today saves you months of mispronouncing everything.",
+      "words": [
+        { "c": "děkuju", "e": "thank you", "s": "DYEH-ku-yu" },
+        { "c": "prosím", "e": "please / you're welcome / here you go", "s": "PRO-seem" },
+        { "c": "čau", "e": "bye (casual)", "s": "chow" },
+        { "c": "promiňte", "e": "excuse me / sorry", "s": "PRO-min-tye" },
+        { "c": "dobře", "e": "good / fine / OK", "s": "DO-brzheh" }
+      ],
+      "grammar": { "p": "č = ch, š = sh, ž = zh", "d": "The háček (ˇ) turns a plain consonant into its 'sh-family' version. It's completely regular. Once you know the three, you can pronounce any Czech word you see.", "ex": ["čau = chow", "šest = shest", "žena = zhena"] },
+      "drill": ["Say děkuju until the 'dye' is one sound, not d+y", "Prosím does four jobs — please, you're welcome, here you are, and 'pardon?'. Use it for all of them.", "Say dobře — that ř will be rough. 'DO-brzheh' is fine for now."]
+    },
+    {
+      "day": 3, "phase": "Sounds & survival", "title": "Fifteen words that get you through a day",
+      "why": "You now have enough sound rules. Today is pure survival vocabulary — the phrases that let you be a polite human in Czech before you know any grammar at all.",
+      "words": [
+        { "c": "Jak se máš?", "e": "How are you? (informal)", "s": "yak seh mash" },
+        { "c": "Mám se dobře.", "e": "I'm good.", "s": "mahm seh DO-brzheh" },
+        { "c": "Nerozumím.", "e": "I don't understand.", "s": "NE-ro-zu-meem" },
+        { "c": "Mluvíte anglicky?", "e": "Do you speak English?", "s": "MLU-vee-teh AN-glits-ki" },
+        { "c": "Kde je záchod?", "e": "Where's the toilet?", "s": "gdeh yeh ZAH-khod" }
+      ],
+      "grammar": { "p": "Czech has no 'a' or 'the'", "d": "There are no articles at all. 'Kde je záchod' is literally 'where is toilet'. This is one of the genuinely easy things about Czech — stop translating 'the' and you'll sound more natural immediately.", "ex": ["Kde je pivo? = Where's the beer?", "Mám auto. = I have a car."] },
+      "drill": ["Say all five aloud twice", "Nerozumím is your most useful sentence for the next month — make it automatic", "Ask yourself Jak se máš? and answer Mám se dobře"]
+    },
+    {
+      "day": 4, "phase": "Foundations", "title": "To be, and your name",
+      "why": "být (to be) is the most common verb in the language and it's irregular, so it gets learned as raw vocabulary now rather than derived later.",
+      "words": [
+        { "c": "jsem", "e": "I am", "s": "ysem" },
+        { "c": "jsi", "e": "you are (informal)", "s": "ysi" },
+        { "c": "je", "e": "he/she/it is", "s": "yeh" },
+        { "c": "Jmenuju se…", "e": "My name is…", "s": "YME-nu-yu seh" },
+        { "c": "Těší mě.", "e": "Nice to meet you.", "s": "TYE-shee mnye" }
+      ],
+      "grammar": { "p": "Drop the pronoun", "d": "The verb ending already tells you who's doing it, so já (I) and ty (you) get left out unless you're emphasising. 'Jsem Christian' — not 'Já jsem Christian'. Saying já every time is a dead giveaway you're translating from English.", "ex": ["Jsem z Austrálie. = I'm from Australia.", "Je doma. = He's at home."] },
+      "drill": ["Jmenuju se Christian. Těší mě.", "Say the full introduction as one flowing line", "Review: yesterday's five"]
+    },
+    {
+      "day": 5, "phase": "Foundations", "title": "Guessing gender from the last letter",
+      "why": "Every Czech noun has a gender and it drives everything downstream. There's a rule of thumb that's right about 80% of the time — that's more than enough to start.",
+      "words": [
+        { "c": "pivo", "e": "beer (neuter)", "s": "PI-vo" },
+        { "c": "káva", "e": "coffee (feminine)", "s": "KAH-va" },
+        { "c": "voda", "e": "water (feminine)", "s": "VO-da" },
+        { "c": "chleba", "e": "bread (masculine)", "s": "KHLE-ba" },
+        { "c": "auto", "e": "car (neuter)", "s": "OW-to" }
+      ],
+      "grammar": { "p": "Last letter → gender, 80% of the time", "d": "Ends in a consonant → masculine. Ends in -a → feminine. Ends in -o → neuter. Chleba is the famous exception (looks feminine, is masculine). Don't memorise exceptions yet — take the 80% and move.", "ex": ["dům (house) → consonant → masculine", "žena (woman) → -a → feminine", "město (town) → -o → neuter"] },
+      "drill": ["Guess the gender of: stůl, láska, okno", "Say each of today's words with its gender out loud", "Review: day 4"]
+    },
+    {
+      "day": 6, "phase": "Foundations", "title": "To have, and one to five",
+      "why": "mít is the second workhorse verb, and numbers are the thing you'll need on your very first day in a shop.",
+      "words": [
+        { "c": "mám", "e": "I have", "s": "mahm" },
+        { "c": "máš", "e": "you have", "s": "mahsh" },
+        { "c": "jedna, dva, tři", "e": "1, 2, 3", "s": "YED-na, dva, trzhi" },
+        { "c": "čtyři, pět", "e": "4, 5", "s": "CHTI-rzhi, pyet" },
+        { "c": "hodně / málo", "e": "a lot / a little", "s": "HOD-nye / MAH-lo" }
+      ],
+      "grammar": { "p": "The -ám / -áš pattern", "d": "A big family of verbs works exactly like mít: -ám for I, -áš for you, -á for he/she. Learn the shape once and it unlocks hundreds of verbs. dělat (to do) → dělám, děláš, dělá.", "ex": ["Mám kávu. = I have a coffee.", "Máš auto? = Do you have a car?"] },
+      "drill": ["Count to five out loud, five times", "Mám hodně práce. (I have a lot of work.)", "Review: day 5 nouns + their genders"]
+    },
+    {
+      "day": 7, "phase": "Foundations", "title": "Six to ten, and what it costs",
+      "why": "Numbers plus one question gets you through every transaction in the country.",
+      "words": [
+        { "c": "šest, sedm", "e": "6, 7", "s": "shest, SE-dum" },
+        { "c": "osm, devět, deset", "e": "8, 9, 10", "s": "O-sum, DE-vyet, DE-set" },
+        { "c": "Kolik to stojí?", "e": "How much does it cost?", "s": "KO-lik to STO-yee" },
+        { "c": "korun", "e": "crowns (the currency)", "s": "KO-run" },
+        { "c": "Účet, prosím.", "e": "The bill, please.", "s": "OO-chet PRO-seem" }
+      ],
+      "grammar": { "p": "Kolik = how much / how many", "d": "One word covers both. Kolik to stojí? is the single most useful question you'll learn this week — it works for anything you can point at.", "ex": ["Kolik je hodin? = What time is it? (lit. how many hours)", "Kolik stojí pivo?"] },
+      "drill": ["Count 1–10 without pausing", "Kolik to stojí? — say it fast, like you actually mean it", "Review: day 6 + day 4"]
+    },
+    {
+      "day": 8, "phase": "Foundations", "title": "The question words",
+      "why": "Six words that turn you from someone who answers into someone who can ask. This is where you start having conversations instead of surviving them.",
+      "words": [
+        { "c": "co", "e": "what", "s": "tso" },
+        { "c": "kdo", "e": "who", "s": "gdoh" },
+        { "c": "kde", "e": "where", "s": "gdeh" },
+        { "c": "kdy", "e": "when", "s": "gdi" },
+        { "c": "proč", "e": "why", "s": "proch" }
+      ],
+      "grammar": { "p": "No 'do' in questions", "d": "English needs a helper verb — 'do you have'. Czech just uses the statement with a rising tone, or a question word at the front. Máš auto? is both 'you have a car' and 'do you have a car', decided by your voice.", "ex": ["Co to je? = What is that?", "Kde je káva? = Where's the coffee?"] },
+      "drill": ["Ask five questions about things in the room", "Co to je? — point at things and say it", "Review: day 7 numbers"]
+    },
+    {
+      "day": 9, "phase": "Foundations", "title": "Saying no to anything",
+      "why": "Negation in Czech is one letter. This is the highest-value five minutes in the whole block.",
+      "words": [
+        { "c": "nemám", "e": "I don't have", "s": "NE-mahm" },
+        { "c": "nevím", "e": "I don't know", "s": "NE-veem" },
+        { "c": "nerozumím", "e": "I don't understand", "s": "NE-ro-zu-meem" },
+        { "c": "nemluvím česky", "e": "I don't speak Czech", "s": "NE-mlu-veem CHES-ki" },
+        { "c": "trochu", "e": "a little", "s": "TRO-khu" }
+      ],
+      "grammar": { "p": "Stick ne- on the front. Done.", "d": "Every verb, no exceptions, no auxiliary. mám → nemám. vím → nevím. And unlike English, Czech doubles up happily: Nikdy nic nevím — 'I never don't know nothing' — is correct.", "ex": ["Nejsem doma. = I'm not home.", "Nechci. = I don't want to."] },
+      "drill": ["Negate every verb you know so far", "Mluvím trochu česky. — you'll use this constantly", "Review: day 8 question words"]
+    },
+    {
+      "day": 10, "phase": "Foundations", "title": "Checkpoint one",
+      "why": "No new words. Ten days in, this is where you find out what actually stuck — and what needs another pass.",
+      "words": [
+        { "c": "—", "e": "Review day: no new vocabulary", "s": "" }
+      ],
+      "grammar": { "p": "Self-test", "d": "Cover the English and say each in Czech. Anything you hesitate on for more than two seconds goes on a re-do list for tomorrow.", "ex": ["Hello (formal) / thank you / I don't understand", "Do you speak English? / How much is it? / Where's the toilet?", "I have / I don't have / I don't know", "1 to 10 without stopping"] },
+      "drill": ["Introduce yourself out loud: greeting, name, where you're from, nice to meet you", "Order a coffee using only what you know", "Anything you missed — write it down and re-drill it tomorrow"]
+    },
+    {
+      "day": 11, "phase": "The first case", "title": "Dám si kávu — the -u trick",
+      "why": "The single most useful pattern in the language for a beginner. One vowel change and you can order anything in the country.",
+      "words": [
+        { "c": "Dám si…", "e": "I'll have… (ordering)", "s": "dahm si" },
+        { "c": "Dám si kávu.", "e": "I'll have a coffee.", "s": "dahm si KAH-vu" },
+        { "c": "Dám si vodu.", "e": "I'll have a water.", "s": "dahm si VO-du" },
+        { "c": "Dám si pivo.", "e": "I'll have a beer.", "s": "dahm si PI-vo" },
+        { "c": "čaj", "e": "tea (masculine)", "s": "chai" }
+      ],
+      "grammar": { "p": "Feminine -a becomes -u as the object", "d": "When a feminine noun is the thing being acted on, its final -a flips to -u. káva → kávu. voda → vodu. Neuter (pivo) and masculine inanimate (čaj) don't change at all. That's the accusative case — but you don't need the name, you need the flip.", "ex": ["Mám kávu. = I have a coffee.", "Dám si vodu. = I'll have a water.", "Dám si pivo. — no change, it's neuter"] },
+      "drill": ["Order all four out loud", "Take every feminine noun you know and flip the -a to -u", "Review: day 10 misses"]
+    },
+    {
+      "day": 12, "phase": "The first case", "title": "Food worth ordering",
+      "why": "Vocabulary you'll use the same week you learn it, all running through yesterday's -u pattern.",
+      "words": [
+        { "c": "polévka → polévku", "e": "soup", "s": "PO-lehv-ka" },
+        { "c": "maso", "e": "meat (neuter)", "s": "MA-so" },
+        { "c": "zelenina → zeleninu", "e": "vegetables", "s": "ZE-le-ni-na" },
+        { "c": "chleba", "e": "bread (no change)", "s": "KHLE-ba" },
+        { "c": "ještě jedno", "e": "one more", "s": "YESH-tye YED-no" }
+      ],
+      "grammar": { "p": "Practising the flip", "d": "Every feminine noun today ends in -a and flips to -u when it's what you want. Neuter and masculine sit still. You now have a rule you can apply to words you've never seen.", "ex": ["Dám si polévku.", "Dám si maso. — neuter, unchanged", "Ještě jedno pivo, prosím."] },
+      "drill": ["Order a full meal out loud", "Ještě jedno pivo, prosím — the most Czech sentence there is", "Review: day 11"]
+    },
+    {
+      "day": 13, "phase": "The first case", "title": "Talking about languages",
+      "why": "The conversation you'll have most often as a foreigner, so it's worth being smooth at it.",
+      "words": [
+        { "c": "mluvím", "e": "I speak", "s": "MLU-veem" },
+        { "c": "mluvíš", "e": "you speak", "s": "MLU-veesh" },
+        { "c": "česky", "e": "Czech (as a language)", "s": "CHES-ki" },
+        { "c": "anglicky", "e": "English", "s": "AN-glits-ki" },
+        { "c": "Umím trochu.", "e": "I know a little.", "s": "U-meem TRO-khu" }
+      ],
+      "grammar": { "p": "The -ím / -íš pattern", "d": "The second big verb family. mluvit → mluvím, mluvíš, mluví. Compare day 6's mít → mám, máš, má. Two patterns cover most Czech verbs; you now have both.", "ex": ["Mluvím trochu česky.", "Mluvíš anglicky?", "Nemluvím dobře."] },
+      "drill": ["Mluvím trochu česky, ale učím se. (…but I'm learning.)", "Ask three people the question form", "Review: day 12"]
+    },
+    {
+      "day": 14, "phase": "The first case", "title": "How well, how much",
+      "why": "Adverbs let you upgrade every sentence you already own without learning any new grammar.",
+      "words": [
+        { "c": "moc", "e": "very / too much", "s": "mots" },
+        { "c": "špatně", "e": "badly", "s": "SHPAT-nye" },
+        { "c": "rychle", "e": "fast", "s": "RIKH-leh" },
+        { "c": "pomalu", "e": "slowly", "s": "PO-ma-lu" },
+        { "c": "Mluvte pomalu, prosím.", "e": "Please speak slowly.", "s": "MLUV-teh PO-ma-lu" },
+        { "c": "taky", "e": "also / too", "s": "TA-ki" }
+      ],
+      "grammar": { "p": "Adverbs don't change", "d": "Nouns decline, verbs conjugate, adjectives agree — adverbs do nothing at all. They're free. Most end in -e or -ě and drop straight in after the verb.", "ex": ["Mluvím špatně. = I speak badly.", "Mluvte pomalu, prosím."] },
+      "drill": ["Mluvte pomalu, prosím — you will need this in week one", "Add moc or trochu to five sentences you already know", "Review: day 13"]
+    },
+    {
+      "day": 15, "phase": "The first case", "title": "Wanting things politely",
+      "why": "Chci is blunt to the point of rude. Chtěl bych is what an adult actually says.",
+      "words": [
+        { "c": "chci", "e": "I want (blunt)", "s": "khtsi" },
+        { "c": "Chtěl bych…", "e": "I'd like… (male speaker)", "s": "KHTYEL bikh" },
+        { "c": "Chtěla bych…", "e": "I'd like… (female speaker)", "s": "KHTYE-la bikh" },
+        { "c": "Můžu…?", "e": "Can I…?", "s": "MOO-zhu" },
+        { "c": "Potřebuju…", "e": "I need…", "s": "PO-trzhe-bu-yu" }
+      ],
+      "grammar": { "p": "Past-tense forms carry gender", "d": "Chtěl bych if you're male, chtěla bych if you're female. This gender agreement shows up on every past-tense verb too, so meeting it now makes day 23 painless. You say chtěl.", "ex": ["Chtěl bych kávu.", "Můžu platit kartou? = Can I pay by card?"] },
+      "drill": ["Chtěl bych — say it until the khty is one sound", "Ask for three things politely", "Review: day 14"]
+    },
+    {
+      "day": 16, "phase": "Places", "title": "Where things are",
+      "why": "Kde je + a noun answers most of the practical questions you'll have in a strange city.",
+      "words": [
+        { "c": "nádraží", "e": "train station", "s": "NAH-dra-zhee" },
+        { "c": "letiště", "e": "airport", "s": "LE-tish-tye" },
+        { "c": "obchod", "e": "shop", "s": "OB-khod" },
+        { "c": "restaurace", "e": "restaurant", "s": "RES-tow-ra-tseh" },
+        { "c": "tady / tam", "e": "here / there", "s": "TA-di / tam" }
+      ],
+      "grammar": { "p": "Kde je + nominative", "d": "After kde je the noun stays in its dictionary form — no flip. The -u change from day 11 only applies to the thing being acted on, not the thing being located.", "ex": ["Kde je nádraží?", "Restaurace je tam.", "Tady je obchod."] },
+      "drill": ["Ask where each of today's places is", "Point and say tady / tam", "Review: day 15"]
+    },
+    {
+      "day": 17, "phase": "Places", "title": "In Prague — the second case",
+      "why": "After v (in) and na (on/at), nouns change again. It's the case you'll read on every sign and hear in every direction.",
+      "words": [
+        { "c": "v Praze", "e": "in Prague", "s": "f PRA-zeh" },
+        { "c": "v práci", "e": "at work", "s": "f PRAH-tsi" },
+        { "c": "doma", "e": "at home", "s": "DO-ma" },
+        { "c": "na nádraží", "e": "at the station", "s": "na NAH-dra-zhee" },
+        { "c": "Kde bydlíš?", "e": "Where do you live?", "s": "gdeh BID-leesh" }
+      ],
+      "grammar": { "p": "v / na trigger the locative", "d": "Praha → v Praze. práce → v práci. The ending shifts, and the pattern is messier than day 11's — for now, learn the handful of places you actually talk about as fixed phrases. doma is a freebie: it's an adverb, it never changes.", "ex": ["Bydlím v Brisbane.", "Jsem v práci.", "Jsem doma."] },
+      "drill": ["Bydlím v Brisbane. Jsem z Austrálie.", "Answer Kde bydlíš? out loud", "Review: day 16"]
+    },
+    {
+      "day": 18, "phase": "Places", "title": "Checkpoint two",
+      "why": "Two cases and two verb patterns in. Time to find the holes before they calcify.",
+      "words": [{ "c": "—", "e": "Review day: no new vocabulary", "s": "" }],
+      "grammar": { "p": "Self-test", "d": "Say each aloud without looking. Two seconds of hesitation means it isn't learned yet.", "ex": ["I'll have a coffee / a water / a beer", "I speak a little Czech, but I'm learning", "Please speak slowly", "Where do you live? — and answer it", "I'd like… / Can I…? / I need…"] },
+      "drill": ["Order a full meal, start to bill, out loud", "Introduce yourself and say where you live and where you're from", "Re-drill anything that stalled"]
+    },
+    {
+      "day": 19, "phase": "Verbs that work", "title": "The doing verb",
+      "why": "dělat is the -ám pattern's poster child and appears in more everyday questions than almost any other verb.",
+      "words": [
+        { "c": "dělám", "e": "I do / I'm doing", "s": "DYE-lahm" },
+        { "c": "děláš", "e": "you do", "s": "DYE-lahsh" },
+        { "c": "Co děláš?", "e": "What are you doing?", "s": "tso DYE-lahsh" },
+        { "c": "pracuju", "e": "I work", "s": "PRA-tsu-yu" },
+        { "c": "učím se", "e": "I'm learning", "s": "U-cheem seh" }
+      ],
+      "grammar": { "p": "One present tense, two meanings", "d": "Czech has no separate continuous form. Dělám is both 'I do' and 'I am doing' — context decides. That's one whole English tense you never have to build.", "ex": ["Co děláš? — Pracuju.", "Učím se česky."] },
+      "drill": ["Co děláš? — answer it three different ways", "Učím se česky — say it with some conviction", "Review: day 18 misses"]
+    },
+    {
+      "day": 20, "phase": "Verbs that work", "title": "Knowing and seeing",
+      "why": "More -ím family verbs, and the difference between two kinds of 'know' that trips up English speakers.",
+      "words": [
+        { "c": "vím", "e": "I know (a fact)", "s": "veem" },
+        { "c": "znám", "e": "I know (a person/place)", "s": "znahm" },
+        { "c": "vidím", "e": "I see", "s": "VI-deem" },
+        { "c": "rozumím", "e": "I understand", "s": "RO-zu-meem" },
+        { "c": "myslím", "e": "I think", "s": "MI-sleem" }
+      ],
+      "grammar": { "p": "Two verbs for 'know'", "d": "vím is for facts and information — Vím, kde to je. znám is for being acquainted with a person or place — Znám Prahu. Get these the wrong way round and you'll be understood, but it marks you as a learner.", "ex": ["Nevím. = I don't know.", "Znám Prahu. = I know Prague.", "Myslím, že ano. = I think so."] },
+      "drill": ["Nevím vs Neznám — say when each applies", "Myslím, že… + finish it three ways", "Review: day 19"]
+    },
+    {
+      "day": 21, "phase": "Verbs that work", "title": "Coming and going",
+      "why": "Movement verbs are irregular and constant. Learning them as fixed phrases beats trying to derive them.",
+      "words": [
+        { "c": "jdu", "e": "I'm going (on foot)", "s": "ydu" },
+        { "c": "jedu", "e": "I'm going (by vehicle)", "s": "YE-du" },
+        { "c": "Kam jdeš?", "e": "Where are you going?", "s": "kam ydesh" },
+        { "c": "přijdu", "e": "I'll come", "s": "PRZHI-ydu" },
+        { "c": "Pojď!", "e": "Come on!", "s": "poydy" }
+      ],
+      "grammar": { "p": "Kam vs kde", "d": "kde = where something IS. kam = where something is GOING. English uses 'where' for both; Czech insists on the difference, and using kde for motion sounds distinctly wrong.", "ex": ["Kde jsi? = Where are you?", "Kam jdeš? = Where are you going?"] },
+      "drill": ["Kam jdeš? — answer with three destinations", "Walking vs driving: jdu vs jedu", "Review: day 20"]
+    },
+    {
+      "day": 22, "phase": "Verbs that work", "title": "Today, tomorrow, yesterday",
+      "why": "Time words are the scaffolding you hang tenses on, and you need them before tomorrow's past tense.",
+      "words": [
+        { "c": "dnes", "e": "today", "s": "dnes" },
+        { "c": "zítra", "e": "tomorrow", "s": "ZEE-tra" },
+        { "c": "včera", "e": "yesterday", "s": "FCHE-ra" },
+        { "c": "teď", "e": "now", "s": "tedy" },
+        { "c": "vždycky / nikdy", "e": "always / never", "s": "VZHDIT-ski / NIG-di" }
+      ],
+      "grammar": { "p": "Word order is flexible", "d": "Czech cases mark who does what to whom, so word order is free for emphasis rather than grammar. Dnes pracuju and Pracuju dnes are both correct — the first stresses today, the second stresses working. Whatever comes last tends to carry the weight.", "ex": ["Dnes pracuju.", "Zítra jdu do práce.", "Nikdy nevím."] },
+      "drill": ["Put dnes, zítra and včera into sentences you know", "Nikdy nevím — note the double negative is correct", "Review: day 21"]
+    },
+    {
+      "day": 23, "phase": "The past", "title": "What you did — and gender again",
+      "why": "The past tense is far easier than English's. One participle plus the verb you learned on day 4.",
+      "words": [
+        { "c": "byl jsem", "e": "I was (male)", "s": "bill ysem" },
+        { "c": "byla jsem", "e": "I was (female)", "s": "BI-la ysem" },
+        { "c": "dělal jsem", "e": "I did", "s": "DYE-lal ysem" },
+        { "c": "měl jsem", "e": "I had", "s": "myel ysem" },
+        { "c": "Kde jsi byl?", "e": "Where were you?", "s": "gdeh ysi bill" }
+      ],
+      "grammar": { "p": "-l + jsem, and it agrees with you", "d": "Take the verb, add -l (male) or -la (female), then bolt on jsem or jsi. That's the whole past tense. The catch from day 15 returns: the ending matches the speaker's gender. You say byl jsem. Third person drops the auxiliary entirely — byl = 'he was'.", "ex": ["Byl jsem doma. = I was at home.", "Dělal jsem kávu.", "Byl v práci. = He was at work."] },
+      "drill": ["Say what you did yesterday, three sentences", "Byl jsem — not byla, that's the female form", "Review: day 22"]
+    },
+    {
+      "day": 24, "phase": "The past", "title": "Yesterday, out loud",
+      "why": "One grammar point only becomes yours when you've used it for something real. Today you narrate your actual day.",
+      "words": [
+        { "c": "šel jsem", "e": "I went (on foot, male)", "s": "shel ysem" },
+        { "c": "jedl jsem", "e": "I ate", "s": "YEDL ysem" },
+        { "c": "pil jsem", "e": "I drank", "s": "pill ysem" },
+        { "c": "viděl jsem", "e": "I saw", "s": "VI-dyel ysem" },
+        { "c": "mluvil jsem", "e": "I spoke", "s": "MLU-vill ysem" }
+      ],
+      "grammar": { "p": "Irregular participles", "day": "", "d": "Most verbs just take -l on the stem. A few change shape — jít (to go) becomes šel, not 'jdl'. There are maybe a dozen of these worth knowing and they're all extremely common, so they'll stick through use rather than study.", "ex": ["Včera jsem šel do práce.", "Jedl jsem chleba.", "Mluvil jsem česky!"] },
+      "drill": ["Narrate yesterday in five past-tense sentences, aloud", "Note jsem usually sits second in the sentence", "Review: day 23"]
+    },
+    {
+      "day": 25, "phase": "The past", "title": "Checkpoint three",
+      "why": "Two cases, two verb patterns, present and past. This is a genuine foundation — time to prove it.",
+      "words": [{ "c": "—", "e": "Review day: no new vocabulary", "s": "" }],
+      "grammar": { "p": "Self-test", "d": "All aloud, no looking. Anything that stalls goes on tomorrow's list.", "ex": ["What are you doing? — and three answers", "Where were you yesterday? — and answer it", "I went / I ate / I drank / I saw", "I know (fact) vs I know (person)", "Where are you going? vs Where are you?"] },
+      "drill": ["Tell the story of yesterday, out loud, one minute", "Order a meal, ask the price, ask for the bill", "Re-drill the stalls"]
+    },
+    {
+      "day": 26, "phase": "Assembly", "title": "More than one",
+      "why": "Plurals in Czech are a swamp. Here's the shallow end — enough to be understood without drowning in tables.",
+      "words": [
+        { "c": "dvě piva", "e": "two beers", "s": "dvye PI-va" },
+        { "c": "tři kávy", "e": "three coffees", "s": "trzhi KAH-vi" },
+        { "c": "lidi", "e": "people", "s": "LI-di" },
+        { "c": "věci", "e": "things", "s": "VYE-tsi" },
+        { "c": "pět piv", "e": "five beers", "s": "pyet piff" }
+      ],
+      "grammar": { "p": "Numbers 2–4 vs 5+", "d": "This is genuinely odd and worth knowing: after 2, 3, 4 the noun takes a normal plural (dvě piva). After 5 and up it switches to the genitive plural, which often looks like the bare stem (pět piv). Nobody will misunderstand you if you get it wrong — but getting it right sounds notably fluent.", "ex": ["dvě piva, tři piva, čtyři piva", "pět piv, šest piv, deset piv"] },
+      "drill": ["Order 2, 3, 4 and then 5 beers", "dvě kávy vs pět káv", "Review: day 25 misses"]
+    },
+    {
+      "day": 27, "phase": "Assembly", "title": "Describing things",
+      "why": "Adjectives agree with their noun's gender. Three endings and your sentences stop sounding like a telegram.",
+      "words": [
+        { "c": "dobrý / dobrá / dobré", "e": "good (m / f / n)", "s": "DO-bree / DO-brah / DO-breh" },
+        { "c": "velký / malý", "e": "big / small", "s": "VEL-kee / MA-lee" },
+        { "c": "nový", "e": "new", "s": "NO-vee" },
+        { "c": "krásný", "e": "beautiful", "s": "KRAHS-nee" },
+        { "c": "levný / drahý", "e": "cheap / expensive", "s": "LEV-nee / DRA-hee" }
+      ],
+      "grammar": { "p": "-ý / -á / -é by gender", "d": "Masculine takes -ý, feminine -á, neuter -é. dobrý chleba, dobrá káva, dobré pivo. Day 5's last-letter rule is what tells you which to use — the two rules work together.", "ex": ["dobrá káva", "velké pivo", "Je to drahé. = It's expensive."] },
+      "drill": ["Describe five things around you", "Take every noun you know and attach dobrý in the right form", "Review: day 26"]
+    },
+    {
+      "day": 28, "phase": "Assembly", "title": "Joining sentences up",
+      "why": "Connectors are what turn a list of phrases into speech that sounds like a person talking.",
+      "words": [
+        { "c": "a", "e": "and", "s": "a" },
+        { "c": "ale", "e": "but", "s": "A-leh" },
+        { "c": "protože", "e": "because", "s": "PRO-to-zheh" },
+        { "c": "nebo", "e": "or", "s": "NE-bo" },
+        { "c": "že", "e": "that", "s": "zheh" }
+      ],
+      "grammar": { "p": "Czech always writes the comma", "d": "Before že and protože there's always a comma — Myslím, že ano. English drops it; Czech never does. Small thing, but it's the kind of detail that makes written Czech look right.", "ex": ["Mluvím trochu česky, ale učím se.", "Nejdu, protože pracuju.", "Myslím, že je to dobré."] },
+      "drill": ["Join five short sentences into longer ones", "Mluvím trochu česky, ale učím se — your set-piece line", "Review: day 27"]
+    },
+    {
+      "day": 29, "phase": "Assembly", "title": "The two-minute conversation",
+      "why": "Everything from 28 days, assembled into the exchange you'll actually have when someone realises you speak some Czech.",
+      "words": [
+        { "c": "Odkud jsi?", "e": "Where are you from?", "s": "OD-kud ysi" },
+        { "c": "Jsem z Austrálie.", "e": "I'm from Australia.", "s": "ysem z ow-STRAH-li-eh" },
+        { "c": "Jak dlouho?", "e": "How long?", "s": "yak DLOU-ho" },
+        { "c": "Líbí se mi tady.", "e": "I like it here.", "s": "LEE-bee seh mi TA-di" },
+        { "c": "Ještě se učím.", "e": "I'm still learning.", "s": "YESH-tye seh U-cheem" }
+      ],
+      "grammar": { "p": "Nothing new — assembly only", "d": "Every piece today is built from grammar you already have. That's the point: you're not learning more, you're proving what you've got is usable.", "ex": ["Dobrý den. Jmenuju se Christian.", "Jsem z Austrálie. Mluvím trochu česky, ale ještě se učím.", "Líbí se mi tady."] },
+      "drill": ["Run the whole conversation out loud, both sides", "Record yourself once — you'll want this for day 30 and it's content", "Review: day 28"]
+    },
+    {
+      "day": 30, "phase": "Assembly", "title": "Block one test",
+      "why": "Thirty days. Find out honestly what you own, and decide what block two should fix.",
+      "words": [{ "c": "—", "e": "Test day: no new vocabulary", "s": "" }],
+      "grammar": { "p": "The real test", "d": "Not flashcards — production. Speak for two minutes about yourself with nothing in front of you, then compare against your day 29 recording. If you can do it with hesitation but no English, block one worked.", "ex": ["Introduce yourself fully", "Order a meal from greeting to bill", "Say what you did yesterday and what you're doing tomorrow", "Ask five questions", "Explain that you're learning and ask them to speak slowly"] },
+      "drill": ["Two minutes, out loud, no notes", "List the ten words you still can't retrieve — those seed block two", "Tell me how it went and I'll build block two around the gaps"]
+    }
+  ],
+
+  "next": "Block 2 (days 31–60) opens up the past-vs-future aspect pairs, the genitive, and enough connected listening to follow a real conversation. It gets built from whatever you're still missing on day 30 — so the block-one test matters."
+}
