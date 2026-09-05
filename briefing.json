@@ -10,18 +10,50 @@
     "Still unfilmed: the baseline. It's Day 4 of the build. I've led with it every morning and I'm not going to keep doing that — but one video a day only starts properly once there's a Day 1 in the can, and today is a market day, which is the easiest filming you'll ever do."
   ],
   "today": [
-    { "level": "critical", "text": "Czech Day 1 — the stress rule and hello. 15 minutes, tap Czech above." },
-    { "level": "critical", "text": "One video. Baseline tests if you can — 100m ×2, jumps, bodyweight, piece to camera." },
-    { "level": "warning",  "text": "Market day — film thirty seconds while you're there, it costs you nothing" },
-    { "level": "warning",  "text": "Two bills overdue: Fitness Passports $69, Car Insurance $58" },
-    { "level": "neutral",  "text": "Add TODOIST_TOKEN to the repo secrets — the 5:50am job still can't see your tasks without it" },
-    { "level": "neutral",  "text": "10 minutes tonight: pick the week's seven video ideas from the idea bank" }
+    {
+      "level": "critical",
+      "text": "Czech Day 1 — the stress rule and hello. 15 minutes, tap Czech above."
+    },
+    {
+      "level": "critical",
+      "text": "One video. Baseline tests if you can — 100m ×2, jumps, bodyweight, piece to camera."
+    },
+    {
+      "level": "warning",
+      "text": "Market day — film thirty seconds while you're there, it costs you nothing"
+    },
+    {
+      "level": "warning",
+      "text": "Two bills overdue: Fitness Passports $69, Car Insurance $58"
+    },
+    {
+      "level": "neutral",
+      "text": "Add TODOIST_TOKEN to the repo secrets — the 5:50am job still can't see your tasks without it"
+    },
+    {
+      "level": "neutral",
+      "text": "10 minutes tonight: pick the week's seven video ideas from the idea bank"
+    }
   ],
   "numbers": [
-    { "label": "The build",  "value": "Day 4", "note": "of 150",            "level": "info" },
-    { "label": "Czech",      "value": "Day 1", "note": "of 30 · block one", "level": "good" },
-    { "label": "Daily asks", "value": "2",     "note": "down from 3+",      "level": "good" },
-    { "label": "Overdue",    "value": "$127",  "note": "2 bills",           "level": "warning" }
+    {
+      "label": "The build",
+      "value": "Day 4",
+      "note": "of 150",
+      "level": "info"
+    },
+    {
+      "label": "Open today",
+      "value": "—",
+      "note": "Todoist unreachable",
+      "level": "warning"
+    },
+    {
+      "label": "Due / overdue",
+      "value": "—",
+      "note": "not checked",
+      "level": "warning"
+    }
   ],
   "radar": [
     "One video a day is slower to monetisation than the old plan — dropping the weekly long form costs you the watch-hours route to YouTube partner. That's a real trade and the right one for now; add long form back only when a single video obviously deserves it",
