@@ -104,24 +104,6 @@
   .briefing p { font-size: 16.5px; line-height: 1.65; margin-bottom: 16px; }
   .briefing p:last-child { margin-bottom: 0; }
 
-  /* ---------- today ---------- */
-  .today-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 13px 0; min-height: 44px;
-    cursor: pointer; user-select: none; -webkit-user-select: none;
-  }
-  .today-item + .today-item { border-top: 1px solid var(--hairline); }
-  .today-check {
-    width: 21px; height: 21px; border-radius: 50%; border: 1.5px solid var(--ink-3);
-    flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; color: #fff;
-    transition: background 0.15s ease, border-color 0.15s ease;
-  }
-  .today-item .dot { margin-top: 8px; }
-  .today-text { font-size: 15.5px; line-height: 1.5; }
-  .today-item.done { opacity: 0.4; }
-  .today-item.done .today-text { text-decoration: line-through; }
-  .today-item.done .today-check { background: var(--good); border-color: var(--good); }
-
   /* ---------- numbers ---------- */
   .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 7px; }
   .tile { background: var(--well); border-radius: 10px; padding: 9px 10px 8px; min-width: 0; }
@@ -159,10 +141,10 @@
 
   /* ---------- plan chip + panel ---------- */
   .plan-chip {
-    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+    display: inline-flex; align-items: center; gap: 7px; margin-top: 14px;
     background: var(--well); border: 1px solid var(--hairline); border-radius: 999px;
-    padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--ink);
-    cursor: pointer; min-height: 40px; user-select: none; -webkit-user-select: none;
+    padding: 7px 12px; font-size: 12.5px; font-weight: 600; color: var(--ink);
+    cursor: pointer; min-height: 38px; user-select: none; -webkit-user-select: none;
   }
   .plan-chip:active { transform: scale(0.97); }
   .plan-chip .day { color: var(--info); }
@@ -215,7 +197,7 @@
     border-radius: 10px; padding: 12px 14px; color: var(--ink); font-size: 14px; line-height: 1.55;
   }
   .plan-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
-  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip-row { display: flex; gap: 7px; flex-wrap: wrap; }
   .plan-daily {
     background: var(--well); border-radius: 14px; padding: 4px 14px; margin-bottom: 22px;
   }
@@ -258,7 +240,6 @@
   <section id="header"></section>
   <section><div class="tiles" id="numbers"></div></section>
   <section><div class="briefing" id="briefing"></div></section>
-  <section><div class="label">Today</div><div id="today"></div></section>
   <footer class="footer" id="footer"></footer>
 </div>
 
@@ -293,7 +274,6 @@
 
 const $ = (id) => document.getElementById(id);
 const TZ = "Australia/Brisbane";
-const CHECK = '<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 
 let BRIEFING = null;
 
@@ -564,29 +544,6 @@ function renderBriefing(b) {
   $("briefing").innerHTML = b.message.map((p) => `<p>${fmt(p)}</p>`).join("");
 }
 
-function renderToday(b) {
-  const key = `pa:done:${b.date}`;
-  const done = store(key) || [];
-  $("today").innerHTML = b.today.map((t, i) => `
-    <div class="today-item lv-${t.level} ${done[i] ? "done" : ""}" data-i="${i}">
-      <span class="today-check">${done[i] ? CHECK : ""}</span>
-      <span class="dot"></span>
-      <span class="today-text">${esc(t.text)}</span>
-    </div>
-  `).join("");
-
-  $("today").querySelectorAll(".today-item").forEach((item) => {
-    item.addEventListener("click", () => {
-      const i = +item.dataset.i;
-      const d = store(key) || [];
-      d[i] = !d[i];
-      store(key, d);
-      item.classList.toggle("done", d[i]);
-      item.querySelector(".today-check").innerHTML = d[i] ? CHECK : "";
-    });
-  });
-}
-
 function renderNumbers(b, whoop) {
   const tiles = [...b.numbers];
   if (whoop && whoop.synced_at && (Date.now() - new Date(whoop.synced_at)) / 3600000 <= 36 && whoop.recovery) {
@@ -642,7 +599,6 @@ async function refresh() {
   renderHeader(briefing);
   renderNumbers(briefing, whoop);
   renderBriefing(briefing);
-  renderToday(briefing);
   renderFooter(briefing);
   rendered = true;
 }

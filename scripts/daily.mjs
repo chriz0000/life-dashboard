@@ -8,9 +8,13 @@
  * What it does:
  *   1. Works out what day of the 150 it is.
  *   2. Rolls still-open tasks in the Daily project forward to today.
- *   3. Mirrors those tasks into briefing.json so the dashboard matches Todoist.
+ *   3. Counts what is still open, so the dashboard can show it as a number.
  *   4. Recomputes the money numbers from the bills + subscriptions projects.
  *   5. Writes briefing.json. The caller commits it.
+ *
+ * The daily checklist itself lives in Todoist, not on the dashboard. The page
+ * shows the count; Todoist is where things get ticked off, and that is where
+ * to look when writing the next briefing to see what actually got done.
  *
  * What it deliberately does NOT do: write the prose briefing. A script can't
  * judge what matters today. It leaves a short honest placeholder and Christian
@@ -192,9 +196,9 @@ if (!handwritten) briefing.message = [
     : `Nothing overdue — bills and subscriptions are clear.`,
 ];
 
-// Only overwrite the list when Todoist actually answered — and never over a
-// hand-written briefing, whose list was chosen deliberately.
-if (checked && todayItems.length && !handwritten) briefing.today = todayItems;
+// The checklist moved to Todoist. Drop any list left in older briefings so the
+// page never serves a stale copy of it.
+delete briefing.today;
 
 briefing.numbers = [
   { label: "The build", value: `Day ${day}`, note: "of 150", level: behind ? "warning" : "info" },

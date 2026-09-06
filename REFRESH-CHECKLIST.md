@@ -26,10 +26,13 @@ Write it like a personal assistant talking to Christian:
   written (a 9 PM briefing reads differently from a 7 AM one). Lead with a win
   if there is one, then the hardest thing, each with the ONE concrete next
   action. Never carry over yesterday's wording.
-- `today`: 4–6 checkable actions, most impactful first
-  (levels: `critical` / `warning` / `good` / `neutral`)
 - `numbers`: 3–5 stat tiles — only numbers that matter *today*. They sit at the
   very top of the page, above the prose, so they have to earn that spot
+
+**The daily checklist is not on the dashboard — it lives in Todoist**, in the
+`💀 Daily` project (`6h56xJPfVRX5MRMg`). Write the day's tasks there, and read
+it back the next morning to see what actually got ticked off before writing the
+briefing. The page only shows the open count as a number.
 
 The page fetches `briefing.json`, `whoop-data.json`, `plan.json` and
 `czech.json` with no caching on every load, on focus, and every 5 minutes —
@@ -41,8 +44,8 @@ today, the page flags the briefing as old automatically. If WHOOP synced within
 ## 1. The automated half (`.github/workflows/daily.yml`)
 
 A GitHub Action runs `scripts/daily.mjs` at 05:50 Brisbane every day. It rolls
-overdue Daily tasks forward, mirrors the list into `briefing.json`, totals the
-bills, and commits. It writes a plain template briefing — it deliberately does
+overdue Daily tasks forward, counts what's still open, totals the bills, and
+commits. It writes a plain template briefing — it deliberately does
 not attempt prose.
 
 - It needs the **`TODOIST_TOKEN`** repo secret. Without it the run goes red and

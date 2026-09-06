@@ -6,41 +6,7 @@
     "Morning. The content plan is rebuilt and the counter is back to **Day 1 of 150** — everything from the last two attempts is off the board. That's not a punishment, it's just honest: nothing was published, so there's nothing to carry forward.",
     "It's **YouTube only** now. No Instagram, no cross-posting. One long form a week, filmed Monday and live Saturday 10am. Shorts every day — one is the floor, two is a normal day, three only when the bank is deep. Most of the shorts get cut out of the long form you already filmed, so one shoot day feeds the whole week.",
     "Today is that shoot day, and it's the one the whole arc hangs off: the baseline. Marathon legs, a stopwatch, and a number you have to say out loud. Run it at effort, not flat out — the hamstring gate holds until 1 Oct and a torn hamstring ends this before it starts.",
-    "The chat is gone from the app. It never worked without an API key and a broken button is worse than no button."
-  ],
-  "today": [
-    {
-      "level": "critical",
-      "text": "SHOOT DAY — film the baseline long form. 100m ×2 at effort, long jump, vertical, bodyweight, and the piece to camera where you say the target"
-    },
-    {
-      "level": "critical",
-      "text": "Write the title and rough the thumbnail before you shoot. If you can't write a title someone would click, the video isn't ready"
-    },
-    {
-      "level": "critical",
-      "text": "Czech Day 2 — the háček letters. 15 minutes, tap Czech above. The streak survived the reset"
-    },
-    {
-      "level": "critical",
-      "text": "Pay Fitness Passports — $69, ten days overdue. Karin cleared the car insurance on 3 Sep, so this is the only one left"
-    },
-    {
-      "level": "warning",
-      "text": "Put the hamstring ramp on the calendar through to 1 Oct — today's 100m is run at effort, not flat out"
-    },
-    {
-      "level": "neutral",
-      "text": "Post one short tonight from today's footage — the hardest 40 seconds of the shoot, nothing fancy"
-    },
-    {
-      "level": "neutral",
-      "text": "Set the exact target number after you've seen the clock, not before"
-    },
-    {
-      "level": "neutral",
-      "text": "Add TODOIST_TOKEN to the repo secrets — the 5:50am job still can't see your tasks without it"
-    }
+    "The app is now just the briefing, the numbers, the plan and Czech. The chat is gone and so is the checklist — your list lives in Todoist, and I read it there each morning to see what actually got done."
   ],
   "numbers": [
     {
@@ -48,6 +14,12 @@
       "value": "Day 1",
       "note": "of 150",
       "level": "info"
+    },
+    {
+      "label": "Open today",
+      "value": "8",
+      "note": "in Todoist",
+      "level": "warning"
     },
     {
       "label": "Long form",
