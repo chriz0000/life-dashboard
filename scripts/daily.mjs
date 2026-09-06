@@ -176,9 +176,12 @@ const handwritten = briefing.handwritten === true && briefing.date === today;
 if (handwritten) log("Today's briefing is hand-written — refreshing numbers only, leaving the text alone.");
 
 briefing.date = today;
+// Once the template text is back in, the file is no longer hand-written. Leaving
+// the flag set would make every future run think it must preserve this prose.
+if (!handwritten) delete briefing.handwritten;
 if (!handwritten) briefing.writtenAt = brisbaneNowISO();
 if (!handwritten) briefing.message = [
-  `Day ${day} of 150. This is the automatic refresh — the written briefing comes when you message me.`,
+  `Day ${day} of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.`,
   behind
     ? `Day 1 still isn't filmed. Everything in the arc is measured against a baseline that doesn't exist yet, and it gets weaker the longer it waits.`
     : `${weekday} in the rhythm: ${rhythmText}.`,

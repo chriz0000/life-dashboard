@@ -1,51 +1,158 @@
 {
   "meta": {
-    "updatedAt": "2026-09-03T09:05:00+10:00",
-    "sources": "Todoist · Square · Shopify · Gmail · Notion · WHOOP"
+    "updatedAt": "2026-09-07T08:10:00+10:00",
+    "sources": "Todoist · Gmail · Notion · WHOOP"
   },
-  "user": { "name": "Christian" },
-
+  "user": {
+    "name": "Christian"
+  },
   "focusToday": [
-    { "level": "info",     "text": "The 150-day build restarted today — Day 1 of 150, filmed time trial 30 Jan 2027. The old Day-29 numbering was scrapped because the baseline was never filmed" },
-    { "level": "critical", "text": "Day 1 job: film the baseline tests — 100m ×2, long jump, vertical, bodyweight, stakes piece to camera. Unrepeatable footage" },
-    { "level": "good",     "text": "WHOOP is syncing again after 11 weeks dark — recovery 67%, sleep 76% this morning" },
-    { "level": "warning",  "text": "Two bills overdue: Fitness Passports $69 (28 Aug) and Car Insurance $58 (1 Sep), both tagged Karin" },
-    { "level": "warning",  "text": "Hamstring gate restarts with the clock — ramp work only, nothing maximal until 1 Oct" },
-    { "level": "warning",  "text": "Todoist week so far: 2 completions against a daily goal of 5 — streak at 0, karma 10,880 trending up" }
+    {
+      "level": "info",
+      "text": "Content reset to Day 1 of 150. YouTube only from here — one long form a week, shorts every day. Filmed time trial 3 Feb 2027"
+    },
+    {
+      "level": "critical",
+      "text": "Today is a shoot day and it's the first one: film the baseline long form — 100m ×2, long jump, vertical, bodyweight, stakes piece to camera. It goes live Saturday"
+    },
+    {
+      "level": "warning",
+      "text": "One bill overdue: Fitness Passports $69 (28 Aug). Karin cleared the $58 car insurance on 3 Sep"
+    },
+    {
+      "level": "warning",
+      "text": "Hamstring gate holds: ramp work only, nothing maximal until 1 Oct — that includes the baseline 100m, which is run at effort, not flat out"
+    },
+    {
+      "level": "warning",
+      "text": "TODOIST_TOKEN still isn't in the repo secrets, so the 5:50am job can't read or write the daily list"
+    },
+    {
+      "level": "good",
+      "text": "Czech is on Day 2 and untouched by the content reset — the streak keeps running"
+    }
   ],
-
   "marathon": {
     "name": "100m time trial",
-    "raceDate": "2027-01-30",
+    "raceDate": "2027-02-03",
     "goal": "Sub-12.0s · filmed · public",
     "blockWeeks": 21
   },
-
   "week": [
-    { "day": "Mon", "workout": "Ramp",  "km": 0, "detail": "Hamstring ramp — Nordic curls, A-skips, build-ups at 70–80%. Nothing maximal until 1 Oct." },
-    { "day": "Tue", "workout": "Easy",  "km": 5, "detail": "Easy Z2 run — keep the aerobic base ticking while the tendons adapt." },
-    { "day": "Wed", "workout": "Ramp",  "km": 0, "detail": "Hamstring ramp — Nordic curls, A-skips, build-ups at 70–80%." },
-    { "day": "Thu", "workout": "Ramp",  "km": 0, "detail": "Hamstring ramp + gym lower body, moderate load." },
-    { "day": "Fri", "workout": "Rest",  "km": 0, "detail": "Rest — mobility and stretching only." },
-    { "day": "Sat", "workout": "Easy",  "km": 5, "detail": "Easy Z2 run — conversational pace." },
-    { "day": "Sun", "workout": "Rest",  "km": 0, "detail": "Rest — market day. Review the week's footage in the evening." }
+    {
+      "day": "Mon",
+      "workout": "Ramp",
+      "km": 0,
+      "detail": "Hamstring ramp — Nordic curls, A-skips, build-ups at 70–80%. Nothing maximal until 1 Oct. Shoot day, so the session doubles as footage."
+    },
+    {
+      "day": "Tue",
+      "workout": "Easy",
+      "km": 5,
+      "detail": "Easy Z2 run — keep the aerobic base ticking while the tendons adapt."
+    },
+    {
+      "day": "Wed",
+      "workout": "Ramp",
+      "km": 0,
+      "detail": "Hamstring ramp — Nordic curls, A-skips, build-ups at 70–80%."
+    },
+    {
+      "day": "Thu",
+      "workout": "Ramp",
+      "km": 0,
+      "detail": "Hamstring ramp + gym lower body, moderate load."
+    },
+    {
+      "day": "Fri",
+      "workout": "Rest",
+      "km": 0,
+      "detail": "Rest — mobility and stretching only."
+    },
+    {
+      "day": "Sat",
+      "workout": "Easy",
+      "km": 5,
+      "detail": "Easy Z2 run — conversational pace. Long form goes live 10am."
+    },
+    {
+      "day": "Sun",
+      "workout": "Rest",
+      "km": 0,
+      "detail": "Rest. Ten minutes on last week's numbers and next week's long form."
+    }
   ],
-
   "money": {
-    "revenue": { "label": "Revenue (Sep so far)", "value": "—", "sub": "not pulled this refresh · July closed at $1,803.50" },
+    "revenue": {
+      "label": "Channel revenue",
+      "value": "$0",
+      "sub": "no monetisation yet — YouTube Partner Program not reached"
+    },
     "bills": [
-      { "name": "Fitness Passports", "amount": "$69", "due": "28 Aug", "status": "overdue" },
-      { "name": "Car Insurance",     "amount": "$58", "due": "1 Sep",  "status": "overdue" }
+      {
+        "name": "Fitness Passports",
+        "amount": "$69",
+        "due": "28 Aug",
+        "status": "overdue"
+      }
     ]
   },
-
   "pillars": [
-    { "key": "physical",   "name": "Physical",   "score": 50, "weight": 0.15, "status": "Ramp week 1",     "level": "warning"  },
-    { "key": "capital",    "name": "Capital",    "score": 55, "weight": 0.20, "status": "Two bills overdue", "level": "warning" },
-    { "key": "brand",      "name": "Brand",      "score": 35, "weight": 0.10, "status": "Day 1 of 150",    "level": "warning"  },
-    { "key": "build",      "name": "Build",      "score": 18, "weight": 0.15, "status": "Restarted today", "level": "warning"  },
-    { "key": "discipline", "name": "Discipline", "score": 25, "weight": 0.15, "status": "Streak at 0",     "level": "critical" },
-    { "key": "spirit",     "name": "Spirit",     "score": 10, "weight": 0.10, "status": "Just starting",   "level": "warning"  },
-    { "key": "knowledge",  "name": "Knowledge",  "score": 5,  "weight": 0.15, "status": "Not started",     "level": "critical" }
+    {
+      "key": "physical",
+      "name": "Physical",
+      "score": 50,
+      "weight": 0.15,
+      "status": "Ramp week 1",
+      "level": "warning"
+    },
+    {
+      "key": "capital",
+      "name": "Capital",
+      "score": 55,
+      "weight": 0.2,
+      "status": "One bill overdue",
+      "level": "warning"
+    },
+    {
+      "key": "brand",
+      "name": "Brand",
+      "score": 20,
+      "weight": 0.1,
+      "status": "Day 1 of 150",
+      "level": "critical"
+    },
+    {
+      "key": "build",
+      "name": "Channel",
+      "score": 5,
+      "weight": 0.15,
+      "status": "Nothing published",
+      "level": "critical"
+    },
+    {
+      "key": "discipline",
+      "name": "Discipline",
+      "score": 25,
+      "weight": 0.15,
+      "status": "Streak at 0",
+      "level": "critical"
+    },
+    {
+      "key": "spirit",
+      "name": "Spirit",
+      "score": 10,
+      "weight": 0.1,
+      "status": "Just starting",
+      "level": "warning"
+    },
+    {
+      "key": "knowledge",
+      "name": "Knowledge",
+      "score": 12,
+      "weight": 0.15,
+      "status": "Czech day 2",
+      "level": "warning"
+    }
   ]
 }

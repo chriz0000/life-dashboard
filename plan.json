@@ -1,18 +1,20 @@
 {
   "title": "Content Plan",
-  "subtitle": "One video a day · one Czech lesson a day",
-  "startDate": "2026-09-03",
-  "endDate": "2027-01-30",
-  "updatedAt": "2026-09-05T23:45:00+10:00",
+  "subtitle": "YouTube only · one long form a week · shorts daily",
+  "startDate": "2026-09-07",
+  "endDate": "2027-02-03",
+  "updatedAt": "2026-09-07T08:10:00+10:00",
 
   "daily": [
-    { "what": "One video", "detail": "Posted to YouTube Shorts and Instagram Reels — same asset, both places. Not two. One." },
-    { "what": "One Czech lesson", "detail": "15 minutes from the Czech screen. Non-negotiable and non-optional, which is exactly why it's small." }
+    { "when": "Daily", "what": "Shorts — 1 floor, 2 normal, 3 ceiling", "detail": "One is the floor and it is never skipped. Two is the day you should be having. Three only when the bank is deep enough that a third costs you nothing. Never post a third just to hit three." },
+    { "when": "Daily", "what": "One Czech lesson", "detail": "15 minutes from the Czech screen. Non-negotiable and non-optional, which is exactly why it's small." },
+    { "when": "Weekly", "what": "One long form", "detail": "Filmed Monday, live Saturday 10am. It is the week's centrepiece and the source of most of the week's shorts." }
   ],
 
   "premise": [
-    "The old plan asked for 2 reels a day, a weekly long form, batching across two shoot days and five content pillars. It was a plan for a production company, not for one person who also runs markets on weekends. You didn't fall behind because you're lazy — you fell behind because it was unbuildable.",
-    "So it's two things a day now. One video. One Czech lesson. Everything else in here is support for those two.",
+    "One platform now: **YouTube**. No Instagram, no cross-posting, no second audience to feed. Everything you make is built for one algorithm and one set of numbers, which means you can actually learn what's working instead of guessing across two.",
+    "The shape is a long form a week and shorts every day. The long form is the thing worth making — it's what builds a channel people subscribe to, and it's the only route to watch-hours monetisation. The shorts are reach, and most of them are cut out of the long form you already filmed. One shoot feeds the whole week.",
+    "Content history is wiped. This is **Day 1**. The two previous restarts died on a baseline that never got filmed, so the baseline is now the first long form and it goes up this Saturday whether it's good or not.",
     "The brand is unchanged: you're a **test subject**, not a fitness influencer. You put your own body through things and publish the numbers whether they flatter you or not. That's what lets one channel hold a Viking diet, a Navy SEAL fitness test and a sprint transformation without looking scattered."
   ],
 
@@ -22,113 +24,139 @@
     "target": "Sub-12.0s over 100m, filmed, timed, public.",
     "targetNote": "Fix the number after the baseline, not before. Sub-13 is fit, sub-12 is genuinely top few percent of adult men, sub-11 is club-athlete. Don't say '1%' on camera until you can defend it.",
     "phases": [
-      { "days": "1–28", "name": "Ramp", "focus": "Tendon and hamstring prep. Nothing maximal until 1 Oct. This gate is the whole plan's insurance policy." },
-      { "days": "29–70", "name": "Power", "focus": "Heavy lower body, plyos, hill sprints. Bodyweight goes up — that's content, not failure." },
-      { "days": "71–110", "name": "Speed", "focus": "Max velocity, flying 30s, mechanics. The first real time drops land here." },
-      { "days": "111–150", "name": "Sharpen & trial", "focus": "Block starts, race modelling, taper, then the filmed public time trial." }
+      { "days": "1–24", "name": "Ramp", "focus": "Tendon and hamstring prep. Nothing maximal until 1 Oct. This gate is the whole plan's insurance policy.", "story": "Baseline, and 'why I'm not allowed to sprint yet'" },
+      { "days": "25–70", "name": "Power", "focus": "Heavy lower body, plyos, hill sprints. Bodyweight goes up — that's content, not failure.", "story": "The body visibly changing shape" },
+      { "days": "71–110", "name": "Speed", "focus": "Max velocity, flying 30s, mechanics. The first real time drops land here.", "story": "Clock reveals — the highest-retention thing you own" },
+      { "days": "111–150", "name": "Sharpen & trial", "focus": "Block starts, race modelling, taper, then the filmed public time trial.", "story": "The payoff video the whole channel has been pointing at" }
     ],
     "risk": "Sprinting off an endurance base is the highest hamstring-tear risk in athletics. Tear one and the arc dies with your leg. Nothing maximal until 1 Oct — this is the one place impatience costs you everything."
   },
 
   "formats": [
-    { "name": "The Quest", "share": "50%", "what": "The sprint transformation — training, times, setbacks, the numbers on screen.", "why": "The spine. It's the only reason anyone comes back rather than just watching once." },
+    { "name": "The Quest", "share": "50%", "what": "The sprint transformation — training, times, setbacks, the numbers on screen.", "why": "The spine. It's the only reason anyone subscribes rather than just watching once." },
     { "name": "Ancient Protocols", "share": "30%", "what": "24 hours eating and training as a historical warrior culture.", "why": "Highest reach per hour of effort you own. Weird, searchable, argument-provoking, cheap to film." },
     { "name": "The Standard", "share": "20%", "what": "Elite, military and historical fitness tests. Pass or fail, on camera.", "why": "Built-in stakes and a built-in ending — people watch to find out if you make it." }
   ],
 
   "rhythm": {
-    "note": "One shoot day. Six easy days. The bank never drops below 7 videos — if it does, Monday gets longer, not the other days.",
+    "note": "One shoot day, one edit block, one publish. Shorts are cut on Thursday and scheduled, so the daily post is a tap, not a job. If the shorts bank drops under 7, Monday gets longer — the other days don't.",
     "days": [
-      { "day": "Mon", "what": "SHOOT DAY — batch the week's 7 videos in one session. This is the only heavy day." },
-      { "day": "Tue", "what": "Post one · Czech lesson · training" },
-      { "day": "Wed", "what": "Post one · Czech lesson · training" },
-      { "day": "Thu", "what": "Post one · Czech lesson · training" },
-      { "day": "Fri", "what": "Post one · Czech lesson · training" },
-      { "day": "Sat", "what": "Post one · Czech lesson · market — grab footage while you're there" },
-      { "day": "Sun", "what": "Post one · Czech lesson · market · 10 min picking next week's 7 ideas" }
+      { "day": "Mon", "what": "SHOOT DAY — film the week's long form end to end, plus b-roll. The only heavy day." },
+      { "day": "Tue", "what": "Edit the long form — rough cut, story order, no polish · shorts · Czech · training" },
+      { "day": "Wed", "what": "Finish the long form · write the title and build the thumbnail · shorts · Czech · training" },
+      { "day": "Thu", "what": "Cut and schedule the week's shorts from Monday's footage · Czech · training" },
+      { "day": "Fri", "what": "Buffer — anything that slipped, or bank an extra short · Czech · training" },
+      { "day": "Sat", "what": "LONG FORM LIVE 10am · post shorts that point at it · Czech · training" },
+      { "day": "Sun", "what": "10 minutes on last week's numbers · pick next week's long form · shorts · Czech" }
     ]
   },
 
   "ideaBank": {
-    "Ancient Protocols": [
+    "Long form — The Quest": [
+      "Baseline: I ran a marathon in July. Here's my 100m time. (Day 1 — this is the first video)",
+      "I trained like a sprinter for 30 days — here's what changed",
+      "Marathon body vs sprint body — 12 weeks apart, same camera, same lighting",
+      "The session that broke me, and the physio appointment after it",
+      "I let the comments write my training week",
+      "Everything I ate to gain 5kg without losing speed",
+      "The time trial — the whole 150 days, one clock"
+    ],
+    "Long form — Ancient Protocols": [
       "24h as a Roman legionary — ~70% grain, posca, cheese. 'Rome conquered the world on porridge.'",
       "24h as a Spartan — black broth. Famously the worst food in the ancient world.",
       "24h as a Viking — skyr, dried cod, ale, no vegetables at all",
       "24h as a Mongol horse archer — mare's milk, dried meat, and yes, the blood",
       "24h as a gladiator — barley and ash. They were deliberately fat. Nobody knows this.",
       "24h as a samurai — rice, miso, fish, no meat",
-      "24h as an Aztec eagle warrior — chia, amaranth, spirulina",
-      "24h as a Victorian strongman — raw eggs, milk, steak",
       "24h as an ancient Olympian — Milo of Croton reportedly ate 9kg of meat a day",
       "I ate 6,000 calories like an Olympic swimmer"
     ],
-    "The Standard": [
+    "Long form — The Standard": [
       "The Roman legionary march — 30km in 5 hours carrying 20kg",
       "Navy SEAL PST — can a marathon runner pass?",
       "The NFL combine, as a distance runner",
-      "The Cooper test — 12 minutes, elite standard",
       "Australian Army physical assessment",
+      "The Cooper test — 12 minutes, elite standard",
       "Ancient Olympic pentathlon — all five events in one day",
-      "Firefighter physical ability test in full kit",
       "1896 Olympic gold standards — could you have medalled?"
     ],
-    "The Quest": [
-      "Time reveal — 'Day N, here's the clock' (your highest-retention format)",
-      "Marathon body vs sprint body — the change, monthly",
-      "The session that broke me",
-      "What I ate today to gain muscle without losing speed",
-      "Answering the comment that said I'd never do it",
-      "Why I'm not allowed to sprint yet (the hamstring gate explained)"
+    "Shorts — cut from the week's long form": [
+      "The single hardest 40 seconds of the shoot",
+      "The failure — always cuts better than the win",
+      "One number on screen for the whole clip (the clock, the scale, the plate count)",
+      "The reaction shot to the first bite / the last rep",
+      "A 20-second 'what I'm doing and why' teaser that ends on the unanswered question",
+      "The bit that made you laugh while filming"
+    ],
+    "Shorts — standalone, filmed in minutes": [
+      "Time reveal — 'Day N, here's the clock'",
+      "Answering one comment on camera, no edit",
+      "Why I'm not allowed to sprint yet (the hamstring gate, in 30 seconds)",
+      "One fact about a historical diet, said flat, no build-up",
+      "Today's Czech word, if it's genuinely funny — 30 seconds, optional",
+      "Weigh-in / mirror check, same angle every time"
     ]
   },
 
   "rules": {
+    "package": [
+      "For long form the title and thumbnail exist **before** you film. If you can't write a title someone would click, don't shoot it.",
+      "Title states a number and a stake: 'I Ran a Marathon in July. Here's My 100m Time.' No cleverness, no colons full of adjectives.",
+      "Thumbnail: one face, one object, one readable word at phone size. Look at it at thumbnail scale before you accept it.",
+      "Click-through rate 4–6% is fine at this size, 8%+ is working. Under 3% is a packaging problem, not a content problem — reshoot the thumbnail, not the video.",
+      "Average view duration matters more than length. A 9-minute video watched to 5 minutes beats an 18-minute one watched to 4."
+    ],
     "hook": [
       "First 1.5 seconds decide it. Number + stake + conflict: 'I ran a marathon in July. Today I'm trying to break 12 seconds.'",
       "Cold open on the strangest visual you have. Never open on your face talking.",
       "On-screen text mirrors the spoken hook — most people watch muted.",
-      "No 'hey guys', no 'in this video', no intro."
+      "No 'hey guys', no 'in this video', no intro. On long form the intro is 10 seconds, maximum."
     ],
     "keep": [
       "State the open loop in the first 3 seconds, resolve it at the end.",
-      "Cut every 1.5–2.5 seconds. Nothing changing on screen for 3 seconds means they're gone.",
+      "Shorts: cut every 1.5–2.5 seconds, and make the last frame flow back into the first so it loops.",
+      "Long form: a new question every 60–90 seconds. Chapters are for you, not the viewer — use them to check you haven't got a flat two minutes.",
       "Keep a number visible — a timer, the scale, the plate count. It's the reason to stay.",
       "Film the failures. They outperform the wins and they make the wins believable."
     ],
     "share": [
       "Argument bait: 'Roman soldiers ate better than you do.'",
       "Number every post — 'Day 41 of 150' says there's a story and they've missed some.",
-      "Let comments pick the next diet. Ownership converts watchers into a following.",
+      "Every short ends pointing somewhere: the long form, or the next day's answer.",
+      "Let comments pick the next protocol. Ownership converts watchers into subscribers.",
       "One thing they could actually do tomorrow."
     ]
   },
 
   "metrics": {
     "watch": [
-      "3-second retention — want 70%+. Below 60% means the hook failed, not the video.",
-      "Shares per view — the best single predictor of something breaking out.",
-      "Subscribers per video — the only one that compounds."
+      "Shorts: swipe-away rate in the first 3 seconds. Want 70%+ still there. Below 60% means the hook failed, not the video.",
+      "Long form: click-through rate and average view duration, in that order. CTR gets them in, AVD decides whether YouTube shows anyone else.",
+      "Subscribers per video — the only number that compounds, and the one the whole long-form strategy exists for."
     ],
     "rules": [
       "Any format that hits 3× your baseline: make 3 more within 7 days.",
       "Any format that underperforms 3 times running: drop it, don't fix it.",
-      "Never judge a post before 72 hours — shorts spike late.",
-      "Posted daily at 7/10 beats posted weekly at 9/10. Consistency is the whole game at this stage."
+      "Never judge a post before 72 hours — shorts spike late and long form spikes later.",
+      "Posted weekly at 7/10 beats posted monthly at 9/10. Consistency is the whole game at this stage.",
+      "One review, Sunday, ten minutes. Checking the numbers daily is a way of not filming."
     ]
   },
 
   "money": {
     "note": "Optimise for reach now; build so the money works later without a jarring pivot.",
     "points": [
-      "YouTube Partner Program, shorts route: 1,000 subs + 10 million shorts views in 90 days. One video a day makes this slower than the old plan but actually achievable.",
-      "Dropping the weekly long form costs you the watch-hours route to monetisation. That's a real trade — take it for now, and add long form back only when a single video obviously deserves it.",
+      "YouTube Partner Program has two doors and the weekly long form puts you in front of both: 1,000 subs + 4,000 public watch hours in 12 months, or 1,000 subs + 10 million shorts views in 90 days.",
+      "The long form is the watch-hours route. A 10-minute video watched half through by 1,000 people is ~830 hours — four or five of those get you there. Shorts alone never will.",
+      "Long form also earns real ad revenue per view. Shorts pay a fraction of it. The shorts exist to feed the long form an audience.",
       "Pre-workout affiliate isn't live: no brand mentions, and don't sign a competing supplement deal in the meantime.",
       "Show pre-workout unbranded in training footage now, so it reads as continuity later rather than a sellout moment."
     ]
   },
 
   "notes": [
-    "The Czech lesson is a daily fixture, not content — but if a day's lesson gives you something genuinely funny or hard, 30 seconds of it is a free second series. Optional. Don't let it become a second job.",
-    "Real Life (markets, NRICH, Brisbane) lives in stories now, not in the daily video. It's the trust layer and it shouldn't eat a production slot."
+    "The Czech lesson is a daily fixture, not content — but if a day's lesson gives you something genuinely funny or hard, 30 seconds of it is a free short. Optional. Don't let it become a second job.",
+    "If a week collapses, the long form is what you protect. Missing a day of shorts costs you a day. Missing the long form costs you the week and the subscribers it would have brought.",
+    "Everything published before today is off the board. Day counters, streaks and idea banks all start now."
   ]
 }

@@ -67,7 +67,7 @@
 
   .app {
     max-width: 620px; margin: 0 auto;
-    padding: calc(26px + env(safe-area-inset-top)) 20px calc(112px + env(safe-area-inset-bottom));
+    padding: calc(26px + env(safe-area-inset-top)) 20px calc(34px + env(safe-area-inset-bottom));
   }
 
   section { padding: 26px 0; border-top: 1px solid var(--hairline); }
@@ -147,96 +147,20 @@
   }
   .error.show { display: block; }
 
-  /* ---------- ask button (briefing) ---------- */
-  .fab {
-    position: fixed; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom));
-    z-index: 60; height: 52px; padding: 0 20px; border-radius: 26px; border: none;
-    background: var(--bubble-me); color: #fff; cursor: pointer;
-    display: flex; align-items: center; gap: 9px;
-    font-size: 15px; font-weight: 650; font-family: inherit;
-    box-shadow: var(--shadow);
-    transition: transform 0.14s ease, opacity 0.2s ease;
-  }
-  .fab:active { transform: scale(0.94); }
-
-  /* ---------- composer (lives inside the chat panel) ---------- */
-  .composer {
-    flex-shrink: 0;
-    padding: 8px 14px calc(10px + env(safe-area-inset-bottom));
-    background: var(--bg);
-    display: flex; justify-content: center;
-    border-top: 1px solid var(--hairline);
-  }
-  .composer-inner {
-    display: flex; align-items: flex-end; gap: 8px; width: 100%; max-width: 592px;
-    background: var(--card); border: 1px solid var(--hairline);
-    border-radius: 22px; box-shadow: var(--shadow); padding: 6px 6px 6px 8px;
-  }
-  .composer-input {
-    flex: 1; border: none; outline: none; background: transparent; resize: none;
-    font-size: 16px; /* 16px stops iOS zooming on focus */
-    line-height: 1.4; font-family: inherit; color: var(--ink);
-    padding: 9px 6px; max-height: 120px; min-width: 0;
-  }
-  .composer-input::placeholder { color: var(--ink-3); }
-  .send {
-    width: 36px; height: 36px; border-radius: 50%; border: none; flex-shrink: 0;
-    background: var(--bubble-me); color: #fff; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.12s ease, opacity 0.15s ease;
-  }
-  .send:active { transform: scale(0.9); }
-  .send:disabled { opacity: 0.35; }
-
-  /* ---------- chat panel ---------- */
-  .chat {
-    position: fixed; top: 0; left: 0; right: 0; height: 100%;
-    z-index: 50; background: var(--bg);
-    display: flex; flex-direction: column;
-    transform: translateY(100%); transition: transform 0.28s cubic-bezier(.32,.72,0,1);
-    visibility: hidden;
-  }
-  .chat.open { transform: translateY(0); visibility: visible; }
-  .chat-head {
+  /* ---------- panel chrome (Czech + Plan) ---------- */
+  .panel-head {
     display: flex; align-items: center; gap: 12px; flex-shrink: 0;
     padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
     border-bottom: 1px solid var(--hairline); background: var(--bg);
   }
-  .chat-title { font-size: 15px; font-weight: 650; flex: 1; }
-  .chat-sub { font-size: 12px; color: var(--ink-2); font-weight: 400; }
+  .panel-title { font-size: 15px; font-weight: 650; flex: 1; }
+  .panel-sub { font-size: 12px; color: var(--ink-2); font-weight: 400; }
   .icon-btn {
     width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--well);
     color: var(--ink-2); display: flex; align-items: center; justify-content: center;
     cursor: pointer; flex-shrink: 0;
   }
   .icon-btn:active { transform: scale(0.92); }
-  .chat-scroll {
-    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    padding: 16px 16px 14px;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .handoff-note {
-    align-self: flex-start; font-size: 13px; color: var(--ink-3);
-    line-height: 1.5; padding: 4px 0;
-  }
-  .msg { max-width: 86%; font-size: 15.5px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; }
-  .msg.me {
-    align-self: flex-end; background: var(--bubble-me); color: #fff;
-    padding: 10px 14px; border-radius: 18px 18px 4px 18px;
-  }
-  .msg.pa { align-self: flex-start; max-width: 100%; }
-  .msg.pa strong { font-weight: 650; }
-  .msg.err { align-self: flex-start; color: var(--critical); font-size: 14px; }
-  .typing { display: flex; gap: 4px; align-self: flex-start; padding: 6px 0; }
-  .typing span {
-    width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3);
-    animation: blink 1.3s infinite both;
-  }
-  .typing span:nth-child(2) { animation-delay: 0.18s; }
-  .typing span:nth-child(3) { animation-delay: 0.36s; }
-  @keyframes blink { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
-  .chat-empty { color: var(--ink-3); font-size: 14px; text-align: center; padding: 32px 12px; line-height: 1.6; }
 
   /* ---------- plan chip + panel ---------- */
   .plan-chip {
@@ -288,7 +212,7 @@
   .plan-body strong { color: var(--ink); font-weight: 650; }
   .plan-row { display: flex; gap: 12px; padding: 9px 0; border-top: 1px solid var(--hairline); }
   .plan-row:first-child { border-top: none; }
-  .plan-row .k { flex-shrink: 0; width: 62px; font-weight: 650; color: var(--ink); font-size: 13.5px; }
+  .plan-row .k { flex-shrink: 0; width: 66px; font-weight: 650; color: var(--ink); font-size: 13.5px; white-space: nowrap; }
   .plan-list li { margin: 0 0 9px 18px; }
   .plan-list li:last-child { margin-bottom: 0; }
   .plan-warn {
@@ -345,10 +269,10 @@
 </div>
 
 <div class="plan" id="czech">
-  <div class="chat-head">
+  <div class="panel-head">
     <div>
-      <div class="chat-title">Czech</div>
-      <div class="chat-sub" id="czechSub"></div>
+      <div class="panel-title">Czech</div>
+      <div class="panel-sub" id="czechSub"></div>
     </div>
     <button class="icon-btn" id="czechClose" title="Back to briefing" aria-label="Back to briefing">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
@@ -358,10 +282,10 @@
 </div>
 
 <div class="plan" id="plan">
-  <div class="chat-head">
+  <div class="panel-head">
     <div>
-      <div class="chat-title">Content Plan</div>
-      <div class="chat-sub" id="planSub"></div>
+      <div class="panel-title">Content Plan</div>
+      <div class="panel-sub" id="planSub"></div>
     </div>
     <button class="icon-btn" id="planClose" title="Back to briefing" aria-label="Back to briefing">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
@@ -369,35 +293,6 @@
   </div>
   <div class="plan-scroll" id="planScroll"></div>
 </div>
-
-<div class="chat" id="chat">
-  <div class="chat-head">
-    <div>
-      <div class="chat-title">Your assistant</div>
-      <div class="chat-sub" id="chatSub">Knows today's briefing</div>
-    </div>
-    <button class="icon-btn" id="chatClear" title="Clear conversation" aria-label="Clear conversation">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-    </button>
-    <button class="icon-btn" id="chatClose" title="Back to briefing" aria-label="Back to briefing">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-    </button>
-  </div>
-  <div class="chat-scroll" id="chatScroll"></div>
-  <div class="composer" id="composer">
-    <div class="composer-inner">
-      <textarea class="composer-input" id="input" rows="1" placeholder="Ask your assistant…" enterkeyhint="send" autocapitalize="sentences"></textarea>
-      <button class="send" id="send" aria-label="Send">
-        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
-
-<button class="fab" id="fab" aria-label="Ask your assistant">
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-8.5 8.5 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7A8.4 8.4 0 014 11.5 8.5 8.5 0 0112.5 3 8.5 8.5 0 0121 11.5z"/></svg>
-  Ask
-</button>
 
 <script>
 "use strict";
@@ -446,7 +341,7 @@ function renderHeader(b) {
   $("header").innerHTML = `
     <div class="date">${dateStr}</div>
     <div class="greeting">${greeting}, Christian</div>
-    ${isStale ? `<div class="stale-note">This briefing was written ${staleStr} — ask me below for anything newer.</div>` : ""}
+    ${isStale ? `<div class="stale-note">This briefing was written ${staleStr}.</div>` : ""}
     ${inArc ? `<div class="build-line"><span>Day ${n} of ${total}</span><div class="progress"><i style="width:${pct}%"></i></div></div>` : ""}
     <div class="chip-row">
       <div class="plan-chip" id="planChip" role="button" tabindex="0">
@@ -533,7 +428,7 @@ function renderPlan() {
   ).join("");
 
   const daily = (p.daily || []).map((d) =>
-    `<div class="plan-row"><div class="k">Daily</div><div><strong>${esc(d.what)}</strong><div class="plan-sub">${esc(d.detail)}</div></div></div>`
+    `<div class="plan-row"><div class="k">${esc(d.when || "Daily")}</div><div><strong>${esc(d.what)}</strong><div class="plan-sub">${esc(d.detail)}</div></div></div>`
   ).join("");
 
   $("planScroll").innerHTML = `
@@ -549,14 +444,14 @@ function renderPlan() {
       <p style="margin-top:14px"><span class="plan-warn">${esc(p.spine.risk)}</span></p>
     `)}
 
-    ${block("The three formats", `${(p.formats || []).length}`, formats)}
+    ${block("The three formats", "long form rotates", formats)}
 
-    ${block("Weekly rhythm", "1 shoot day", `<p>${esc(p.rhythm.note)}</p>${rhythm}`)}
+    ${block("Weekly rhythm", "1 shoot day · 1 publish", `<p>${esc(p.rhythm.note)}</p>${rhythm}`)}
 
     ${block("Idea bank", `${Object.values(p.ideaBank).reduce((a, b) => a + b.length, 0)} ideas`, banks)}
 
     ${block("Making things spread", "the mechanics", `
-      <p><strong>The hook</strong></p>${ul(p.rules.hook)}
+      ${p.rules.package ? `<p><strong>Packaging the long form</strong></p>${ul(p.rules.package)}<p style="margin-top:14px"><strong>The hook</strong></p>` : `<p><strong>The hook</strong></p>`}${ul(p.rules.hook)}
       <p style="margin-top:14px"><strong>Holding them</strong></p>${ul(p.rules.keep)}
       <p style="margin-top:14px"><strong>Getting shared</strong></p>${ul(p.rules.share)}
     `)}
@@ -727,241 +622,9 @@ function renderFooter(b) {
   $("footer").innerHTML = `<div>Briefing written ${str}</div><div>Updates automatically — no refresh needed</div>`;
 }
 
-/* =========================================================
-   CHAT — talks to /api/chat, which talks to Claude
-   ========================================================= */
-const chatKey = () => `pa:chat:${todayISO()}`;
-let history = [];
-let sending = false;
-
-function renderChat() {
-  const scroll = $("chatScroll");
-  if (!history.length) {
-    scroll.innerHTML = `<div class="chat-empty">Ask me anything about today.<br />I have your briefing, your bills, and your numbers in front of me.</div>`;
-    return;
-  }
-  scroll.innerHTML = history.map((m) =>
-    m.role === "user"
-      ? `<div class="msg me">${esc(m.content)}</div>`
-      : m.note
-      ? `<div class="handoff-note">${esc(m.content)}</div>`
-      : m.error
-      ? `<div class="msg err">${esc(m.content)}</div>`
-      : `<div class="msg pa">${fmt(m.content)}</div>`
-  ).join("");
-  scrollDown();
-}
-
-/* ---------- handoff: no API key, so hand the question to Claude
-   with today's context attached. Costs nothing, uses your subscription. ---------- */
-function handoffContext(question) {
-  const b = BRIEFING;
-  const day = PLAN ? dayNumber() : null;
-  const out = ["You're my personal assistant. This came from my life dashboard — keep the reply short and direct, like the briefing does."];
-  if (day && day >= 1 && day <= totalDays()) {
-    const trial = new Date(`${PLAN.endDate}T12:00:00+10:00`).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric", timeZone: TZ });
-    out.push(`Today is Day ${day} of my ${totalDays()}-day content build (marathon runner → sprinter, filmed time trial on ${trial}).`);
-  }
-  if (b) {
-    out.push(`Today's briefing said:\n${b.message.join("\n")}`.slice(0, 2600));
-    out.push(`Today's list: ${b.today.map((t) => t.text).join(" · ")}`);
-    out.push(`Numbers: ${b.numbers.map((n) => `${n.label} ${n.value}`).join(" · ")}`);
-  }
-  out.push(`My question: ${question}`);
-  return out.join("\n\n");
-}
-
-function openHandoff(question) {
-  window.open(`https://claude.ai/new?q=${encodeURIComponent(handoffContext(question))}`, "_blank");
-}
-
-function scrollDown() {
-  const s = $("chatScroll");
-  requestAnimationFrame(() => { s.scrollTop = s.scrollHeight; });
-}
-
-function openChat() {
-  $("chat").classList.add("open");
-  renderChat();
-}
-function closeChat() {
-  $("chat").classList.remove("open");
-  $("input").blur();
-}
-
-function passcode() { return store("pa:passcode") || ""; }
-
-async function send() {
-  const input = $("input");
-  const text = input.value.trim();
-  if (!text || sending) return;
-
-  input.value = "";
-  input.style.height = "auto";
-  openChat();
-
-  history.push({ role: "user", content: text });
-
-  // Handoff mode: already established there's no API key on the server.
-  if (store("pa:handoff")) {
-    history.push({ role: "assistant", note: true, content: "Opened in Claude with today's briefing attached." });
-    store(chatKey(), history);
-    renderChat();
-    openHandoff(text);
-    return;
-  }
-
-  sending = true;
-  $("send").disabled = true;
-  store(chatKey(), history);
-  renderChat();
-
-  const scroll = $("chatScroll");
-  const typing = document.createElement("div");
-  typing.className = "typing";
-  typing.innerHTML = "<span></span><span></span><span></span>";
-  scroll.appendChild(typing);
-  scrollDown();
-
-  let bubble = null;
-  let acc = "";
-
-  const finish = (content, isError) => {
-    typing.remove();
-    if (content) {
-      history.push({ role: "assistant", content, ...(isError ? { error: true } : {}) });
-      store(chatKey(), history);
-    }
-    renderChat();
-    sending = false;
-    $("send").disabled = false;
-  };
-
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-dashboard-passcode": passcode() },
-      body: JSON.stringify({ messages: history.filter((m) => !m.error) }),
-    });
-
-    if (res.status === 401) {
-      typing.remove();
-      const code = prompt("Passcode for this dashboard:");
-      if (code) {
-        store("pa:passcode", code);
-        history.pop();
-        store(chatKey(), history);
-        input.value = text;
-        sending = false;
-        $("send").disabled = false;
-        renderChat();
-        return send();
-      }
-      return finish("Chat is locked — a passcode is needed.", true);
-    }
-
-    // No API key configured on the server — switch to handoff permanently.
-    const ctype = res.headers.get("content-type") || "";
-    if (res.ok && ctype.includes("application/json")) {
-      const j = await res.json().catch(() => null);
-      if (j && j.handoff) {
-        store("pa:handoff", true);
-        typing.remove();
-        history.push({ role: "assistant", note: true, content: "No API key set, so I'll hand these to Claude instead — same conversation, on your subscription, no per-message cost. Opening it now." });
-        store(chatKey(), history);
-        renderChat();
-        openHandoff(text);
-        sending = false;
-        $("send").disabled = false;
-        return;
-      }
-    }
-
-    if (!res.ok || !res.body) {
-      let msg = `Couldn't reach the assistant (${res.status}).`;
-      try { const j = await res.json(); if (j.error) msg = j.error; } catch {}
-      return finish(msg, true);
-    }
-
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = "";
-
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buf += decoder.decode(value, { stream: true });
-      const lines = buf.split("\n");
-      buf = lines.pop();
-
-      for (const line of lines) {
-        if (!line.trim()) continue;
-        let evt;
-        try { evt = JSON.parse(line); } catch { continue; }
-
-        if (evt.error) return finish(evt.error, true);
-
-        if (evt.t) {
-          if (!bubble) {
-            typing.remove();
-            bubble = document.createElement("div");
-            bubble.className = "msg pa";
-            scroll.appendChild(bubble);
-          }
-          acc += evt.t;
-          bubble.innerHTML = fmt(acc);
-          scrollDown();
-        }
-      }
-    }
-
-    if (bubble) bubble.remove();
-    finish(acc.trim() || "No reply came back — try again.", !acc.trim());
-  } catch (err) {
-    finish(`Connection dropped: ${err.message}`, true);
-  }
-}
-
-function setupChat() {
-  const input = $("input");
-
-  input.addEventListener("input", () => {
-    input.style.height = "auto";
-    input.style.height = Math.min(input.scrollHeight, 120) + "px";
-  });
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
-  });
-  $("fab").addEventListener("click", () => {
-    openChat();
-    setTimeout(() => input.focus(), 300);
-  });
-  $("send").addEventListener("click", send);
-  $("chatClose").addEventListener("click", closeChat);
+function setupPanels() {
   $("planClose").addEventListener("click", closePlan);
   $("czechClose").addEventListener("click", closeCzech);
-  $("chatClear").addEventListener("click", () => {
-    history = [];
-    store(chatKey(), history);
-    renderChat();
-  });
-
-  history = store(chatKey()) || [];
-
-  // Shrink the chat panel to the visible area so the keyboard never covers
-  // the composer or the last message on iOS.
-  if (window.visualViewport) {
-    const vv = window.visualViewport;
-    const fit = () => {
-      const chat = $("chat");
-      chat.style.height = `${vv.height}px`;
-      chat.style.top = `${vv.offsetTop}px`;
-      if (chat.classList.contains("open")) scrollDown();
-    };
-    vv.addEventListener("resize", fit);
-    vv.addEventListener("scroll", fit);
-    fit();
-  }
 }
 
 /* =========================================================
@@ -992,7 +655,6 @@ async function refresh() {
   renderNumbers(briefing, whoop);
   renderRadar(briefing);
   renderFooter(briefing);
-  $("chatSub").textContent = briefing.date === todayISO() ? "Knows today's briefing" : "Knows your last briefing";
   rendered = true;
 }
 
@@ -1002,7 +664,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") refresh();
 });
 
-setupChat();
+setupPanels();
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 </script>
