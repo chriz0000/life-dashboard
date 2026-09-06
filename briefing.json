@@ -52,7 +52,7 @@
     {
       "label": "Long form",
       "value": "0",
-      "note": "1 a week, live Sat",
+      "note": "1 a week",
       "level": "warning"
     },
     {
@@ -67,11 +67,5 @@
       "note": "of 30",
       "level": "good"
     }
-  ],
-  "radar": [
-    "The baseline has now failed to get filmed twice. If it doesn't happen today the problem isn't the plan, it's the shoot day itself — and I'd want to make the first video something you can film in twenty minutes instead",
-    "One long form a week is the whole reason to be on YouTube: it's the watch-hours route to monetisation and the only format people subscribe for. If a week collapses, protect the long form and drop the shorts",
-    "TODOIST_TOKEN still isn't set in the repo secrets, so the morning job can only update the day counter, not your actual list",
-    "Nothing maximal until 1 Oct — the hamstring gate is the one thing that would end the whole arc"
   ]
 }

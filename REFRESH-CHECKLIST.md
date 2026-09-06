@@ -28,8 +28,8 @@ Write it like a personal assistant talking to Christian:
   action. Never carry over yesterday's wording.
 - `today`: 4–6 checkable actions, most impactful first
   (levels: `critical` / `warning` / `good` / `neutral`)
-- `numbers`: 3–5 stat tiles — only numbers that matter *today*
-- `radar`: 2–4 quiet items being tracked, each with what would resolve it
+- `numbers`: 3–5 stat tiles — only numbers that matter *today*. They sit at the
+  very top of the page, above the prose, so they have to earn that spot
 
 The page fetches `briefing.json`, `whoop-data.json`, `plan.json` and
 `czech.json` with no caching on every load, on focus, and every 5 minutes —
