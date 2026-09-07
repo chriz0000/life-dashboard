@@ -1,43 +1,29 @@
 {
-  "date": "2026-09-07",
-  "writtenAt": "2026-09-07T08:15:00+10:00",
-  "handwritten": true,
+  "date": "2026-09-08",
+  "writtenAt": "2026-09-08T08:16:00+10:00",
   "message": [
-    "Morning. The content plan is rebuilt and the counter is back to **Day 1 of 150** — everything from the last two attempts is off the board. That's not a punishment, it's just honest: nothing was published, so there's nothing to carry forward.",
-    "It's **YouTube only** now. No Instagram, no cross-posting. One long form a week, filmed Monday and live Saturday 10am. Shorts every day — one is the floor, two is a normal day, three only when the bank is deep. Most of the shorts get cut out of the long form you already filmed, so one shoot day feeds the whole week.",
-    "Today is that shoot day, and it's the one the whole arc hangs off: the baseline. Marathon legs, a stopwatch, and a number you have to say out loud. Run it at effort, not flat out — the hamstring gate holds until 1 Oct and a torn hamstring ends this before it starts.",
-    "The app is now just the briefing, the numbers, the plan and Czech. The chat is gone and so is the checklist — your list lives in Todoist, and I read it there each morning to see what actually got done."
+    "Day 2 of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.",
+    "Tue in the rhythm: Edit the long form — rough cut, story order, no polish · shorts · Czech · training.",
+    "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
   ],
   "numbers": [
     {
       "label": "The build",
-      "value": "Day 1",
+      "value": "Day 2",
       "note": "of 150",
       "level": "info"
     },
     {
       "label": "Open today",
-      "value": "8",
-      "note": "in Todoist",
+      "value": "—",
+      "note": "Todoist unreachable",
       "level": "warning"
     },
     {
-      "label": "Long form",
-      "value": "0",
-      "note": "1 a week",
+      "label": "Due / overdue",
+      "value": "—",
+      "note": "not checked",
       "level": "warning"
-    },
-    {
-      "label": "Overdue",
-      "value": "$69",
-      "note": "1 item",
-      "level": "critical"
-    },
-    {
-      "label": "Czech",
-      "value": "Day 2",
-      "note": "of 30",
-      "level": "good"
     }
   ]
 }
