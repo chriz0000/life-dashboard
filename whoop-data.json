@@ -1,19 +1,19 @@
 {
-  "synced_at": "2026-09-08T16:47:02.712198+00:00",
+  "synced_at": "2026-09-08T22:47:09.419257+00:00",
   "recovery": {
-    "date": "2026-09-07T19:49:36.295Z",
-    "recovery_score": 51.0,
-    "hrv_ms": 51.000492,
-    "resting_heart_rate": 61.0
+    "date": "2026-09-08T20:11:16.016Z",
+    "recovery_score": 73.0,
+    "hrv_ms": 54.20275,
+    "resting_heart_rate": 59.0
   },
   "sleep": {
-    "date": "2026-09-07T12:07:31.530Z",
-    "sleep_score": 74.0,
-    "efficiency_percentage": 88.72875
+    "date": "2026-09-08T10:01:40.960Z",
+    "sleep_score": 81.0,
+    "efficiency_percentage": 94.96196
   },
   "strain": {
-    "date": "2026-09-07T12:07:31.530Z",
-    "strain_score": 13.753204,
-    "average_heart_rate": 74
+    "date": "2026-09-08T10:01:40.960Z",
+    "strain_score": 0.31644905,
+    "average_heart_rate": 60
   }
 }
