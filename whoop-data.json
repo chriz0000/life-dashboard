@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-09T10:47:22.271079+00:00",
+  "synced_at": "2026-09-09T16:47:27.783733+00:00",
   "recovery": {
     "date": "2026-09-08T20:11:16.016Z",
     "recovery_score": 73.0,
@@ -7,13 +7,13 @@
     "resting_heart_rate": 59.0
   },
   "sleep": {
-    "date": "2026-09-08T10:01:40.960Z",
-    "sleep_score": 81.0,
-    "efficiency_percentage": 94.96196
+    "date": "2026-09-09T07:07:43.970Z",
+    "sleep_score": 11.0,
+    "efficiency_percentage": 76.22283
   },
   "strain": {
     "date": "2026-09-08T10:01:40.960Z",
-    "strain_score": 15.5492735,
-    "average_heart_rate": 74
+    "strain_score": 15.559255,
+    "average_heart_rate": 73
   }
 }
