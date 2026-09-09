@@ -1,15 +1,15 @@
 {
-  "date": "2026-09-09",
-  "writtenAt": "2026-09-09T08:02:00+10:00",
+  "date": "2026-09-10",
+  "writtenAt": "2026-09-10T07:57:00+10:00",
   "message": [
-    "Day 3 of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.",
-    "Wed in the rhythm: Finish the long form · write the title and build the thumbnail · shorts · Czech · training.",
+    "Day 4 of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.",
+    "Thu in the rhythm: Cut and schedule the week's shorts from Monday's footage · Czech · training.",
     "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
   ],
   "numbers": [
     {
       "label": "The build",
-      "value": "Day 3",
+      "value": "Day 4",
       "note": "of 150",
       "level": "info"
     },
