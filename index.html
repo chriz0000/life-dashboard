@@ -189,7 +189,7 @@
   .plan-body strong { color: var(--ink); font-weight: 650; }
   .plan-row { display: flex; gap: 12px; padding: 9px 0; border-top: 1px solid var(--hairline); }
   .plan-row:first-child { border-top: none; }
-  .plan-row .k { flex-shrink: 0; width: 66px; font-weight: 650; color: var(--ink); font-size: 13.5px; white-space: nowrap; }
+  .plan-row .k { flex-shrink: 0; min-width: 66px; font-weight: 650; color: var(--ink); font-size: 13.5px; white-space: nowrap; }
   .plan-list li { margin: 0 0 9px 18px; }
   .plan-list li:last-child { margin-bottom: 0; }
   .plan-warn {
@@ -232,6 +232,51 @@
   .cz-done:active { transform: scale(0.98); }
   .cz-done.is-done { background: var(--good); }
   .cz-tick { font-size: 11px; font-weight: 700; color: var(--good); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ---------- czech: day navigation ---------- */
+  .cz-nav {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+    background: var(--well); border-radius: 999px; padding: 4px;
+  }
+  .cz-nav-btn {
+    width: 34px; height: 34px; border-radius: 50%; border: none; flex-shrink: 0;
+    background: var(--card); color: var(--ink); font-size: 18px; line-height: 1;
+    font-family: inherit; cursor: pointer; box-shadow: var(--shadow);
+  }
+  .cz-nav-btn:disabled { opacity: 0.3; box-shadow: none; cursor: default; }
+  .cz-nav-btn:not(:disabled):active { transform: scale(0.92); }
+  .cz-nav-label {
+    flex: 1; text-align: center; font-size: 13px; font-weight: 650; color: var(--ink-2);
+  }
+  .cz-nav-label em { font-style: normal; color: var(--warning); font-weight: 600; }
+  .cz-back {
+    display: block; width: 100%; margin: -8px 0 18px; padding: 9px;
+    border: none; background: none; font-family: inherit;
+    font-size: 13px; font-weight: 650; color: var(--info); cursor: pointer;
+  }
+
+  /* ---------- czech: recall ---------- */
+  .cz-recall { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; }
+  .cz-recall-item {
+    background: var(--well); border-radius: 12px; padding: 11px 13px;
+    cursor: pointer; user-select: none; -webkit-user-select: none; min-width: 0;
+  }
+  .cz-recall-item:active { transform: scale(0.98); }
+  .cz-recall-item .cz-cs { font-size: 17px; }
+  .cz-recall-item .cz-en {
+    filter: blur(5px); opacity: 0.55; transition: filter 0.14s ease, opacity 0.14s ease;
+  }
+  .cz-recall-item.shown .cz-en { filter: none; opacity: 1; }
+  .cz-recall-src {
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-3); margin-top: 6px; font-weight: 650;
+  }
+
+  /* ---------- czech: lesson list rows ---------- */
+  .cz-row { cursor: pointer; }
+  .cz-row:active { opacity: 0.6; }
+  .cz-row.is-locked { cursor: default; opacity: 0.4; }
+  .cz-row.is-here .k { color: var(--info); }
 </style>
 </head>
 <body>
@@ -495,37 +540,131 @@ function lessonCard(l) {
   `;
 }
 
+/* ---------- which day is on screen ----------
+   Defaults to today, but any earlier day can be opened and completed, so a
+   missed day can be caught up later instead of being lost. Days ahead of
+   today stay shut -- the course only works if it stays paced. */
+let CZ_VIEW = null;
+
+function czMaxDay() { return Math.max(1, Math.min(czechDay(), CZECH.blockDays)); }
+function czViewDay() {
+  const max = czMaxDay();
+  return CZ_VIEW === null ? max : Math.min(Math.max(CZ_VIEW, 1), max);
+}
+const lessonFor = (day) => CZECH.lessons.find((l) => l.day === day);
+const wordsOf = (day) => (lessonFor(day)?.words || []).filter((w) => w.c !== "—");
+
+/* ---------- recall: yesterday, three days back, a week, a fortnight ----------
+   Spacing beats volume. Two words from each of four earlier lessons, picked
+   from the day number so they are stable all day but rotate as the days pass.
+   Checkpoint days hold no words, so walk back to the last day that does. */
+function recallFor(day) {
+  const out = [];
+  const used = new Set();
+  for (const gap of [1, 3, 7, 14]) {
+    let src = day - gap;
+    while (src >= 1 && !wordsOf(src).length) src--;
+    if (src < 1 || used.has(src)) continue;
+    used.add(src);
+    const w = wordsOf(src);
+    const a = (day * 7 + gap) % w.length;
+    const b = (a + 1) % w.length;
+    out.push({ day: src, gap, words: b === a ? [w[a]] : [w[a], w[b]] });
+  }
+  return out;
+}
+
+function recallBlock(day) {
+  const groups = recallFor(day);
+  if (!groups.length) return "";
+  const when = { 1: "yesterday", 3: "three days ago", 7: "a week ago", 14: "a fortnight ago" };
+  const items = groups.map((g) => g.words.map((w) => `
+    <div class="cz-recall-item" role="button" tabindex="0">
+      <div class="cz-cs">${esc(w.c)}</div>
+      <div class="cz-en">${esc(w.e)}</div>
+      <div class="cz-recall-src">Day ${g.day} · ${when[g.gap]}</div>
+    </div>`).join("")).join("");
+  return `
+    <div class="cz-section-label">Recall first</div>
+    <p class="cz-why" style="margin-bottom:12px">Say each one out loud before you look. Tap to check.</p>
+    <div class="cz-recall">${items}</div>
+  `;
+}
+
+/* ---------- the nutshell: every rule met before today, in one line each ---------- */
+function nutshellBlock(day) {
+  const rules = (CZECH.nutshell || []).filter((n) => n.day < day);
+  if (!rules.length) return "";
+  const rows = rules.map((n) => `
+    <div class="plan-row">
+      <div class="k">Day ${n.day}</div>
+      <div>${fmt(n.rule)}${n.ex ? `<div class="cz-ex">${esc(n.ex)}</div>` : ""}</div>
+    </div>`).join("");
+  return block("Everything so far, in a nutshell", `${rules.length} rule${rules.length === 1 ? "" : "s"}`, rows);
+}
+
 function renderCzech() {
   if (!CZECH) return;
-  const d = czechDay();
   const total = CZECH.blockDays;
   $("czechSub").textContent = `${CZECH.subtitle} · block 1 of the course`;
 
-  if (d < 1) {
+  if (czechDay() < 1) {
     $("czechScroll").innerHTML = `<p class="plan-lede">Starts ${CZECH.startDate}.</p>`;
     return;
   }
 
-  const lesson = CZECH.lessons.find((l) => l.day === Math.min(d, total));
+  const max = czMaxDay();
+  const d = czViewDay();
+  const onToday = d === max;
+  const lesson = lessonFor(d);
   const done = Boolean(store(czechKey(d)));
-  const past = d > total;
+  const past = czechDay() > total;
 
   const sounds = CZECH.sounds.map((s) =>
     `<div class="plan-row"><div class="k">${esc(s.c)}</div><div><strong>${esc(s.s)}</strong><div class="plan-sub">${esc(s.ex)}</div></div></div>`
   ).join("");
 
-  const allLessons = CZECH.lessons.map((l) =>
-    `<div class="plan-row"><div class="k">${l.day}</div><div>${esc(l.title)}${store(czechKey(l.day)) ? ' <span class="cz-tick">done</span>' : ""}<div class="plan-sub">${esc(l.phase)}</div></div></div>`
-  ).join("");
+  const allLessons = CZECH.lessons.map((l) => {
+    const locked = l.day > max;
+    const cls = `plan-row cz-row${locked ? " is-locked" : ""}${l.day === d ? " is-here" : ""}`;
+    const mark = store(czechKey(l.day)) ? ' <span class="cz-tick">done</span>' : locked ? "" : "";
+    return `<div class="${cls}"${locked ? "" : ` data-day="${l.day}" role="button" tabindex="0"`}>
+      <div class="k">${l.day}</div>
+      <div>${esc(l.title)}${mark}<div class="plan-sub">${esc(l.phase)}</div></div>
+    </div>`;
+  }).join("");
 
   $("czechScroll").innerHTML = `
-    ${past ? `<p class="plan-lede">Block 1 is finished — ${esc(CZECH.next)}</p>` : ""}
+    <div class="cz-nav">
+      <button class="cz-nav-btn" id="czPrev" ${d <= 1 ? "disabled" : ""} aria-label="Previous day">‹</button>
+      <div class="cz-nav-label">Day ${d} of ${total}${onToday ? "" : ` · <em>today is Day ${max}</em>`}</div>
+      <button class="cz-nav-btn" id="czNext" ${d >= max ? "disabled" : ""} aria-label="Next day">›</button>
+    </div>
+    ${onToday ? "" : `<button class="cz-back" id="czBack">Back to today →</button>`}
+    ${past && onToday ? `<p class="plan-lede">Block 1 is finished — ${esc(CZECH.next)}</p>` : ""}
+    ${recallBlock(d)}
     ${lessonCard(lesson)}
-    <button class="cz-done ${done ? "is-done" : ""}" id="czechDone">${done ? "Done today ✓" : "Mark today done"}</button>
+    <button class="cz-done ${done ? "is-done" : ""}" id="czechDone">${
+      done ? (onToday ? "Done today ✓" : `Day ${d} done ✓`) : (onToday ? "Mark today done" : `Mark Day ${d} done`)
+    }</button>
+    ${nutshellBlock(d)}
     ${block("The sound system", "reference", `<p>Czech spelling is one-to-one with sound — learn these once and you can pronounce any word you see.</p>${sounds}`)}
     ${block("How this course works", "the method", ul(CZECH.method))}
-    ${block("All 30 lessons", `day ${Math.min(d, total)} of ${total}`, allLessons)}
+    ${block("All 30 lessons", `day ${d} of ${total}`, allLessons)}
   `;
+
+  const go = (n) => { CZ_VIEW = n; renderCzech(); $("czechScroll").scrollTop = 0; };
+  $("czPrev").addEventListener("click", () => go(d - 1));
+  $("czNext").addEventListener("click", () => go(d + 1));
+  if ($("czBack")) $("czBack").addEventListener("click", () => { CZ_VIEW = null; renderCzech(); $("czechScroll").scrollTop = 0; });
+
+  $("czechScroll").querySelectorAll(".cz-row[data-day]").forEach((row) => {
+    row.addEventListener("click", () => go(+row.dataset.day));
+  });
+
+  $("czechScroll").querySelectorAll(".cz-recall-item").forEach((item) => {
+    item.addEventListener("click", () => item.classList.toggle("shown"));
+  });
 
   $("czechDone").addEventListener("click", () => {
     store(czechKey(d), !store(czechKey(d)));
