@@ -1,15 +1,15 @@
 {
-  "date": "2026-09-13",
-  "writtenAt": "2026-09-13T07:40:00+10:00",
+  "date": "2026-09-14",
+  "writtenAt": "2026-09-14T07:43:00+10:00",
   "message": [
-    "Day 7 of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.",
-    "Sun in the rhythm: 10 minutes on last week's numbers · pick next week's long form · shorts · Czech.",
-    "I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current."
+    "Day 8 of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.",
+    "Mon in the rhythm: SHOOT DAY — film the week's long form end to end, plus b-roll. The only heavy day.",
+    "I couldn't reach Todoist this morning, so the open count and the money above aren't current. Your Todoist is fine — the dashboard just can't see it until TODOIST_TOKEN is set."
   ],
   "numbers": [
     {
       "label": "The build",
-      "value": "Day 7",
+      "value": "Day 8",
       "note": "of 150",
       "level": "info"
     },
