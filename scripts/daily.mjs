@@ -190,7 +190,7 @@ if (!handwritten) briefing.message = [
     ? `Day 1 still isn't filmed. Everything in the arc is measured against a baseline that doesn't exist yet, and it gets weaker the longer it waits.`
     : `${weekday} in the rhythm: ${rhythmText}.`,
   !checked
-    ? `I couldn't reach Todoist this morning, so the list and the money below are from the last time someone looked — treat them as stale, not current.`
+    ? `I couldn't reach Todoist this morning, so the open count and the money above aren't current. Your Todoist is fine — the dashboard just can't see it until TODOIST_TOKEN is set.`
     : overdueCount
     ? `${fmtMoney(overdueTotal)} sitting due or overdue across ${overdueCount} item${overdueCount === 1 ? "" : "s"}.`
     : `Nothing overdue — bills and subscriptions are clear.`,
