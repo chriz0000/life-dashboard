@@ -1,15 +1,15 @@
 {
-  "date": "2026-09-16",
-  "writtenAt": "2026-09-16T08:26:00+10:00",
+  "date": "2026-09-17",
+  "writtenAt": "2026-09-17T08:21:00+10:00",
   "message": [
-    "Day 10 of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.",
-    "Wed in the rhythm: Finish the long form · write the title and build the thumbnail · shorts · Czech · training.",
+    "Day 11 of 150. This is the automatic refresh — the written briefing lands when you next talk to me in Claude.",
+    "Thu in the rhythm: Cut and schedule the week's shorts from Monday's footage · Czech · training.",
     "I couldn't reach Todoist this morning, so the open count and the money above aren't current. Your Todoist is fine — the dashboard just can't see it until TODOIST_TOKEN is set."
   ],
   "numbers": [
     {
       "label": "The build",
-      "value": "Day 10",
+      "value": "Day 11",
       "note": "of 150",
       "level": "info"
     },
